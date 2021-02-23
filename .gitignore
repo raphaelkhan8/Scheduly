@@ -1,2 +1,4 @@
 # Project exclude paths
 /out/
+
+src/Database/DBInfo.java
