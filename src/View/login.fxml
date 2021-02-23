@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LoginController">
+    <children>
+        <AnchorPane layoutX="50.0" layoutY="147.0" prefHeight="200.0" prefWidth="500.0" style="-fx-border-radius: 10; -fx-border-color: black;">
+            <children>
+                <TextArea editable="false" layoutX="11.0" layoutY="3.0" prefHeight="200.0" prefWidth="500.0" text="                                              Please login to begin scheduling." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                <TextField fx:id="usernameTextField" layoutX="219.0" layoutY="47.0" />
+                <TextField fx:id="passwordTextField" layoutX="219.0" layoutY="88.0" />
+                <Label fx:id="usernameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="82.0" layoutY="51.0" prefHeight="17.0" prefWidth="149.0" text="Username:" />
+                <Label fx:id="passwordLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="82.0" layoutY="92.0" prefHeight="17.0" prefWidth="149.0" text="Password:" />
+                <Button fx:id="loginButton" layoutX="378.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="25.0" prefWidth="75.0" text="Submit" />
+                <Label fx:id="passwordLabel1" alignment="CENTER" contentDisplay="CENTER" layoutX="76.0" layoutY="149.0" prefHeight="17.0" prefWidth="149.0" text="Zone Id:" />
+                <TextField fx:id="passwordTextField1" editable="false" layoutX="219.0" layoutY="145.0" prefHeight="25.0" prefWidth="49.0" />
+            </children>
+        </AnchorPane>
+        <TextArea fx:id="welcomeMessageLabel" editable="false" layoutX="50.0" layoutY="31.0" prefHeight="88.0" prefWidth="500.0" style="-fx-background-radius: 10; -fx-background-color: black;" text="                                                    Scheduly                                                                 &#10;&#10;                                             Set it and Forget it">
+            <font>
+                <Font name="System Bold" size="13.0" />
+            </font>
+        </TextArea>
+    </children>
+</AnchorPane>
