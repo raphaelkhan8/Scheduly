@@ -1,7 +1,8 @@
 package Database;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.SQLException;
 
 public class DBQuery {
 
@@ -11,11 +12,11 @@ public class DBQuery {
     // Setter (sets above result variable to query's return)
     public static void makeQuery(String query) {
         try {
-            Statement statement = DBConnection.startConnection().createStatement();
-            result = statement.executeQuery(query);
+            PreparedStatement ps = DBConnection.startConnection().prepareStatement(query);
+            result = ps.executeQuery(query);
         }
-        catch (Exception ex) {
-            System.out.println(ex.getStackTrace());
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
 
