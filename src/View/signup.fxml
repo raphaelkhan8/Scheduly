@@ -16,9 +16,8 @@
                 <TextField fx:id="passwordTextField" layoutX="219.0" layoutY="88.0" />
                 <Label fx:id="usernameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="82.0" layoutY="51.0" prefHeight="17.0" prefWidth="149.0" text="Username:" />
                 <Label fx:id="passwordLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="82.0" layoutY="92.0" prefHeight="17.0" prefWidth="149.0" text="Password:" />
-                <Button fx:id="signupButton" layoutX="378.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleSignup" prefHeight="25.0" prefWidth="85.0" text="Sign Me Up!" />
-                <Label fx:id="zoneIdLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="76.0" layoutY="149.0" prefHeight="17.0" prefWidth="149.0" text="Zone Id:" />
-                <TextField fx:id="zoneIdTextField" editable="false" layoutX="219.0" layoutY="145.0" prefHeight="25.0" prefWidth="49.0" />
+                <Button fx:id="signupButton" layoutX="294.0" layoutY="145.0" mnemonicParsing="false" onAction="#handleSignup" prefHeight="25.0" prefWidth="85.0" text="Sign Me Up!" />
+            <Button fx:id="cancelButton" layoutX="114.0" layoutY="145.0" mnemonicParsing="false" onAction="#cancelView" prefHeight="25.0" prefWidth="85.0" text="Cancel" />
             </children>
         </AnchorPane>
         <TextArea fx:id="sloganLabel" editable="false" layoutX="50.0" layoutY="21.0" prefHeight="88.0" prefWidth="500.0" style="-fx-background-radius: 10; -fx-background-color: black;" stylesheets="@styles.css" text="                                                            Scheduly                                                                 &#10;&#10;                                                     Set it and Forget it">

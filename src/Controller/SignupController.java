@@ -4,9 +4,14 @@ import Database.DBQuery;
 import Model.SessionHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.util.ResourceBundle;
@@ -32,10 +37,7 @@ public class SignupController implements Initializable {
     private Button signupButton;
 
     @FXML
-    private Label zoneIdLabel;
-
-    @FXML
-    private TextField zoneIdTextField;
+    private Button cancelButton;
 
     @FXML
     private TextArea sloganLabel;
@@ -52,7 +54,6 @@ public class SignupController implements Initializable {
         signupMessage.setText(userLanguage.getString("signupMessage"));
         usernameLabel.setText(userLanguage.getString("username"));
         passwordLabel.setText(userLanguage.getString("password"));
-        zoneIdLabel.setText(userLanguage.getString("zoneId"));
         signupButton.setText(userLanguage.getString("signupButton"));
     }
 
@@ -93,6 +94,14 @@ public class SignupController implements Initializable {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    @FXML
+    void cancelView(ActionEvent event) throws IOException {
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        Object scene = FXMLLoader.load(getClass().getResource("/View/login.fxml"));
+        stage.setScene(new Scene((Parent) scene));
+        stage.show();
     }
 
 }
