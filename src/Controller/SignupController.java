@@ -25,13 +25,13 @@ public class SignupController {
     private Button signupButton;
 
     @FXML
-    private Label passwordLabel1;
+    private Label zoneIdLabel;
 
     @FXML
-    private TextField passwordTextField1;
+    private TextField zoneIdTextField;
 
     @FXML
-    private TextArea welcomeMessageLabel;
+    private TextArea sloganLabel;
 
     @FXML
     void handleSignup(ActionEvent event) {
