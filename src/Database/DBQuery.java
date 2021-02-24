@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DBQuery {
 
-    // container from db query return
+    // container for db query return
     private static ResultSet result;
 
     // Setter (sets above result variable to query's return)
