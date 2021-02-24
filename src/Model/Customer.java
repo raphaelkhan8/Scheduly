@@ -1,5 +1,8 @@
 package Model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class Customer {
 
     private int customerId;
@@ -9,6 +12,20 @@ public class Customer {
     private String phone;
     private String country;
     private int status;
+    // container for customer's appointments
+    private ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+
+    public Customer() { }
+
+    public Customer(int customerId, String customerName, String address, String postalCode, String phone, String country, int status) {
+        this.customerId = customerId;
+        this.customerName = customerName;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.phone = phone;
+        this.country = country;
+        this.status = status;
+    }
 
     // Setters
     public void setUserId(int customerId) {
@@ -29,10 +46,9 @@ public class Customer {
     public void setCountry(String country) {
         this.country = country;
     }
-    public void setStatus(int status) {
-        // 0 = inactive; 1 = active
-        this.status = status;
-    }
+    // 0 = inactive; 1 = active
+    public void setStatus(int status) { this.status = status; }
+    public void addAppointment(Appointment apt) { allAppointments.add(apt); }
 
     // Getters
     public int getCustomerId() {
@@ -56,5 +72,6 @@ public class Customer {
     public int getStatus() {
         return status;
     }
+    public ObservableList<Appointment> getAllAppointments() { return allAppointments; }
 
 }

@@ -1,5 +1,8 @@
 package Model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.time.LocalTime;
 
 public class Appointment {
@@ -16,6 +19,25 @@ public class Appointment {
     private int customerId;
     private int userId;
     private int contactId;
+    // container for all appointments
+    private ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+
+    public Appointment() { }
+
+    public Appointment(int appointmentId, String title, String description, String location, String type, String start, String end, LocalTime time, String customerName, int customerId, int userId, int contactId) {
+        this.appointmentId = appointmentId;
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.type = type;
+        this.start = start;
+        this.end = end;
+        this.time = time;
+        this.customerName = customerName;
+        this.customerId = customerId;
+        this.userId = userId;
+        this.contactId = contactId;
+    }
 
     // Setters
     public void setAppointmentId(int appointmentId) {

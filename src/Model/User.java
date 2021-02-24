@@ -1,11 +1,25 @@
 package Model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class User {
 
     private int userId;
     private String username;
     private String password;
     private int status;
+    // container for all users
+    public static ObservableList<User> allUsers = FXCollections.observableArrayList();
+
+    public User() { }
+
+    public User(int userID, String username, String password, int status) {
+        this.userId = userID;
+        this.username = username;
+        this.password = password;
+        this.status = status;
+    }
 
     // Setters
     public void setUserId(int userId) {
@@ -17,10 +31,8 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public void setStatus(int status) {
-        // 0 = inactive; 1 = active
-        this.status = status;
-    }
+    public void setStatus(int status) { this.status = status; }
+    public void addUser(User user) { allUsers.add(user); }
 
     // Getters
     public int getUserId() {
@@ -35,5 +47,6 @@ public class User {
     public int getStatus() {
         return status;
     }
+    public ObservableList<User> getAllUsers() { return allUsers; }
 
 }
