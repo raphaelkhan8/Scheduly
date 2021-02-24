@@ -1,6 +1,7 @@
 package Main;
 
 import Database.DBConnection;
+import Database.DBQuery;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
