@@ -2,6 +2,7 @@ package Controller;
 
 import Database.DBQuery;
 import Model.SessionHandler;
+import com.mysql.cj.log.Log;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -72,7 +73,7 @@ public class LoginController implements Initializable {
     }
 
     @FXML
-    void handleLogin(ActionEvent event) {
+    void handleLogin(ActionEvent event) throws IOException {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
 
@@ -81,21 +82,13 @@ public class LoginController implements Initializable {
         if (proceed) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, userLanguage.getString("loginSuccess"));
             alert.showAndWait();
+            openHomePage(event);
         }
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR, userLanguage.getString("loginMismatch"));
             alert.showAndWait();
         }
     }
-
-    @FXML
-    void openSignupView(ActionEvent event) throws IOException {
-        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        Object scene = FXMLLoader.load(getClass().getResource("/View/signup.fxml"));
-        stage.setScene(new Scene((Parent) scene));
-        stage.show();
-    }
-
 
     public static Boolean checkLoginInfo(String username, String password) {
         if (username.isEmpty() || password.isEmpty()) {
@@ -115,6 +108,22 @@ public class LoginController implements Initializable {
             System.out.println(e.getMessage());
             return false;
         }
+    }
+
+    @FXML
+    void openSignupView(ActionEvent event) throws IOException {
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        Object scene = FXMLLoader.load(getClass().getResource("/View/Signup.fxml"));
+        stage.setScene(new Scene((Parent) scene));
+        stage.show();
+    }
+
+    @FXML
+    void openHomePage(ActionEvent event) throws IOException {
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        Object scene = FXMLLoader.load(getClass().getResource("/View/HomePage.fxml"));
+        stage.setScene(new Scene((Parent) scene));
+        stage.show();
     }
 
 }

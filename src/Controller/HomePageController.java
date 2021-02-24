@@ -35,9 +35,6 @@ public class HomePageController {
     private Label appointmentLabel1;
 
     @FXML
-    private Button cancelButton;
-
-    @FXML
     private Button logoutButton;
 
     @FXML
@@ -54,11 +51,6 @@ public class HomePageController {
 
     @FXML
     private Label reportLabel4;
-
-    @FXML
-    void cancelView(ActionEvent event) {
-
-    }
 
     @FXML
     void handleLogout(ActionEvent event) {

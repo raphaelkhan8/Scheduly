@@ -2,6 +2,7 @@ package Controller;
 
 import Database.DBQuery;
 import Model.SessionHandler;
+import com.mysql.cj.log.Log;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -59,7 +60,7 @@ public class SignupController implements Initializable {
     }
 
     @FXML
-    void handleSignup(ActionEvent event) {
+    void handleSignup(ActionEvent event) throws IOException {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
         int userId = 1;
@@ -75,6 +76,7 @@ public class SignupController implements Initializable {
         if (proceed) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, userLanguage.getString("signupRedundant"));
             alert.showAndWait();
+            openHomePage(event);
         }
         else {
             try {
@@ -90,6 +92,7 @@ public class SignupController implements Initializable {
                 System.out.println(userCreation);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, userLanguage.getString("signupSuccess"));
                 alert.showAndWait();
+                openHomePage(event);
             }
             catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -98,9 +101,17 @@ public class SignupController implements Initializable {
     }
 
     @FXML
+    void openHomePage(ActionEvent event) throws IOException {
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        Object scene = FXMLLoader.load(getClass().getResource("/View/HomePage.fxml"));
+        stage.setScene(new Scene((Parent) scene));
+        stage.show();
+    }
+
+    @FXML
     void cancelView(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        Object scene = FXMLLoader.load(getClass().getResource("/View/login.fxml"));
+        Object scene = FXMLLoader.load(getClass().getResource("/View/Login.fxml"));
         stage.setScene(new Scene((Parent) scene));
         stage.show();
     }
