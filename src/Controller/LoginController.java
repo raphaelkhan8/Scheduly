@@ -65,7 +65,8 @@ public class LoginController implements Initializable {
         passwordLabel.setText(userLanguage.getString("password"));
         loginMessage.setText(userLanguage.getString("loginMessage"));
         loginButton.setText(userLanguage.getString("loginButton"));
-        zoneIdLabel.setText(userLanguage.getString("zoneId"));
+        zoneIdLabel.setText(userLanguage.getString("zoneIdLabel"));
+        zoneIdTextField.setText(userLanguage.getString("zoneId"));
         signUpViewButton.setText(userLanguage.getString("signupViewButton"));
         signupViewLabel.setText(userLanguage.getString("signupViewMessage"));
     }

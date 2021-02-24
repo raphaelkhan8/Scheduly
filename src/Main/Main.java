@@ -25,17 +25,7 @@ public class Main extends Application {
     }
 
 
-    public static void main(String[] args) throws SQLException {
-        ObservableList<Country> countries = FXCollections.observableArrayList();
-        DBQuery.makeQuery("SELECT * FROM countries");
-        ResultSetImpl rs = (ResultSetImpl) DBQuery.getResult();
-        while (rs.next()) {
-            int countryId = rs.getInt("Country_ID");
-            String country = rs.getString("Country");
-            Country newCountry = new Country(countryId, country);
-            countries.add(newCountry);
-            System.out.println("Country ID: " + newCountry.getCountryId() + "\nCountry Name: " + newCountry.getCountryName() + "\n");
-        }
+    public static void main(String[] args) {
         launch(args);
         DBConnection.stopConnection();
     }
