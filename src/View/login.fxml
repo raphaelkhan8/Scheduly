@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="427.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LoginController">
     <children>
-        <AnchorPane layoutX="50.0" layoutY="147.0" prefHeight="200.0" prefWidth="500.0" style="-fx-border-radius: 10; -fx-border-color: black;">
+        <AnchorPane layoutX="50.0" layoutY="122.0" prefHeight="200.0" prefWidth="500.0" style="-fx-border-radius: 10; -fx-border-color: black;">
             <children>
-                <TextArea editable="false" layoutX="11.0" layoutY="3.0" prefHeight="200.0" prefWidth="500.0" text="                                              Please login to begin scheduling." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                <TextArea editable="false" layoutX="2.0" layoutY="2.0" prefHeight="189.0" prefWidth="498.0" text="                                              Please login to begin scheduling." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0" />
                 <TextField fx:id="usernameTextField" layoutX="219.0" layoutY="47.0" />
                 <TextField fx:id="passwordTextField" layoutX="219.0" layoutY="88.0" />
                 <Label fx:id="usernameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="82.0" layoutY="51.0" prefHeight="17.0" prefWidth="149.0" text="Username:" />
@@ -21,10 +21,16 @@
                 <TextField fx:id="passwordTextField1" editable="false" layoutX="219.0" layoutY="145.0" prefHeight="25.0" prefWidth="49.0" />
             </children>
         </AnchorPane>
-        <TextArea fx:id="welcomeMessageLabel" editable="false" layoutX="50.0" layoutY="31.0" prefHeight="88.0" prefWidth="500.0" style="-fx-background-radius: 10; -fx-background-color: black;" text="                                                    Scheduly                                                                 &#10;&#10;                                             Set it and Forget it">
+        <TextArea fx:id="welcomeMessageLabel" editable="false" layoutX="50.0" layoutY="21.0" prefHeight="88.0" prefWidth="500.0" style="-fx-background-radius: 10; -fx-background-color: black;" text="                                                    Scheduly                                                                 &#10;&#10;                                             Set it and Forget it">
             <font>
                 <Font name="System Bold" size="13.0" />
             </font>
         </TextArea>
+      <TextArea fx:id="welcomeMessageLabel1" editable="false" layoutX="50.0" layoutY="335.0" prefHeight="66.0" prefWidth="500.0" style="-fx-background-radius: 10; -fx-background-color: black;" text="&#10;First time loggin in? Please sign up in order to start scheduling.&#10;&#10;">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </TextArea>
+      <Button fx:id="signUpViewButton" layoutX="457.0" layoutY="356.0" mnemonicParsing="false" onAction="#openSignupView" prefHeight="25.0" prefWidth="75.0" text="Signup" />
     </children>
 </AnchorPane>

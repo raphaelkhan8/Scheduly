@@ -3,8 +3,13 @@ package Controller;
 import Database.DBQuery;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 
 public class LoginController {
@@ -34,6 +39,12 @@ public class LoginController {
     private TextArea welcomeMessageLabel;
 
     @FXML
+    private TextArea welcomeMessageLabel1;
+
+    @FXML
+    private Button signUpViewButton;
+
+    @FXML
     void handleLogin(ActionEvent event) {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
@@ -50,6 +61,15 @@ public class LoginController {
         }
     }
 
+    @FXML
+    void openSignupView(ActionEvent event) throws IOException {
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        Object scene = FXMLLoader.load(getClass().getResource("/View/signup.fxml"));
+        stage.setScene(new Scene((Parent) scene));
+        stage.show();
+    }
+
+
     public static Boolean checkLoginInfo(String username, String password) {
         try {
             DBQuery.makeQuery("SELECT * FROM users");
@@ -58,8 +78,8 @@ public class LoginController {
             while(rs.next()) {
                 if(rs.getString("User_Name").equals(username) && rs.getString("Password").equals(password))
                     return true;
-                }
-                return false;
+            }
+            return false;
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
