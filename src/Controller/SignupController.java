@@ -55,6 +55,7 @@ public class SignupController implements Initializable {
         usernameLabel.setText(userLanguage.getString("username"));
         passwordLabel.setText(userLanguage.getString("password"));
         signupButton.setText(userLanguage.getString("signupButton"));
+        cancelButton.setText(userLanguage.getString("cancelButton"));
     }
 
     @FXML
