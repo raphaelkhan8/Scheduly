@@ -1,6 +1,7 @@
 package Controller;
 
 import Database.DBQuery;
+import Model.SessionHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,10 +14,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
+
+    @FXML
+    private TextArea loginMessage;
 
     @FXML
     private TextField usernameTextField;
@@ -48,26 +51,23 @@ public class LoginController implements Initializable {
     @FXML
     private Button signUpViewButton;
 
-    // determine user's local language
-    public static Locale getLocale() {
-        return Locale.getDefault();
-    }
-
-    Locale[] localeLanguages = {
-            Locale.ENGLISH,
-            Locale.FRENCH
-    };
+    // var to hold user's language
+    ResourceBundle userLanguage;
 
     // change text to match user's language upon initialization
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ResourceBundle userLanguage;
-        Locale current = getLocale();
-        userLanguage = ResourceBundle.getBundle("Utils/Language", current);
+        SessionHandler.setLocation();
+        userLanguage = SessionHandler.getUserLanguage();
 
         sloganLabel.setText(userLanguage.getString("sloganLabel"));
         usernameLabel.setText(userLanguage.getString("username"));
         passwordLabel.setText(userLanguage.getString("password"));
+        loginMessage.setText(userLanguage.getString("loginMessage"));
+        loginButton.setText(userLanguage.getString("loginButton"));
+        zoneIdLabel.setText(userLanguage.getString("zoneId"));
+        signUpViewButton.setText(userLanguage.getString("signupViewButton"));
+        signupViewLabel.setText(userLanguage.getString("signupViewMessage"));
     }
 
     @FXML
@@ -78,11 +78,11 @@ public class LoginController implements Initializable {
         boolean proceed = checkLoginInfo(username, password);
 
         if (proceed) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "User successfully logged in.");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, userLanguage.getString("loginSuccess"));
             alert.showAndWait();
         }
         else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "The username and password did not match.");
+            Alert alert = new Alert(Alert.AlertType.ERROR, userLanguage.getString("loginMismatch"));
             alert.showAndWait();
         }
     }
@@ -97,6 +97,9 @@ public class LoginController implements Initializable {
 
 
     public static Boolean checkLoginInfo(String username, String password) {
+        if (username.isEmpty() || password.isEmpty()) {
+            return false;
+        }
         try {
             DBQuery.makeQuery("SELECT * FROM users");
             ResultSet rs = DBQuery.getResult();

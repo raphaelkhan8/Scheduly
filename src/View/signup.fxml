@@ -11,7 +11,7 @@
     <children>
         <AnchorPane layoutX="50.0" layoutY="167.0" prefHeight="200.0" prefWidth="500.0" style="-fx-border-radius: 10; -fx-border-color: black;">
             <children>
-                <TextArea editable="false" layoutX="2.0" layoutY="2.0" prefHeight="189.0" prefWidth="498.0" text="                             Please enter login credentials to create your account." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0" />
+                <TextArea fx:id="signupMessage" editable="false" layoutX="2.0" layoutY="2.0" prefHeight="189.0" prefWidth="498.0" text="                             Please enter login credentials to create your account." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0" />
                 <TextField fx:id="usernameTextField" layoutX="219.0" layoutY="47.0" />
                 <TextField fx:id="passwordTextField" layoutX="219.0" layoutY="88.0" />
                 <Label fx:id="usernameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="82.0" layoutY="51.0" prefHeight="17.0" prefWidth="149.0" text="Username:" />
@@ -21,7 +21,7 @@
                 <TextField fx:id="zoneIdTextField" editable="false" layoutX="219.0" layoutY="145.0" prefHeight="25.0" prefWidth="49.0" />
             </children>
         </AnchorPane>
-        <TextArea fx:id="sloganLabel" editable="false" layoutX="50.0" layoutY="21.0" prefHeight="88.0" prefWidth="500.0" style="-fx-background-radius: 10; -fx-background-color: black;" text="                                                    Scheduly                                                                 &#10;&#10;                                             Set it and Forget it">
+        <TextArea fx:id="sloganLabel" editable="false" layoutX="50.0" layoutY="21.0" prefHeight="88.0" prefWidth="500.0" style="-fx-background-radius: 10; -fx-background-color: black;" stylesheets="@styles.css" text="                                                            Scheduly                                                                 &#10;&#10;                                                     Set it and Forget it">
             <font>
                 <Font name="System Bold" size="13.0" />
             </font>
