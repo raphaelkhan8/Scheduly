@@ -13,7 +13,13 @@ public class DBQuery {
     public static void makeQuery(String query) {
         try {
             PreparedStatement ps = DBConnection.startConnection().prepareStatement(query);
-            result = ps.executeQuery(query);
+            // if SELECT query, run executeQuery
+            if (query.toLowerCase().startsWith("select")) {
+                result = ps.executeQuery(query);
+            // else (if db manipulation query), run executeUpdate
+            } else {
+                ps.executeUpdate(query);
+            }
         }
         catch (SQLException throwables) {
             throwables.printStackTrace();
