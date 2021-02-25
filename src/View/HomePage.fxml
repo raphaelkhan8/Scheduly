@@ -41,7 +41,7 @@
         <Label fx:id="customerLabelText" layoutX="17.0" layoutY="124.0" text="Add, delete, or view all of your customers here." />
         <Label fx:id="appointmentLabelText" layoutX="14.0" layoutY="188.0" text="Create, update, or view appointments here." />
         <Button fx:id="logoutButton" layoutX="198.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleLogout" text="Logout" />
-        <Button fx:id="reportTableButton" layoutX="290.0" layoutY="278.0" mnemonicParsing="false" onAction="#openReportTableView" text="View Generated Reports">
+        <Button fx:id="reportGeneratorButton" layoutX="290.0" layoutY="278.0" mnemonicParsing="false" onAction="#openReportGeneratorView" text="View Generated Reports">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>

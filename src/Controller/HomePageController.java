@@ -48,7 +48,7 @@ public class HomePageController implements Initializable {
     private Button logoutButton;
 
     @FXML
-    private Button reportTableButton;
+    private Button reportGeneratorButton;
 
     @FXML
     private Label reportLabel1;
@@ -81,7 +81,7 @@ public class HomePageController implements Initializable {
         reportLabel4.setText(userLanguage.getString("reportLabel4Text"));
         customerTableButton.setText(userLanguage.getString("customerTableButtonText"));
         appointmentTableButton.setText(userLanguage.getString("appointmentTableButtonText"));
-        reportTableButton.setText(userLanguage.getString("reportTableButtonText"));
+        reportGeneratorButton.setText(userLanguage.getString("reportTableButtonText"));
         logoutButton.setText(userLanguage.getString("logoutButton"));
     }
 
@@ -107,8 +107,11 @@ public class HomePageController implements Initializable {
     }
 
     @FXML
-    void openReportTableView(ActionEvent event) {
-
+    void openReportGeneratorView(ActionEvent event) throws IOException {
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        Object scene = FXMLLoader.load(getClass().getResource("/View/ReportGenerator.fxml"));
+        stage.setScene(new Scene((Parent) scene));
+        stage.show();
     }
 
 }
