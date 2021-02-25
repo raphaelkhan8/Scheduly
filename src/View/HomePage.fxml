@@ -12,7 +12,7 @@
                 <Font name="System Bold" size="18.0" />
             </font>
         </Label>
-        <Label fx:id="optionsLabel" layoutX="128.0" layoutY="48.0" text="Please select from the options below" />
+        <Label fx:id="optionsLabel" layoutX="128.0" layoutY="48.0" text="Please select from the options below." />
         <Label fx:id="customerLabel" layoutX="18.0" layoutY="95.0" prefHeight="25.0" prefWidth="88.0" text="Customers">
             <font>
                 <Font name="System Bold" size="16.0" />
@@ -38,8 +38,8 @@
                 <Font name="System Bold" size="12.0" />
             </font>
         </Button>
-        <Label fx:id="customerLabel1" layoutX="17.0" layoutY="124.0" text="Add, delete, or view all of your customers here." />
-        <Label fx:id="appointmentLabel1" layoutX="14.0" layoutY="188.0" text="Create, update, or view appointments here." />
+        <Label fx:id="customerLabelText" layoutX="17.0" layoutY="124.0" text="Add, delete, or view all of your customers here." />
+        <Label fx:id="appointmentLabelText" layoutX="14.0" layoutY="188.0" text="Create, update, or view appointments here." />
         <Button fx:id="logoutButton" layoutX="198.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleLogout" text="Logout" />
         <Button fx:id="reportTableButton" layoutX="290.0" layoutY="278.0" mnemonicParsing="false" onAction="#openReportTableView" text="View Generated Reports">
             <font>

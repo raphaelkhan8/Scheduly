@@ -51,7 +51,6 @@ public class SignupController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         sloganLabel.setText(userLanguage.getString("sloganLabel"));
-
         signupMessage.setText(userLanguage.getString("signupMessage"));
         usernameLabel.setText(userLanguage.getString("username"));
         passwordLabel.setText(userLanguage.getString("password"));

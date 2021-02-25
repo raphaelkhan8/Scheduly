@@ -9,7 +9,8 @@ public class SessionHandler {
 
     // set user's location
     public static void setLocation() {
-        location = Locale.getDefault();
+        location = Locale.FRENCH;
+//        location = Locale.getDefault();
     }
 
     // get user's location

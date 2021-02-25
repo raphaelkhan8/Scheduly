@@ -1,11 +1,16 @@
 package Controller;
 
+import Model.SessionHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-public class HomePageController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class HomePageController implements Initializable {
 
     @FXML
     private Label welcomeLabel;
@@ -29,10 +34,10 @@ public class HomePageController {
     private Button appointmentTableButton;
 
     @FXML
-    private Label customerLabel1;
+    private Label customerLabelText;
 
     @FXML
-    private Label appointmentLabel1;
+    private Label appointmentLabelText;
 
     @FXML
     private Button logoutButton;
@@ -51,6 +56,30 @@ public class HomePageController {
 
     @FXML
     private Label reportLabel4;
+
+    // var to hold user's language
+    ResourceBundle userLanguage = SessionHandler.getUserLanguage();
+
+    // change text to match user's language upon initialization
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+
+        welcomeLabel.setText(userLanguage.getString("welcomeLabelMessage"));
+        optionsLabel.setText(userLanguage.getString("optionsLabelMessage"));
+        customerLabel.setText(userLanguage.getString("customerLabel"));
+        appointmentLabel.setText(userLanguage.getString("appointmentLabel"));
+        reportLabel.setText(userLanguage.getString("reportLabel"));
+        customerLabelText.setText(userLanguage.getString("customerLabelText"));
+        appointmentLabelText.setText(userLanguage.getString("appointmentLabelText"));
+        reportLabel1.setText(userLanguage.getString("reportLabel1Text"));
+        reportLabel2.setText(userLanguage.getString("reportLabel2Text"));
+        reportLabel3.setText(userLanguage.getString("reportLabel3Text"));
+        reportLabel4.setText(userLanguage.getString("reportLabel4Text"));
+        customerTableButton.setText(userLanguage.getString("customerTableButtonText"));
+        appointmentTableButton.setText(userLanguage.getString("appointmentTableButtonText"));
+        reportTableButton.setText(userLanguage.getString("reportTableButtonText"));
+        logoutButton.setText(userLanguage.getString("logoutButton"));
+    }
 
     @FXML
     void handleLogout(ActionEvent event) {
