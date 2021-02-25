@@ -77,9 +77,9 @@ public class CustomersTableController implements Initializable {
         customersTableButtonMessage.setText(userLanguage.getString("customersTableButtonMessage"));
         addAppointmentButtonMessage.setText(userLanguage.getString("addAppointmentButtonMessage"));
         appointmentsTableAddButton.setText(userLanguage.getString("appointmentsTableAddButton"));
-        customersTableAddButton.setText(userLanguage.getString("customersTableAddButton"));
-        customersTableUpdateButton.setText(userLanguage.getString("customersTableUpdateButton"));
-        customersTableDeleteButton.setText(userLanguage.getString("customersTableDeleteButton"));
+        customersTableAddButton.setText(userLanguage.getString("addButton"));
+        customersTableUpdateButton.setText(userLanguage.getString("updateButton"));
+        customersTableDeleteButton.setText(userLanguage.getString("deleteButton"));
         cancelButton.setText(userLanguage.getString("cancelButton"));
         customerIDTable.setText(userLanguage.getString("ID"));
         customerNameTable.setText(userLanguage.getString("Name"));

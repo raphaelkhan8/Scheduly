@@ -33,7 +33,7 @@
                 <Font name="System Bold" size="12.0" />
             </font>
         </Button>
-        <Button fx:id="appointmentTableButton" layoutX="294.0" layoutY="184.0" mnemonicParsing="false" onAction="#openAptTableView" text="View Appointment List">
+        <Button fx:id="appointmentTableButton" layoutX="294.0" layoutY="184.0" mnemonicParsing="false" onAction="#openAptManagerView" text="View Appointment List">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
