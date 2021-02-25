@@ -1,2 +1,4 @@
-package Controller;public class AppointmentsTableController {
+package Controller;
+
+public class AppointmentsTableController {
 }

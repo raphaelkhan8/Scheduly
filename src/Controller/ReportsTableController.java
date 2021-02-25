@@ -1,2 +1,4 @@
-package Controller;public class ReportsTableController {
+package Controller;
+
+public class ReportsTableController {
 }
