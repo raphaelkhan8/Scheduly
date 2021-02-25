@@ -68,7 +68,6 @@ public class HomePageController implements Initializable {
     // change text to match user's language upon initialization
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         welcomeLabel.setText(userLanguage.getString("welcomeLabelMessage"));
         optionsLabel.setText(userLanguage.getString("optionsLabelMessage"));
         customerLabel.setText(userLanguage.getString("customerLabel"));

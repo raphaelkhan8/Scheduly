@@ -49,7 +49,6 @@ public class SignupController implements Initializable {
     // change text to match user's language upon initialization
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         sloganLabel.setText(userLanguage.getString("sloganLabel"));
         signupMessage.setText(userLanguage.getString("signupMessage"));
         usernameLabel.setText(userLanguage.getString("username"));
