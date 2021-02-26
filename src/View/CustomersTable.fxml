@@ -47,7 +47,7 @@
         </Button>
         <Label fx:id="customersTableButtonMessage" layoutX="33.0" layoutY="76.0" text="Press one of the buttons below to update your Customers Table." />
         <Label fx:id="addAppointmentButtonMessage" layoutX="504.0" layoutY="76.0" text="Add an appointment for one of your customers" />
-        <Button fx:id="appointmentsTableAddButton" layoutX="539.0" layoutY="101.0" mnemonicParsing="false" onAction="#addAppointmentTableHandler" prefHeight="30.0" prefWidth="186.0" text="ADD APPOINTMENT">
+        <Button fx:id="appointmentsTableAddButton" layoutX="539.0" layoutY="101.0" mnemonicParsing="false" onAction="#addAppointmentHandler" prefHeight="30.0" prefWidth="186.0" text="ADD APPOINTMENT">
             <font>
                 <Font name="System Bold" size="14.0" />
             </font>

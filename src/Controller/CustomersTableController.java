@@ -91,8 +91,11 @@ public class CustomersTableController implements Initializable {
     }
 
     @FXML
-    void addAppointmentTableHandler(ActionEvent event) {
-
+    void addAppointmentHandler(ActionEvent event) throws IOException {
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        Object scene = FXMLLoader.load(getClass().getResource("/View/AddAppointment.fxml"));
+        stage.setScene(new Scene((Parent) scene));
+        stage.show();
     }
 
     @FXML
