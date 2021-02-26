@@ -71,10 +71,10 @@
                 <Font size="14.0" />
             </font>
         </Button>
-        <TableView fx:id="addCustomerTableView" layoutX="555.0" layoutY="90.0" prefHeight="496.0" prefWidth="630.0">
+        <TableView fx:id="addAppointmentTableView" layoutX="555.0" layoutY="90.0" prefHeight="496.0" prefWidth="630.0">
             <columns>
-                <TableColumn fx:id="addAppointmentCustomerIDColumn" prefWidth="105.0" text="Customer ID" />
                 <TableColumn fx:id="addAppointmentIDColumn" prefWidth="105.0" text="Appointment ID" />
+                <TableColumn fx:id="addAppointmentCustomerIDColumn" prefWidth="105.0" text="Customer ID" />
                 <TableColumn fx:id="addAppointmentLocationColumn" prefWidth="105.0" text="Location" />
                 <TableColumn fx:id="addAppointmentLocalDateColumn" prefWidth="160.0" text="Local Start Time" />
                 <TableColumn fx:id="addAppointmentUTCDateColumn" prefWidth="155.0" text="UTC Start Time" />

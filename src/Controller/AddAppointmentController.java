@@ -95,7 +95,7 @@ public class AddAppointmentController implements Initializable {
     private Button cancelButton;
 
     @FXML
-    private TableView<?> addCustomerTableView;
+    private TableView<?> addAppointmentTableView;
 
     @FXML
     private TableColumn<?, ?> addAppointmentCustomerIDColumn;
@@ -122,6 +122,25 @@ public class AddAppointmentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cancelButton.setText(userLanguage.getString("cancelButton"));
+        saveAppointmentButton.setText(userLanguage.getString("saveButton"));
+        addAppointmentHeader.setText(userLanguage.getString("addAppointmentHeader"));
+        addAppointmentHeaderText.setText(userLanguage.getString("addAppointmentHeaderText"));
+        addAppointmentTableHeaderText.setText(userLanguage.getString("addAppointmentTableViewHeaderText"));
+        appointmentIdLabel.setText(userLanguage.getString("AppointmentID"));
+        customerIdLabel.setText(userLanguage.getString("CustomerID"));
+        titleLabel.setText(userLanguage.getString("Title"));
+        descriptionLabel.setText(userLanguage.getString("Description"));
+        locationLabel.setText(userLanguage.getString("Location"));
+        contactTypeLabel.setText(userLanguage.getString("ContactType"));
+        assignedContactLabel.setText(userLanguage.getString("AssignedContact"));
+        dateLabel.setText(userLanguage.getString("Date"));
+        startTimeLabel.setText(userLanguage.getString("StartTime"));
+        endTimeLabel.setText(userLanguage.getString("EndTime"));
+        addAppointmentIDColumn.setText(userLanguage.getString("AppointmentID"));
+        addAppointmentCustomerIDColumn.setText(userLanguage.getString("CustomerID"));
+        addAppointmentLocationColumn.setText(userLanguage.getString("Location"));
+        addAppointmentLocalDateColumn.setText(userLanguage.getString("LocalStartTime"));
+        addAppointmentUTCDateColumn.setText(userLanguage.getString("UTCStartTime"));
     }
 
     @FXML
