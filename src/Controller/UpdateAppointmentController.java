@@ -122,6 +122,25 @@ public class UpdateAppointmentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cancelButton.setText(userLanguage.getString("cancelButton"));
+        saveAppointmentButton.setText(userLanguage.getString("saveButton"));
+        updateAppointmentHeader.setText(userLanguage.getString("updateAppointmentHeader"));
+        updateAppointmentHeaderText.setText(userLanguage.getString("updateAppointmentHeaderText"));
+        updateAppointmentTableHeaderText.setText(userLanguage.getString("addAppointmentTableViewHeaderText"));
+        appointmentIdLabel.setText(userLanguage.getString("AppointmentID"));
+        customerIdLabel.setText(userLanguage.getString("CustomerID"));
+        titleLabel.setText(userLanguage.getString("Title"));
+        descriptionLabel.setText(userLanguage.getString("Description"));
+        locationLabel.setText(userLanguage.getString("Location"));
+        contactTypeLabel.setText(userLanguage.getString("ContactType"));
+        assignedContactLabel.setText(userLanguage.getString("AssignedContact"));
+        dateLabel.setText(userLanguage.getString("Date"));
+        startTimeLabel.setText(userLanguage.getString("StartTime"));
+        endTimeLabel.setText(userLanguage.getString("EndTime"));
+        updateAppointmentIDColumn.setText(userLanguage.getString("AppointmentID"));
+        updateAppointmentCustomerIDColumn.setText(userLanguage.getString("CustomerID"));
+        updateAppointmentLocationColumn.setText(userLanguage.getString("Location"));
+        updateAppointmentLocalDateColumn.setText(userLanguage.getString("LocalStartTime"));
+        updateAppointmentUTCDateColumn.setText(userLanguage.getString("UTCStartTime"));
     }
 
     @FXML
