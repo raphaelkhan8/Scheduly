@@ -64,7 +64,7 @@ public class AddCustomerController implements Initializable {
     private ComboBox<String> addCustomerCountryComboBox;
 
     @FXML
-    private ComboBox<?> addCustomerDivisionComboBox;
+    private ComboBox<String> addCustomerDivisionComboBox;
 
     @FXML
     private Button saveCustomerButton;
@@ -78,6 +78,10 @@ public class AddCustomerController implements Initializable {
     ObservableList<String> countryList = FXCollections.observableArrayList();
     /** container to hold first-level divisions */
     ObservableList<String> divisionList = FXCollections.observableArrayList();
+    /** container to hold selected-country's Country_ID */
+    int selectedCountryId;
+    /** container to hold selected-division's Division_ID */
+    int selectedDivisionId;
 
     /** change text to match user's language and populate country combo box upon initialization */
     @Override
@@ -103,14 +107,24 @@ public class AddCustomerController implements Initializable {
         addCustomerDivisionComboBox.promptTextProperty().setValue(userLanguage.getString("selectDivision"));
     }
 
+    /** records the customer's selected country and populates division combo box with associated divisions */
     @FXML
-    void addCustomerCountryHandler(ActionEvent event) {
-
+    void addCustomerCountryHandler(ActionEvent event) throws SQLException {
+        selectedCountryId = addCustomerCountryComboBox.getSelectionModel().getSelectedIndex() + 1;
+        populateDivisionComboBox(selectedCountryId);
+        if (divisionList.size() == 0) {
+            ObservableList<String> empty = FXCollections.observableArrayList();
+            empty.add(userLanguage.getString("noCountryDivisions"));
+            addCustomerDivisionComboBox.setItems(empty);
+        } else {
+            addCustomerDivisionComboBox.setItems(divisionList);
+        }
     }
 
+    /** Records the customer's selected division */
     @FXML
     void addCustomerDivisionHandler(ActionEvent event) {
-
+        selectedDivisionId = addCustomerDivisionComboBox.getSelectionModel().getSelectedIndex() + 1;
     }
 
     /** Cancel button returns view to Customers Table page */
@@ -122,6 +136,7 @@ public class AddCustomerController implements Initializable {
         stage.show();
     }
 
+    /** Method for saving new customer data to database */
     @FXML
     void saveCustomerHandler(ActionEvent event) {
 
@@ -134,6 +149,16 @@ public class AddCustomerController implements Initializable {
         ResultSet countries = DBQuery.getResult();
         while (countries.next()) {
             countryList.add(countries.getString(1));
+        }
+    }
+
+    /** populates Division combo-box (drop-down) with selected countries divisions */
+    @FXML
+    void populateDivisionComboBox(int countryId) throws SQLException {
+        DBQuery.makeQuery("SELECT Division from first_level_divisions WHERE Country_ID = " + countryId);
+        ResultSet divisions = DBQuery.getResult();
+        while (divisions.next()) {
+            divisionList.add(divisions.getString(1));
         }
     }
 
