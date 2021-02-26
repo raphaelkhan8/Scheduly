@@ -2,7 +2,7 @@ package Controller;
 
 import Database.DBQuery;
 import Model.SessionHandler;
-import com.mysql.cj.log.Log;
+import Utils.AlertMessages;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -77,23 +77,23 @@ public class LoginController implements Initializable {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
 
+        if (username.isEmpty() || password.isEmpty()) {
+            AlertMessages.errorMessage(userLanguage.getString("missingCredential"));
+            return;
+        }
+
         boolean proceed = checkLoginInfo(username, password);
 
         if (proceed) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, userLanguage.getString("loginSuccess"));
-            alert.showAndWait();
+            AlertMessages.alertMessage(userLanguage.getString("loginSuccess"));
             openHomePage(event);
         }
         else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, userLanguage.getString("loginMismatch"));
-            alert.showAndWait();
+            AlertMessages.errorMessage(userLanguage.getString("loginMismatch"));
         }
     }
 
     public static Boolean checkLoginInfo(String username, String password) {
-        if (username.isEmpty() || password.isEmpty()) {
-            return false;
-        }
         try {
             DBQuery.makeQuery("SELECT * FROM users");
             ResultSet rs = DBQuery.getResult();

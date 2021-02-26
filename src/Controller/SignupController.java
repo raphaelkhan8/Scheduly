@@ -2,6 +2,7 @@ package Controller;
 
 import Database.DBQuery;
 import Model.SessionHandler;
+import Utils.AlertMessages;
 import com.mysql.cj.log.Log;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -64,16 +65,14 @@ public class SignupController implements Initializable {
         int userId = 1;
 
         if (username.isEmpty() || password.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please fill out both Username and Password fields.");
-            alert.showAndWait();
+            AlertMessages.errorMessage(userLanguage.getString("missingCredential"));
             return;
         }
 
         boolean proceed = LoginController.checkLoginInfo(username, password);
 
         if (proceed) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, userLanguage.getString("signupRedundant"));
-            alert.showAndWait();
+            AlertMessages.alertMessage(userLanguage.getString("signupRedundant"));
             openHomePage(event);
         }
         else {
@@ -88,8 +87,7 @@ public class SignupController implements Initializable {
                         "', Password='" + password + "', Create_Date=NOW(), Created_By='', Last_Update=NOW(), Last_Updated_By=''");
                 ResultSet userCreation = DBQuery.getResult();
                 System.out.println(userCreation);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, userLanguage.getString("signupSuccess"));
-                alert.showAndWait();
+                AlertMessages.alertMessage(userLanguage.getString("signupSuccess"));
                 openHomePage(event);
             }
             catch (Exception e) {
