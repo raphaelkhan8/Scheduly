@@ -45,7 +45,7 @@
                 <Font size="14.0" />
             </font>
         </Button>
-        <Button fx:id="updateAppointmentButton" layoutX="887.0" layoutY="632.0" mnemonicParsing="false" onAction="#modifyAppointmentHandler" prefHeight="30.0" prefWidth="84.0" text="UPDATE">
+        <Button fx:id="updateAppointmentButton" layoutX="887.0" layoutY="632.0" mnemonicParsing="false" onAction="#updateAppointmentHandler" prefHeight="30.0" prefWidth="84.0" text="UPDATE">
             <font>
                 <Font size="14.0" />
             </font>

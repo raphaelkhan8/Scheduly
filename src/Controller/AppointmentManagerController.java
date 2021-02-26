@@ -112,8 +112,11 @@ public class AppointmentManagerController implements Initializable {
     }
 
     @FXML
-    void modifyAppointmentHandler(ActionEvent event) {
-
+    void updateAppointmentHandler(ActionEvent event) throws IOException {
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        Object scene = FXMLLoader.load(getClass().getResource("/View/UpdateAppointment.fxml"));
+        stage.setScene(new Scene((Parent) scene));
+        stage.show();
     }
 
     @FXML
