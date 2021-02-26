@@ -1,6 +1,9 @@
 package Controller;
 
+import Database.DBQuery;
 import Model.SessionHandler;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +18,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class AddCustomerController implements Initializable {
@@ -56,7 +61,7 @@ public class AddCustomerController implements Initializable {
     private TextField addCustomerPhoneText;
 
     @FXML
-    private ComboBox<?> addCustomerCountryComboBox;
+    private ComboBox<String> addCustomerCountryComboBox;
 
     @FXML
     private ComboBox<?> addCustomerDivisionComboBox;
@@ -67,12 +72,23 @@ public class AddCustomerController implements Initializable {
     @FXML
     private Button cancelButton;
 
-    // var to hold user's language
+    /** container to hold user's language */
     ResourceBundle userLanguage = SessionHandler.getUserLanguage();
+    /** container to hold countries in database */
+    ObservableList<String> countryList = FXCollections.observableArrayList();
+    /** container to hold first-level divisions */
+    ObservableList<String> divisionList = FXCollections.observableArrayList();
 
-    // change text to match user's language upon initialization
+    /** change text to match user's language and populate country combo box upon initialization */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        try {
+            populateCountryComboBox();
+            addCustomerCountryComboBox.setItems(countryList);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
         cancelButton.setText(userLanguage.getString("cancelButton"));
         saveCustomerButton.setText(userLanguage.getString("saveButton"));
         addCustomerHeader.setText(userLanguage.getString("addCustomerHeader"));
@@ -97,6 +113,7 @@ public class AddCustomerController implements Initializable {
 
     }
 
+    /** Cancel button returns view to Customers Table page */
     @FXML
     void cancelView(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -108,6 +125,16 @@ public class AddCustomerController implements Initializable {
     @FXML
     void saveCustomerHandler(ActionEvent event) {
 
+    }
+
+    /** populates Country combo-box (drop-down) with countries stored in database */
+    @FXML
+    void populateCountryComboBox() throws SQLException {
+        DBQuery.makeQuery("SELECT Country FROM countries");
+        ResultSet countries = DBQuery.getResult();
+        while (countries.next()) {
+            countryList.add(countries.getString(1));
+        }
     }
 
 }
