@@ -51,6 +51,9 @@ public class HomePageController implements Initializable {
     private Button reportGeneratorButton;
 
     @FXML
+    private Label reportLabelText;
+
+    @FXML
     private Label reportLabel1;
 
     @FXML
@@ -58,9 +61,6 @@ public class HomePageController implements Initializable {
 
     @FXML
     private Label reportLabel3;
-
-    @FXML
-    private Label reportLabel4;
 
     // var to hold user's language
     ResourceBundle userLanguage = SessionHandler.getUserLanguage();
@@ -75,10 +75,10 @@ public class HomePageController implements Initializable {
         reportLabel.setText(userLanguage.getString("reportLabel"));
         customerLabelText.setText(userLanguage.getString("customerLabelText"));
         appointmentLabelText.setText(userLanguage.getString("appointmentLabelText"));
-        reportLabel1.setText(userLanguage.getString("reportLabel1Text"));
-        reportLabel2.setText(userLanguage.getString("reportLabel2Text"));
-        reportLabel3.setText(userLanguage.getString("reportLabel3Text"));
-        reportLabel4.setText(userLanguage.getString("reportLabel4Text"));
+        reportLabelText.setText(userLanguage.getString("reportLabelText"));
+        reportLabel1.setText("1. " + userLanguage.getString("reportLabel1Text"));
+        reportLabel2.setText("2. " + userLanguage.getString("reportLabel2Text"));
+        reportLabel3.setText("3. " + userLanguage.getString("reportLabel3Text"));
         customerTableButton.setText(userLanguage.getString("customerTableButtonText"));
         appointmentTableButton.setText(userLanguage.getString("appointmentTableButtonText"));
         reportGeneratorButton.setText(userLanguage.getString("reportTableButtonText"));

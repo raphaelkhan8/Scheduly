@@ -9,23 +9,23 @@
 
 <AnchorPane focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="719.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ReportGeneratorController">
     <children>
-        <Label fx:id="ReportsPageHeader" layoutX="25.0" layoutY="14.0" text="Generate A Report">
+        <Label fx:id="reportsPageHeader" layoutX="25.0" layoutY="14.0" text="Generate A Report">
             <font>
                 <Font name="System Bold" size="16.0" />
             </font>
         </Label>
-        <Label fx:id="ReportsPageHeaderText" layoutX="25.0" layoutY="39.0" prefWidth="367.0" text="Select from the dropdown menu to generatre a report" />
+        <Label fx:id="reportsPageHeaderText" layoutX="25.0" layoutY="39.0" prefWidth="367.0" text="Select from the dropdown menu to generate a report" />
         <ComboBox fx:id="selectReportComboBox" layoutX="345.0" layoutY="23.0" prefHeight="25.0" prefWidth="213.0" />
         <Button fx:id="generateReportButton" layoutX="569.0" layoutY="23.0" mnemonicParsing="false" onAction="#generateReportHandler" prefHeight="25.0" prefWidth="119.0" text="Generate Report" />
-        <TextArea fx:id="Report1Text" layoutX="27.0" layoutY="96.0" prefHeight="178.0" prefWidth="663.0" />
+        <TextArea fx:id="report1Text" layoutX="27.0" layoutY="96.0" prefHeight="178.0" prefWidth="663.0" />
         <Button fx:id="cancelButton" layoutX="593.0" layoutY="56.0" mnemonicParsing="false" onAction="#cancelView" prefHeight="25.0" prefWidth="71.0" text="Cancel">
             <font>
                 <Font size="14.0" />
             </font></Button>
-        <TextArea fx:id="Report2Text" layoutX="27.0" layoutY="303.0" prefHeight="178.0" prefWidth="663.0" />
-        <TextArea fx:id="Report3Text" layoutX="27.0" layoutY="509.0" prefHeight="178.0" prefWidth="663.0" />
-        <Label fx:id="Report1HeaderText" layoutX="28.0" layoutY="79.0" prefHeight="17.0" prefWidth="222.0" text="Appointment Types by Month" />
-        <Label fx:id="Report2HeaderText" layoutX="28.0" layoutY="286.0" prefHeight="17.0" prefWidth="203.0" text="Consultant Schedules" />
-        <Label fx:id="Report3HeaderText" layoutX="28.0" layoutY="492.0" prefHeight="17.0" prefWidth="410.0" text="Consultants Ranked by Number of Appointments" />
+        <TextArea fx:id="report2Text" layoutX="27.0" layoutY="303.0" prefHeight="178.0" prefWidth="663.0" />
+        <TextArea fx:id="report3Text" layoutX="27.0" layoutY="509.0" prefHeight="178.0" prefWidth="663.0" />
+        <Label fx:id="report1HeaderText" layoutX="28.0" layoutY="79.0" prefHeight="17.0" prefWidth="345.0" text="Appointment Types by Month" />
+        <Label fx:id="report2HeaderText" layoutX="28.0" layoutY="286.0" prefHeight="17.0" prefWidth="345.0" text="Consultant Schedules" />
+        <Label fx:id="report3HeaderText" layoutX="28.0" layoutY="492.0" prefHeight="17.0" prefWidth="410.0" text="Consultants Ranked by Number of Appointments" />
     </children>
 </AnchorPane>
