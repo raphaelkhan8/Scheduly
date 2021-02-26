@@ -87,6 +87,7 @@ public class AppointmentManagerController implements Initializable {
         viewByWeekRadioButton.setText(userLanguage.getString("viewByWeekRadioButton"));
         viewByMonthRadioButton.setText(userLanguage.getString("viewByMonthRadioButton"));
         viewByLabel.setText(userLanguage.getString("viewBy"));
+        viewByComboBox.promptTextProperty().setValue(userLanguage.getString("viewByComboBox"));
         customerNameColumn.setText(userLanguage.getString("CustomerName"));
         customerContactColumn.setText(userLanguage.getString("AssignedContact"));
         appointmentTitleColumn.setText(userLanguage.getString("Title"));
