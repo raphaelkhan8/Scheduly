@@ -96,14 +96,9 @@ public class CustomersTableController implements Initializable {
     }
 
     @FXML
-    void addCustomerHandler(ActionEvent event) {
-
-    }
-
-    @FXML
-    void cancelView(ActionEvent event) throws IOException {
+    void addCustomerHandler(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        Object scene = FXMLLoader.load(getClass().getResource("/View/HomePage.fxml"));
+        Object scene = FXMLLoader.load(getClass().getResource("/View/AddCustomer.fxml"));
         stage.setScene(new Scene((Parent) scene));
         stage.show();
     }
@@ -116,6 +111,14 @@ public class CustomersTableController implements Initializable {
     @FXML
     void updateCustomerHandler(ActionEvent event) {
 
+    }
+
+    @FXML
+    void cancelView(ActionEvent event) throws IOException {
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        Object scene = FXMLLoader.load(getClass().getResource("/View/HomePage.fxml"));
+        stage.setScene(new Scene((Parent) scene));
+        stage.show();
     }
 
 }
