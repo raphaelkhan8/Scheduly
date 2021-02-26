@@ -5,15 +5,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="462.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HomePageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="411.0" prefWidth="544.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HomePageController">
     <children>
-        <Label fx:id="welcomeLabel" alignment="TOP_LEFT" layoutX="134.0" layoutY="16.0" prefHeight="63.0" prefWidth="195.0" text="Welcome to Scheduly!">
+        <Label fx:id="welcomeLabel" alignment="TOP_LEFT" layoutX="171.0" layoutY="18.0" prefHeight="63.0" prefWidth="195.0" text="Welcome to Scheduly!">
             <font>
                 <Font name="System Bold" size="18.0" />
             </font>
         </Label>
-        <Label fx:id="optionsLabel" layoutX="128.0" layoutY="48.0" text="Please select from the options below." />
-        <Label fx:id="customerLabel" layoutX="18.0" layoutY="95.0" prefHeight="25.0" prefWidth="88.0" text="Customers">
+        <Label fx:id="optionsLabel" layoutX="168.0" layoutY="49.0" text="Please select from the options below." />
+        <Label fx:id="customerLabel" layoutX="17.0" layoutY="100.0" prefHeight="25.0" prefWidth="88.0" text="Customers">
             <font>
                 <Font name="System Bold" size="16.0" />
             </font>
@@ -28,20 +28,20 @@
                 <Font name="System Bold" size="16.0" />
             </font>
         </Label>
-        <Button fx:id="customerTableButton" layoutX="304.0" layoutY="112.0" mnemonicParsing="false" onAction="#openCustomerTableView" text="View Customer List">
+        <Button fx:id="customerTableButton" layoutX="352.0" layoutY="112.0" mnemonicParsing="false" onAction="#openCustomerTableView" prefHeight="25.0" prefWidth="132.0" text="View Customer List">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
         </Button>
-        <Button fx:id="appointmentTableButton" layoutX="294.0" layoutY="184.0" mnemonicParsing="false" onAction="#openAptManagerView" text="View Appointment List">
+        <Button fx:id="appointmentTableButton" layoutX="340.0" layoutY="184.0" mnemonicParsing="false" onAction="#openAptManagerView" prefHeight="25.0" prefWidth="155.0" text="View Appointment List">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
         </Button>
         <Label fx:id="customerLabelText" layoutX="17.0" layoutY="124.0" text="Add, delete, or view all of your customers here." />
         <Label fx:id="appointmentLabelText" layoutX="14.0" layoutY="188.0" text="Create, update, or view appointments here." />
-        <Button fx:id="logoutButton" layoutX="198.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleLogout" text="Logout" />
-        <Button fx:id="reportGeneratorButton" layoutX="290.0" layoutY="278.0" mnemonicParsing="false" onAction="#openReportGeneratorView" text="View Generated Reports">
+        <Button fx:id="logoutButton" layoutX="258.0" layoutY="346.0" mnemonicParsing="false" onAction="#handleLogout" prefHeight="25.0" prefWidth="60.0" text="Logout" />
+        <Button fx:id="reportGeneratorButton" layoutX="331.0" layoutY="278.0" mnemonicParsing="false" onAction="#openReportGeneratorView" prefHeight="25.0" prefWidth="173.0" text="View Generated Reports">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
