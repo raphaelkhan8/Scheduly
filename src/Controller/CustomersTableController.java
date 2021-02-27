@@ -3,6 +3,7 @@ package Controller;
 import Database.DBQuery;
 import Model.Customer;
 import Model.SessionHandler;
+import Utils.AlertMessages;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,6 +24,7 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CustomersTableController implements Initializable {
 
@@ -77,7 +79,10 @@ public class CustomersTableController implements Initializable {
     /** container for customer data */
     ObservableList<Customer> customersList = FXCollections.observableArrayList();
 
-    /** var to hold user's language */
+    /** container to hold selected Customer */
+    private Customer selectedCustomer;
+
+    /** container to hold user's language */
     ResourceBundle userLanguage = SessionHandler.getUserLanguage();
 
     /** populate customer's table with customer data from the database
@@ -128,7 +133,33 @@ public class CustomersTableController implements Initializable {
     /** deletes selected customer from database */
     @FXML
     void deleteCustomerHandler(ActionEvent event) {
+        AtomicBoolean proceed = AlertMessages.confirmMessage(userLanguage.getString("customerDeleteConfirmMessage"));
+        if (proceed.get() == true) {
 
+            selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
+            int numberOfCustomers = customersTableView.getItems().size();
+            int selectedID = selectedCustomer.getCustomerId();
+
+            System.out.println(selectedID);
+
+            if (numberOfCustomers == 1) {
+                customersTableView.getItems().remove(0);
+            } else {
+                ObservableList<Customer> allCustomers, singleCustomer;
+                allCustomers = customersTableView.getItems();
+                singleCustomer = customersTableView.getSelectionModel().getSelectedItems();
+                singleCustomer.forEach(allCustomers::remove);
+                selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
+            }
+
+            try {
+                DBQuery.makeQuery("DELETE FROM customers WHERE Customer_ID =" + selectedID);
+                AlertMessages.alertMessage(userLanguage.getString("customerDeleteSuccessMessage"));
+            }
+            catch (Exception throwables) {
+                throwables.printStackTrace();
+            }
+        }
     }
 
     /** changes view to Update Customer page */
