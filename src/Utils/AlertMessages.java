@@ -5,22 +5,34 @@ import javafx.scene.control.ButtonType;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/** Commonly used alert messages */
 public class AlertMessages {
-    /** alert to inform user of status */
+
+    /** Alert to inform user of status or change
+     *
+     * @param message - the String message to display to user
+     */
     public static void alertMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(message);
         alert.showAndWait();
     }
 
-    /** alert to inform user of error */
+    /** Alert to inform user of error
+     *
+     * @param message - the String error message to display to user
+     */
     public static void errorMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setContentText(message);
         alert.showAndWait();
     }
 
-    /** alert to confirm deletion of data */
+    /** Alert to confirm deletion of data
+     *
+     * @param message - the String confirmation message to display to the user
+     * @return - AtomicBoolean return value which states whether user wants to move forward or not
+     */
     public static AtomicBoolean confirmMessage(String message) {
         AtomicBoolean proceed = new AtomicBoolean(false);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
