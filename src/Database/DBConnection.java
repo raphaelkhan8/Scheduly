@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/** Contains properties and methods used to connect to the database */
 public class DBConnection {
 
     private static final String protocol = DBInfo.getProtocol();
@@ -18,12 +19,12 @@ public class DBConnection {
     private static final String password = DBInfo.getPassword();
     private static Connection conn = null;
 
+    /** Starts connection to database */
     public static Connection startConnection() {
         try {
             Class.forName(MySQLJBCDriver);
             conn = DriverManager.getConnection(jdbcUrl, username, password);
-
-            System.out.println("Connection successful!");
+//            System.out.println("Connection successful!");
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -32,6 +33,7 @@ public class DBConnection {
         return conn;
     }
 
+    /** Stops database connection */
     public static void stopConnection() {
         try {
             conn.close();
