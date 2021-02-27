@@ -170,7 +170,7 @@ public class AddCustomerController implements Initializable {
         String phone = addCustomerPhoneText.getText();
         // verify that all fields were filled out
         if (customerName.isEmpty() || address.isEmpty() || postalCode.isEmpty() || phone.isEmpty() || selectedCountryId == 0 || selectedDivisionIndex == 0) {
-            AlertMessages.errorMessage("Please fill out all fields before saving.");
+            AlertMessages.errorMessage(userLanguage.getString("missingFieldMessage"));
             return;
         }
         // if all info is filled-out:

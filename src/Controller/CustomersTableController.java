@@ -234,7 +234,7 @@ public class CustomersTableController implements Initializable {
             String phone = customers.getString("Phone");
             String division = customers.getString("Division");
             String country = customers.getString("Country");
-            Customer newCustomer = new Customer(customerId, customerName, address, postalCode, phone, country, division);
+            Customer newCustomer = new Customer(customerId, customerName, address, postalCode, phone, country, division, divisionId);
             customersList.add(newCustomer);
         }
         customersTableView.setItems(customersList);
