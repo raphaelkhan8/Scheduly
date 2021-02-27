@@ -6,10 +6,10 @@ import java.sql.SQLException;
 
 public class DBQuery {
 
-    // container for db query return
+    /** container for db query return */
     private static ResultSet result;
 
-    // Setter (sets above result variable to query's return)
+    /** Setter (sets above result variable to query's return) */
     public static void makeQuery(String query) {
         try {
             PreparedStatement ps = DBConnection.startConnection().prepareStatement(query);
@@ -26,8 +26,9 @@ public class DBQuery {
         }
     }
 
-    // Getter (returns result from db query)
+    /** Getter (returns result from db query) */
     public static ResultSet getResult() {
         return result;
     }
+    
 }
