@@ -3,6 +3,7 @@ package Controller;
 import Database.DBQuery;
 import Model.Customer;
 import Model.SessionHandler;
+import Utils.AlertMessages;
 import Utils.DataRetriever;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -86,6 +87,12 @@ public class UpdateCustomerController implements Initializable {
     Customer selectedCustomer;
     /** container to hold selected customer's countryId */
     int selectedCountryId;
+    /** container to hold selected customer's divisionId */
+    int selectedDivisionId;
+    /** container to hold the newly selected division's index in combo-box */
+    int updatedDivisionIndex = 0;
+    /** container to hold the newly selected division's name */
+    String updatedDivisionName;
 
     /** Initialization Override: Populate country combo-box with country names from database and
      * changes text to match user's language
@@ -143,19 +150,14 @@ public class UpdateCustomerController implements Initializable {
         }
     }
 
-    /** Records the customer's selected country and populates division combo box with associated divisions
+    /** Records the customer's selected division
      *
      * @throws SQLException
      */
     @FXML
     void updateCustomerDivisionHandler() throws SQLException {
-        DBQuery.makeQuery("SELECT d.Division_ID, d.Division from first_level_divisions AS d INNER JOIN countries AS c ON d.Country_ID = " + selectedCountryId);
-        ResultSet divisions = DBQuery.getResult();
-        while (divisions.next()) {
-            divisionIDList.add(divisions.getString(1));
-            divisionNameList.add(divisions.getString(2));
-        }
-        this.updateCustomerDivisionComboBox.setItems(divisionNameList);
+        updatedDivisionIndex = updateCustomerDivisionComboBox.getSelectionModel().getSelectedIndex() + 1;
+        updatedDivisionName = updateCustomerDivisionComboBox.getSelectionModel().getSelectedItem();
     }
 
     /** Records the customer's updated division
@@ -164,7 +166,33 @@ public class UpdateCustomerController implements Initializable {
      */
     @FXML
     void updateCustomerHandler(ActionEvent event) {
-
+        int customerId = selectedCustomer.getCustomerId();
+        // get user's text input
+        String customerName = updateCustomerNameText.getText();
+        String address = updateCustomerAddressText.getText();
+        String postalCode = updateCustomerPostalText.getText();
+        String phone = updateCustomerPhoneText.getText();
+        // verify that all fields were filled out
+        if (customerName.isEmpty() || address.isEmpty() || postalCode.isEmpty() || phone.isEmpty() || selectedCountryId == 0 || selectedDivisionId == 0) {
+            AlertMessages.errorMessage(userLanguage.getString("missingFieldMessage"));
+            return;
+        }
+        // if all info is filled-out:
+        try {
+            // get the selected country/division's Division_ID from the first-level-divisions table (foreign key)
+            int updatedDivisionId = Integer.parseInt(divisionIDList.get(updatedDivisionIndex)) - 1;
+            // save the updated customer info to the database and alert user of successful save
+            DBQuery.makeQuery("UPDATE customers SET Customer_Name='" +
+                    customerName + "', Address='" + address + "', Postal_Code='" + postalCode + "', Phone='" + phone +
+                    "', Create_Date=NOW(), Created_By='', Last_Update=NOW(), Last_Updated_By='', Division_ID="
+                    + updatedDivisionId + " WHERE Customer_ID=" + customerId);
+            AlertMessages.alertMessage(userLanguage.getString("updateCustomerSuccessMessage"));
+            // Afterwards, go back to Customer Table view
+            cancelView(event);
+        } catch (IOException throwables) {
+            throwables.printStackTrace();
+            AlertMessages.errorMessage(userLanguage.getString("updateCustomerErrorMessage"));
+        }
     }
 
     /** Gets selected customer from CustomerTable view to populates UpdateCustomer view fields
@@ -177,6 +205,7 @@ public class UpdateCustomerController implements Initializable {
 
         selectedCustomer = customer;
         selectedCountryId = countryId;
+        selectedDivisionId = selectedCustomer.getDivisionId();
 
         Customer selectedCustomer = (Customer) customer;
 
