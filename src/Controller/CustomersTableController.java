@@ -156,8 +156,6 @@ public class CustomersTableController implements Initializable {
             int numberOfCustomers = customersTableView.getItems().size();
             int selectedID = selectedCustomer.getCustomerId();
 
-            System.out.println(selectedID);
-
             if (numberOfCustomers == 1) {
                 customersTableView.getItems().remove(0);
             } else {
@@ -169,6 +167,9 @@ public class CustomersTableController implements Initializable {
             }
 
             try {
+                // first delete all of the customer's associated appointments
+                DBQuery.makeQuery("DELETE FROM appointments WHERE Customer_ID =" + selectedID);
+                // then, delete the customer from the database
                 DBQuery.makeQuery("DELETE FROM customers WHERE Customer_ID =" + selectedID);
                 AlertMessages.alertMessage(userLanguage.getString("customerDeleteSuccessMessage"));
             }
