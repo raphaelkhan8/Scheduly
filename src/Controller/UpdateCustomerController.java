@@ -34,6 +34,9 @@ public class UpdateCustomerController implements Initializable {
     private Label updateCustomerHeaderText;
 
     @FXML
+    private Label updateCustomerIDLabel;
+
+    @FXML
     private Label updateCustomerNameLabel;
 
     @FXML
@@ -53,6 +56,9 @@ public class UpdateCustomerController implements Initializable {
 
     @FXML
     private TextField updateCustomerNameText;
+
+    @FXML
+    private TextField updateCustomerIDBox;
 
     @FXML
     private TextField updateCustomerAddressText;
@@ -107,6 +113,7 @@ public class UpdateCustomerController implements Initializable {
         saveCustomerButton.setText(userLanguage.getString("saveButton"));
         updateCustomerHeader.setText(userLanguage.getString("updateCustomerHeader"));
         updateCustomerHeaderText.setText(userLanguage.getString("updateCustomerHeaderText"));
+        updateCustomerIDLabel.setText(userLanguage.getString("CustomerID"));
         updateCustomerNameLabel.setText(userLanguage.getString("Name"));
         updateCustomerAddressLabel.setText(userLanguage.getString("Address"));
         updateCustomerCountryLabel.setText(userLanguage.getString("Country"));
@@ -208,6 +215,7 @@ public class UpdateCustomerController implements Initializable {
 
         Customer selectedCustomer = (Customer) customer;
 
+        this.updateCustomerIDBox.setText(Integer.toString(selectedCustomer.getCustomerId()));
         this.updateCustomerNameText.setText(selectedCustomer.getUsername());
         this.updateCustomerAddressText.setText((selectedCustomer.getAddress()));
         this.updateCustomerCountryComboBox.promptTextProperty().setValue(selectedCustomer.getCountry());
