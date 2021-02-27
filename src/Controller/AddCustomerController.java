@@ -170,12 +170,12 @@ public class AddCustomerController implements Initializable {
             // Then, save the customer info to the database and alert user of successful save
             DBQuery.makeQuery("INSERT INTO customers SET Customer_ID=" + customerId + ", Customer_Name='" + customerName +
                     "', Address='" + address + "', Postal_Code='" + postalCode + "', Phone='" + phone + "', Create_Date=NOW(), Created_By='', Last_Update=NOW(), Last_Updated_By='', Division_ID=" + selectedDivisionId);
-            AlertMessages.alertMessage("The customer was added to the database");
+            AlertMessages.alertMessage(userLanguage.getString("customerAddedMessage"));
             // Afterwards, go back to Customer Table view
             cancelView(event);
         } catch (SQLException | IOException throwables) {
             throwables.printStackTrace();
-            AlertMessages.errorMessage("The customer was unable to be saved :/");
+            AlertMessages.errorMessage(userLanguage.getString("customerAddErrorMessage"));
         }
     }
 

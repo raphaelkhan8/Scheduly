@@ -11,20 +11,20 @@ public class Customer {
     private String postalCode;
     private String phone;
     private String country;
-    private int status;
+    private String division;
     // container for customer's appointments
     private ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
     public Customer() { }
 
-    public Customer(int customerId, String customerName, String address, String postalCode, String phone, String country, int status) {
+    public Customer(int customerId, String customerName, String address, String postalCode, String phone, String country, String division) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
         this.postalCode = postalCode;
         this.phone = phone;
         this.country = country;
-        this.status = status;
+        this.division = division;
     }
 
     // Setters
@@ -46,8 +46,7 @@ public class Customer {
     public void setCountry(String country) {
         this.country = country;
     }
-    // 0 = inactive; 1 = active
-    public void setStatus(int status) { this.status = status; }
+    public void setDivision(String status) { this.division = division; }
     public void addAppointment(Appointment apt) { allAppointments.add(apt); }
 
     // Getters
@@ -69,8 +68,8 @@ public class Customer {
     public String getCountry() {
         return country;
     }
-    public int getStatus() {
-        return status;
+    public String getDivision() {
+        return division;
     }
     public ObservableList<Appointment> getAllAppointments() { return allAppointments; }
 
