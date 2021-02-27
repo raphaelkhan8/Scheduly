@@ -12,12 +12,13 @@ public class Customer {
     private String phone;
     private String country;
     private String division;
+    private int divisionId;
     // container for customer's appointments
     private ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
     public Customer() { }
 
-    public Customer(int customerId, String customerName, String address, String postalCode, String phone, String country, String division) {
+    public Customer(int customerId, String customerName, String address, String postalCode, String phone, String country, String division, int divisionId) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
@@ -25,6 +26,7 @@ public class Customer {
         this.phone = phone;
         this.country = country;
         this.division = division;
+        this.divisionId = divisionId;
     }
 
     // Setters
@@ -46,7 +48,8 @@ public class Customer {
     public void setCountry(String country) {
         this.country = country;
     }
-    public void setDivision(String status) { this.division = division; }
+    public void setDivision(String division) { this.division = division; }
+    public void setDivisionId(int divisionId) { this.divisionId = divisionId; }
     public void addAppointment(Appointment apt) { allAppointments.add(apt); }
 
     // Getters
@@ -71,6 +74,7 @@ public class Customer {
     public String getDivision() {
         return division;
     }
+    public int getDivisionId() { return divisionId; }
     public ObservableList<Appointment> getAllAppointments() { return allAppointments; }
 
 }
