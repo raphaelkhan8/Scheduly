@@ -4,6 +4,7 @@ import Database.DBQuery;
 import Model.Customer;
 import Model.SessionHandler;
 import Utils.AlertMessages;
+import Utils.DataRetriever;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -82,11 +83,15 @@ public class CustomersTableController implements Initializable {
     /** container to hold selected Customer */
     private Customer selectedCustomer;
 
+    /** container to hold selected-country's Country_ID */
+    int selectedCountryId = 0;
+
     /** container to hold user's language */
     ResourceBundle userLanguage = SessionHandler.getUserLanguage();
 
-    /** populate customer's table with customer data from the database
-     *  and change text to match user's language upon view initialization  */
+    /** Initialization Override: Populate customer's table with customer data from the database
+     *  and change text to match user's language
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
@@ -112,7 +117,11 @@ public class CustomersTableController implements Initializable {
         customerPhoneTable.setText(userLanguage.getString("Phone"));
     }
 
-    /** changes view to Add Appointment page */
+    /** Changes view to Add Appointment page
+     *
+     * @param event - the event that triggers this function call (click Add Appointment button)
+     * @throws IOException
+     */
     @FXML
     void addAppointmentHandler(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -121,7 +130,11 @@ public class CustomersTableController implements Initializable {
         stage.show();
     }
 
-    /** changes view to Add Customer page */
+    /** Changes view to Add Customer page
+     *
+     * @param event - the event that triggers this function call (click Add button)
+     * @throws IOException
+     */
     @FXML
     void addCustomerHandler(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -130,7 +143,10 @@ public class CustomersTableController implements Initializable {
         stage.show();
     }
 
-    /** deletes selected customer from database */
+    /** Deletes selected customer from database
+     *
+     * @param event - the event that triggers this function call (click Delete button)
+     */
     @FXML
     void deleteCustomerHandler(ActionEvent event) {
         AtomicBoolean proceed = AlertMessages.confirmMessage(userLanguage.getString("customerDeleteConfirmMessage"));
@@ -162,16 +178,38 @@ public class CustomersTableController implements Initializable {
         }
     }
 
-    /** changes view to Update Customer page */
+    /** Changes view to Update Customer page with selected Customer
+     *
+     * @param event - the event that triggers this function call (click Update button)
+     * @throws IOException
+     */
     @FXML
     void updateCustomerHandler(ActionEvent event) throws IOException {
-        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        Object scene = FXMLLoader.load(getClass().getResource("/View/UpdateCustomer.fxml"));
-        stage.setScene(new Scene((Parent) scene));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/View/UpdateCustomer.fxml"));
+        loader.load();
+        UpdateCustomerController controller = loader.getController();
+        selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
+
+        try {
+            String selectedCountry = selectedCustomer.getCountry();
+            selectedCountryId = DataRetriever.getCountryId(selectedCountry);
+            controller.getSelectedCustomer(selectedCustomer, selectedCountryId);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        Stage stage = (Stage) customersTableUpdateButton.getScene().getWindow();
+        Parent scene = loader.getRoot();
+        stage.setScene(new Scene(scene));
         stage.show();
     }
 
-    /** changes view to Home Page */
+    /** Cancel button changes view to Home Page
+     *
+     * @param event - - the event that triggers this function call (click Cancel button)
+     * @throws IOException
+     */
     @FXML
     void cancelView(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -180,8 +218,10 @@ public class CustomersTableController implements Initializable {
         stage.show();
     }
 
-    /** loads customer data from database into the Customer TableView and displays each customer as a table-row */
-    @FXML
+    /** Loads customer data from database into the Customer TableView and displays each customer as a table-row
+     *
+     * @throws SQLException
+     */
     void populateCustomersTable() throws SQLException {
         DBQuery.makeQuery("SELECT cust.*, f.Division, c.Country FROM customers AS cust JOIN first_level_divisions AS f ON f.Division_ID = cust.Division_ID JOIN countries AS c ON c.Country_ID = f.Country_ID");
         ResultSet customers = DBQuery.getResult();

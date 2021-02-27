@@ -3,6 +3,7 @@ package Controller;
 import Database.DBQuery;
 import Model.SessionHandler;
 import Utils.AlertMessages;
+import Utils.DataRetriever;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -88,7 +89,9 @@ public class AddCustomerController implements Initializable {
     /** container to hold selected-division's name */
     String selectedDivisionName;
 
-    /** change text to match user's language and populate country combo box upon initialization */
+    /** Initialization Override: change text to match user's language and populate country combo box
+     *
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
@@ -112,7 +115,11 @@ public class AddCustomerController implements Initializable {
         addCustomerDivisionComboBox.promptTextProperty().setValue(userLanguage.getString("selectDivision"));
     }
 
-    /** records the customer's selected country and populates division combo box with associated divisions */
+    /** Records the customer's selected country and populates division combo box with associated divisions
+     *
+     * @param event - the event that triggers this function call (select a country from country combo-box)
+     * @throws SQLException
+     */
     @FXML
     void addCustomerCountryHandler(ActionEvent event) throws SQLException {
         selectedCountryId = addCustomerCountryComboBox.getSelectionModel().getSelectedIndex() + 1;
@@ -126,14 +133,21 @@ public class AddCustomerController implements Initializable {
         }
     }
 
-    /** Records the customer's selected division */
+    /** Records the customer's selected division
+     *
+     * @param event - the event that triggers this function call (select a division from division combo-box)
+     */
     @FXML
     void addCustomerDivisionHandler(ActionEvent event) {
         selectedDivisionIndex = addCustomerDivisionComboBox.getSelectionModel().getSelectedIndex() + 1;
         selectedDivisionName = addCustomerDivisionComboBox.getSelectionModel().getSelectedItem();
     }
 
-    /** Cancel button returns view to Customers Table page */
+    /** Cancel button returns view to Customers Table page
+     *
+     * @param event - the event that triggers this function call (click Cancel button)
+     * @throws IOException
+     */
     @FXML
     void cancelView(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -142,7 +156,10 @@ public class AddCustomerController implements Initializable {
         stage.show();
     }
 
-    /** Method for saving new customer data to database */
+    /** Method for saving new customer data to database
+     *
+     * @param event - the event that triggers this function call (click Save button)
+     */
     @FXML
     void saveCustomerHandler(ActionEvent event) {
         // get user's text input
@@ -166,10 +183,11 @@ public class AddCustomerController implements Initializable {
                 customerId++;
             }
             // get the selected country/division's Division_ID from the first-level-divisions table (foreign key)
-            int selectedDivisionId = Integer.parseInt(divisionIDList.get(selectedDivisionIndex)) + 1;
+            int selectedDivisionId = Integer.parseInt(divisionIDList.get(selectedDivisionIndex)) - 1;
             // Then, save the customer info to the database and alert user of successful save
-            DBQuery.makeQuery("INSERT INTO customers SET Customer_ID=" + customerId + ", Customer_Name='" + customerName +
-                    "', Address='" + address + "', Postal_Code='" + postalCode + "', Phone='" + phone + "', Create_Date=NOW(), Created_By='', Last_Update=NOW(), Last_Updated_By='', Division_ID=" + selectedDivisionId);
+            DBQuery.makeQuery("INSERT INTO customers SET Customer_ID=" + customerId + ", Customer_Name='" +
+                    customerName + "', Address='" + address + "', Postal_Code='" + postalCode + "', Phone='" + phone +
+                    "', Create_Date=NOW(), Created_By='', Last_Update=NOW(), Last_Updated_By='', Division_ID=" + selectedDivisionId);
             AlertMessages.alertMessage(userLanguage.getString("customerAddedMessage"));
             // Afterwards, go back to Customer Table view
             cancelView(event);
@@ -179,21 +197,26 @@ public class AddCustomerController implements Initializable {
         }
     }
 
-    /** populates Country combo-box (drop-down) with countries stored in database */
-    @FXML
+    /** Populates Country combo-box (drop-down) with countries stored in database
+     *
+     * @throws SQLException
+     */
     void populateCountryComboBox() throws SQLException {
-        DBQuery.makeQuery("SELECT Country FROM countries");
-        ResultSet countries = DBQuery.getResult();
+        ResultSet countries = DataRetriever.getAllCountries();
         while (countries.next()) {
-            countryList.add(countries.getString(1));
+            countryList.add(countries.getString(2));
         }
     }
 
-    /** populates Division combo-box (drop-down) with selected countries divisions */
-    @FXML
+    /** Populates Division combo-box (drop-down) with selected countries divisions
+     *
+     * @param countryId - the int corresponding to the selected country's Id
+     * @throws SQLException
+     */
     void populateDivisionComboBox(int countryId) throws SQLException {
-        DBQuery.makeQuery("SELECT Division_ID, Division from first_level_divisions WHERE Country_ID = " + countryId);
-        ResultSet divisions = DBQuery.getResult();
+        divisionIDList.clear();
+        divisionNameList.clear();
+        ResultSet divisions = DataRetriever.getDivisionInfo(countryId);
         while (divisions.next()) {
             divisionIDList.add(divisions.getString(1));
             divisionNameList.add(divisions.getString(2));
