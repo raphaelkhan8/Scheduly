@@ -129,8 +129,10 @@ public class CustomersTableController implements Initializable {
         loader.load();
         AddAppointmentController controller = loader.getController();
         selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
-        controller.getSelectedCustomer(selectedCustomer);
-
+        // if a customer is selected, pass that customer to the AddAppointmentController
+        if (!(selectedCustomer == null)) {
+            controller.getSelectedCustomer(selectedCustomer);
+        }
         Stage stage = (Stage) customersTableUpdateButton.getScene().getWindow();
         Parent scene = loader.getRoot();
         stage.setScene(new Scene(scene));
