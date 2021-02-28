@@ -12,10 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -83,11 +80,9 @@ public class AddCustomerController implements Initializable {
     /** container to hold first-level division names */
     ObservableList<String> divisionNameList = FXCollections.observableArrayList();
     /** container to hold selected-country's Country_ID */
-    int selectedCountryId = 0;
+    int selectedCountryId = -1;
     /** container to hold selected-division's index in combo-box */
-    int selectedDivisionIndex = 0;
-    /** container to hold selected-division's name */
-    String selectedDivisionName;
+    int selectedDivisionIndex = -1;
 
     /** Initialization Override: change text to match user's language and populate country combo box
      *
@@ -122,7 +117,7 @@ public class AddCustomerController implements Initializable {
      */
     @FXML
     void addCustomerCountryHandler(ActionEvent event) throws SQLException {
-        selectedCountryId = addCustomerCountryComboBox.getSelectionModel().getSelectedIndex() + 1;
+        selectedCountryId = addCustomerCountryComboBox.getSelectionModel().getSelectedIndex();
         populateDivisionComboBox(selectedCountryId);
         if (divisionNameList.size() == 0) {
             ObservableList<String> empty = FXCollections.observableArrayList();
@@ -139,8 +134,7 @@ public class AddCustomerController implements Initializable {
      */
     @FXML
     void addCustomerDivisionHandler(ActionEvent event) {
-        selectedDivisionIndex = addCustomerDivisionComboBox.getSelectionModel().getSelectedIndex() + 1;
-        selectedDivisionName = addCustomerDivisionComboBox.getSelectionModel().getSelectedItem();
+        selectedDivisionIndex = addCustomerDivisionComboBox.getSelectionModel().getSelectedIndex();
     }
 
     /** Cancel button returns view to Customers Table page
@@ -168,13 +162,21 @@ public class AddCustomerController implements Initializable {
         String address = addCustomerAddressText.getText();
         String postalCode = addCustomerPostalText.getText();
         String phone = addCustomerPhoneText.getText();
-        // verify that all fields were filled out
-        if (customerName.isEmpty() || address.isEmpty() || postalCode.isEmpty() || phone.isEmpty() || selectedCountryId == 0 || selectedDivisionIndex == 0) {
+        // verify that all text fields were filled out
+        if (customerName.isEmpty() || address.isEmpty() || postalCode.isEmpty() || phone.isEmpty()) {
             AlertMessages.errorMessage(userLanguage.getString("missingFieldMessage"));
+            return;
+        }
+        // verify that the country and division drop-boxes were selected
+        if (selectedCountryId < 0 || selectedDivisionIndex < 0) {
+            AlertMessages.errorMessage(userLanguage.getString("selectCountryDivisionMsg"));
             return;
         }
         // if all info is filled-out:
         try {
+            System.out.println(selectedDivisionIndex);
+            // get the selected country/division's Division_ID from the first-level-divisions table (foreign key)
+            int selectedDivisionId = Integer.parseInt(divisionIDList.get(selectedDivisionIndex));
             // get last customerId in database and increment it by one for new customerId
             DBQuery.makeQuery("SELECT MAX(Customer_ID) FROM customers");
             ResultSet rs = DBQuery.getResult();
@@ -182,8 +184,6 @@ public class AddCustomerController implements Initializable {
                 customerId = rs.getInt(1);
                 customerId++;
             }
-            // get the selected country/division's Division_ID from the first-level-divisions table (foreign key)
-            int selectedDivisionId = Integer.parseInt(divisionIDList.get(selectedDivisionIndex)) - 1;
             // Then, save the customer info to the database and alert user of successful save
             DBQuery.makeQuery("INSERT INTO customers SET Customer_ID=" + customerId + ", Customer_Name='" +
                     customerName + "', Address='" + address + "', Postal_Code='" + postalCode + "', Phone='" + phone +
@@ -216,7 +216,7 @@ public class AddCustomerController implements Initializable {
     void populateDivisionComboBox(int countryId) throws SQLException {
         divisionIDList.clear();
         divisionNameList.clear();
-        ResultSet divisions = DataRetriever.getDivisionInfo(countryId);
+        ResultSet divisions = DataRetriever.getDivisionInfo(countryId + 1);
         while (divisions.next()) {
             divisionIDList.add(divisions.getString(1));
             divisionNameList.add(divisions.getString(2));
