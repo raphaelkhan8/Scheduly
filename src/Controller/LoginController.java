@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -126,12 +127,18 @@ public class LoginController implements Initializable {
         }
     }
 
-    /** Getter to retrieve the logged-in user's username
+    /** Retrieves the logged-in user's Id
      *
-     * @return - the String corresponding to the logged-in username
+     * @return - the int corresponding to the logged-in userId
      */
-    public static String getCurrentUser() {
-        return currentUser;
+    public static int getCurrentUser() throws SQLException {
+        int userId = 0;
+        DBQuery.makeQuery("SELECT User_ID FROM users WHERE User_Name = '" + currentUser + "'");
+        ResultSet rs = DBQuery.getResult();
+        if (rs.next()) {
+            userId = rs.getInt(1);
+        }
+        return userId;
     }
 
     /** Changes view to Sign Up page

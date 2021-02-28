@@ -125,6 +125,8 @@ public class AddAppointmentController implements Initializable {
     @FXML
     private Label addAppointmentTableHeaderText;
 
+    /** var to hold current user's Id */
+    int currentUserId;
     /** container to hold selected customer */
     Customer selectedCustomer;
     /** conatiner for customer's appointments */
@@ -190,8 +192,13 @@ public class AddAppointmentController implements Initializable {
      * @throws SQLException
      */
     public void getSelectedCustomer(Customer customer) throws SQLException {
+
         selectedCustomer = customer;
         Customer selectedCustomer = (Customer) customer;
+
+        // get the logged-in user's userId
+        currentUserId = LoginController.getCurrentUser();
+
         this.customerIdText.setText(Integer.toString(selectedCustomer.getCustomerId()));
         populateAppointmentsTable(selectedCustomer.getCustomerId());
     }
