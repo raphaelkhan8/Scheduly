@@ -44,4 +44,23 @@ public class DataRetriever {
         return countryId;
     }
 
+    /** Gets all contacts (Id and Name) from the database
+     *
+     * @return - the ResultSet contains all of the contacts' ContactId (int) and ContactName (String)
+     */
+    public static ResultSet getAllContacts() {
+        DBQuery.makeQuery("SELECT Contact_ID, Contact_Name from contacts");
+        return DBQuery.getResult();
+    }
+
+    /** Gets all of the passed-in customer's appointments
+     *
+     * @param customerId - the int that corresponds to the selected customer
+     * @return - the ResultSet contains the all of the customer's scheduled appointments
+     */
+    public static ResultSet getCustomerAppointments(int customerId) {
+        DBQuery.makeQuery("SELECT * FROM appointments WHERE Customer_ID=" + customerId);
+        return DBQuery.getResult();
+    }
+
 }

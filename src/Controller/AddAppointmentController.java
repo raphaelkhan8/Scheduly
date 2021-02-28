@@ -1,6 +1,14 @@
 package Controller;
 
+import Database.DBQuery;
+import Model.Appointment;
+import Model.Customer;
 import Model.SessionHandler;
+import Utils.DataRetriever;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +26,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class AddAppointmentController implements Initializable {
@@ -59,7 +69,7 @@ public class AddAppointmentController implements Initializable {
     private DatePicker addAppointmentDatePicker;
 
     @FXML
-    private ComboBox<?> locationComboBox;
+    private TextField locationText;
 
     @FXML
     private ComboBox<?> endTimeComboBox;
@@ -86,7 +96,7 @@ public class AddAppointmentController implements Initializable {
     private Label assignedContactLabel;
 
     @FXML
-    private ComboBox<?> assignedContactComboBox;
+    private ComboBox<String> assignedContactComboBox;
 
     @FXML
     private Button saveAppointmentButton;
@@ -95,32 +105,45 @@ public class AddAppointmentController implements Initializable {
     private Button cancelButton;
 
     @FXML
-    private TableView<?> addAppointmentTableView;
+    private TableView<Appointment> addAppointmentTableView;
 
     @FXML
-    private TableColumn<?, ?> addAppointmentCustomerIDColumn;
+    private TableColumn<Appointment, String> addAppointmentCustomerIDColumn;
 
     @FXML
-    private TableColumn<?, ?> addAppointmentIDColumn;
+    private TableColumn<Appointment, String> addAppointmentIDColumn;
 
     @FXML
-    private TableColumn<?, ?> addAppointmentLocationColumn;
+    private TableColumn<Appointment, String> addAppointmentLocationColumn;
 
     @FXML
-    private TableColumn<?, ?> addAppointmentLocalDateColumn;
+    private TableColumn<Appointment, String> addAppointmentLocalDateColumn;
 
     @FXML
-    private TableColumn<?, ?> addAppointmentUTCDateColumn;
+    private TableColumn<Appointment, String> addAppointmentUTCDateColumn;
 
     @FXML
     private Label addAppointmentTableHeaderText;
 
-    // var to hold user's language
+    /** container to hold selected customer */
+    Customer selectedCustomer;
+    /** conatiner for customer's appointments */
+    ObservableList<Appointment> allAppointments;
+    /** container to hold all contact's names */
+    ObservableList<String> contactsList = FXCollections.observableArrayList();
+    /** var to hold user's language */
     ResourceBundle userLanguage = SessionHandler.getUserLanguage();
 
-    // change text to match user's language upon initialization
+    /** Initilization Override: Populate contacts combo-box with contact names and
+     *  change text to match user's language upon initialization
+      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        try {
+            populateContactComboBox();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         cancelButton.setText(userLanguage.getString("cancelButton"));
         saveAppointmentButton.setText(userLanguage.getString("saveButton"));
         addAppointmentHeader.setText(userLanguage.getString("addAppointmentHeader"));
@@ -143,6 +166,11 @@ public class AddAppointmentController implements Initializable {
         addAppointmentUTCDateColumn.setText(userLanguage.getString("UTCStartTime"));
     }
 
+    /** Changes view to Customers Table page
+     *
+     * @param event - the event that triggers this function call (click Cancel button)
+     * @throws IOException
+     */
     @FXML
     void cancelView(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -154,6 +182,55 @@ public class AddAppointmentController implements Initializable {
     @FXML
     void saveAppointmentHandler(ActionEvent event) {
 
+    }
+
+    /** Retrieves selected customers info from previous view and populates Appointment table
+     *
+     * @param customer - the Customer object to add an Appointment to
+     * @throws SQLException
+     */
+    public void getSelectedCustomer(Customer customer) throws SQLException {
+        selectedCustomer = customer;
+        Customer selectedCustomer = (Customer) customer;
+        this.customerIdText.setText(Integer.toString(selectedCustomer.getCustomerId()));
+        populateAppointmentsTable(selectedCustomer.getCustomerId());
+    }
+
+    /** Populates Contact combo-box (drop-down) with contact names stored in database
+     *
+     * @throws SQLException
+     */
+    void populateContactComboBox() throws SQLException {
+        ResultSet contacts = DataRetriever.getAllContacts();
+        while (contacts.next()) {
+            contactsList.add(contacts.getString(2));
+        }
+        assignedContactComboBox.setItems(contactsList);
+    }
+
+    /** Populates Appointments table with customer's appointments
+     *
+     * @throws SQLException
+     */
+    void populateAppointmentsTable(int customerId) throws SQLException {
+        ResultSet appointments = DataRetriever.getCustomerAppointments(customerId);
+        while (appointments.next()) {
+            int appointmentId = appointments.getInt("Appointment_ID");
+            String title = appointments.getString("Title");
+            String description = appointments.getString("Description");
+            String location = appointments.getString("Location");
+            String type = appointments.getString("Type");
+            String start = appointments.getString("Start");
+            String end = appointments.getString("End");
+            int userId = appointments.getInt("User_Id");
+            int contactId = appointments.getInt("Contact_ID");
+            Appointment newAppointment = new Appointment(appointmentId, title, description, location, type, start, end, customerId, userId, contactId);
+            allAppointments.add(newAppointment);
+        }
+        addAppointmentTableView.setItems(allAppointments);
+        addAppointmentIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getCustomerId())));
+        addAppointmentCustomerIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getCustomerId())));
+        addAppointmentLocationColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getLocation()));
     }
 
 }

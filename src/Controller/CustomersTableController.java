@@ -123,10 +123,17 @@ public class CustomersTableController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void addAppointmentHandler(ActionEvent event) throws IOException {
-        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        Object scene = FXMLLoader.load(getClass().getResource("/View/AddAppointment.fxml"));
-        stage.setScene(new Scene((Parent) scene));
+    void addAppointmentHandler(ActionEvent event) throws IOException, SQLException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/View/AddAppointment.fxml"));
+        loader.load();
+        AddAppointmentController controller = loader.getController();
+        selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
+        controller.getSelectedCustomer(selectedCustomer);
+
+        Stage stage = (Stage) customersTableUpdateButton.getScene().getWindow();
+        Parent scene = loader.getRoot();
+        stage.setScene(new Scene(scene));
         stage.show();
     }
 
