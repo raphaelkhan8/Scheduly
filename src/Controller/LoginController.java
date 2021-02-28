@@ -52,10 +52,14 @@ public class LoginController implements Initializable {
     @FXML
     private Button signUpViewButton;
 
-    // var to hold user's language
+    /** var to hold the logged-in username */
+    private static String currentUser;
+    /** container to hold user's language */
     ResourceBundle userLanguage;
 
-    // change text to match user's language upon initialization
+    /** Initialization Override: Change text to match user's language
+     *
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         SessionHandler.setLocation();
@@ -72,6 +76,11 @@ public class LoginController implements Initializable {
         signupViewLabel.setText(userLanguage.getString("signupViewMessage"));
     }
 
+    /** Checks user input against database
+     *
+     * @param event - the event that triggers this function call (click Login button)
+     * @throws IOException
+     */
     @FXML
     void handleLogin(ActionEvent event) throws IOException {
         String username = usernameTextField.getText();
@@ -86,6 +95,7 @@ public class LoginController implements Initializable {
 
         if (proceed) {
             AlertMessages.alertMessage(userLanguage.getString("loginSuccess"));
+            currentUser = username;
             openHomePage(event);
         }
         else {
@@ -93,6 +103,12 @@ public class LoginController implements Initializable {
         }
     }
 
+    /** Checks user input against database
+     *
+     * @param username - the String input by the user in the username field
+     * @param password - the String input by the user in the password field
+     * @return - Boolean based on whether the input information matches what is in the database
+     */
     public static Boolean checkLoginInfo(String username, String password) {
         try {
             DBQuery.makeQuery("SELECT * FROM users");
@@ -110,6 +126,19 @@ public class LoginController implements Initializable {
         }
     }
 
+    /** Getter to retrieve the logged-in user's username
+     *
+     * @return - the String corresponding to the logged-in username
+     */
+    public static String getCurrentUser() {
+        return currentUser;
+    }
+
+    /** Changes view to Sign Up page
+     *
+     * @param event - the event that triggers this function call (click Sign Up button)
+     * @throws IOException
+     */
     @FXML
     void openSignupView(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -118,6 +147,11 @@ public class LoginController implements Initializable {
         stage.show();
     }
 
+    /** Changes view to Home Page
+     *
+     * @param event - the event that triggers this function call (successful login)
+     * @throws IOException
+     */
     @FXML
     void openHomePage(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
