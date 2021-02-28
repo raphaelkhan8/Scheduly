@@ -4,6 +4,7 @@ import Database.DBQuery;
 import Model.Appointment;
 import Model.Customer;
 import Model.SessionHandler;
+import Utils.AlertMessages;
 import Utils.DataRetriever;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -15,13 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -75,10 +70,10 @@ public class AddAppointmentController implements Initializable {
     private ComboBox<?> endTimeComboBox;
 
     @FXML
-    private Label contactTypeLabel;
+    private Label appointmentTypeLabel;
 
     @FXML
-    private TextField contactTypeText;
+    private TextField appointmentTypeText;
 
     @FXML
     private Label appointmentIdLabel;
@@ -130,7 +125,7 @@ public class AddAppointmentController implements Initializable {
     /** container to hold selected customer */
     Customer selectedCustomer;
     /** conatiner for customer's appointments */
-    ObservableList<Appointment> allAppointments;
+    ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
     /** container to hold all contact's names */
     ObservableList<String> contactsList = FXCollections.observableArrayList();
     /** var to hold user's language */
@@ -146,6 +141,7 @@ public class AddAppointmentController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        appointmentIdText.setTooltip(new Tooltip(userLanguage.getString("appointmentIDTooltip")));
         cancelButton.setText(userLanguage.getString("cancelButton"));
         saveAppointmentButton.setText(userLanguage.getString("saveButton"));
         addAppointmentHeader.setText(userLanguage.getString("addAppointmentHeader"));
@@ -156,7 +152,7 @@ public class AddAppointmentController implements Initializable {
         titleLabel.setText(userLanguage.getString("Title"));
         descriptionLabel.setText(userLanguage.getString("Description"));
         locationLabel.setText(userLanguage.getString("Location"));
-        contactTypeLabel.setText(userLanguage.getString("ContactType"));
+        appointmentTypeLabel.setText(userLanguage.getString("AppointmentType"));
         assignedContactLabel.setText(userLanguage.getString("AssignedContact"));
         dateLabel.setText(userLanguage.getString("Date"));
         startTimeLabel.setText(userLanguage.getString("StartTime"));
@@ -182,8 +178,42 @@ public class AddAppointmentController implements Initializable {
     }
 
     @FXML
-    void saveAppointmentHandler(ActionEvent event) {
-
+    void saveAppointmentHandler(ActionEvent event) throws SQLException, IOException {
+        int appointmentId = 1;
+        // get user's text input
+        String title = titleText.getText();
+        String description = descriptionText.getText();
+        String location = locationText.getText();
+        String type = appointmentTypeText.getText();
+        String start = "AHHHHH";
+        String end = "BAHHHHHH";
+        int assignedContactId = assignedContactComboBox.getSelectionModel().getSelectedIndex();
+        System.out.println(assignedContactId);
+        // verify that all text fields were filled out
+        if (title.isEmpty() || description.isEmpty() || location.isEmpty() || type.isEmpty()) {
+            AlertMessages.errorMessage(userLanguage.getString("missingFieldMessage"));
+            return;
+        }
+        // verify that an assigned contact was selected
+        if (assignedContactId < 0) {
+            AlertMessages.errorMessage(userLanguage.getString("selectAssignedContactMsg"));
+            return;
+        }
+        // if all fields are filled out, get the last appointmentId in db and increment by one to get the new appointmentId
+        DBQuery.makeQuery("SELECT MAX(Customer_ID) FROM customers");
+        ResultSet rs = DBQuery.getResult();
+        if(rs.next()) {
+            appointmentId = rs.getInt(1);
+            appointmentId++;
+        }
+        // then add the appointment to the database:
+        DBQuery.makeQuery("INSERT INTO appointments SET Appointment_ID=" + appointmentId + ", Title='" +
+                title + "', Description='" + description + "', Location='" + location + "', Type='" + type +
+                "', Start='" + start + "', End='" + end + "', Create_Date=NOW(), Created_By='', Last_Update=NOW(), Last_Updated_By='', Customer_ID="
+                + selectedCustomer.getCustomerId() + ", User_ID=" + currentUserId + ", Contact_ID=" + assignedContactId + 1);
+        AlertMessages.alertMessage(userLanguage.getString("addAppointmentSuccessMsg"));
+        // Afterwards, go back to Customer Table view
+        cancelView(event);
     }
 
     /** Retrieves selected customers info from previous view and populates Appointment table
@@ -227,17 +257,21 @@ public class AddAppointmentController implements Initializable {
             String description = appointments.getString("Description");
             String location = appointments.getString("Location");
             String type = appointments.getString("Type");
-            String start = appointments.getString("Start");
-            String end = appointments.getString("End");
+//            String start = appointments.getString("Start");
+//            String end = appointments.getString("End");
+            String start = "Now";
+            String end = "Never";
             int userId = appointments.getInt("User_Id");
             int contactId = appointments.getInt("Contact_ID");
             Appointment newAppointment = new Appointment(appointmentId, title, description, location, type, start, end, customerId, userId, contactId);
             allAppointments.add(newAppointment);
         }
         addAppointmentTableView.setItems(allAppointments);
-        addAppointmentIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getCustomerId())));
+        addAppointmentIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getAppointmentId())));
         addAppointmentCustomerIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getCustomerId())));
         addAppointmentLocationColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getLocation()));
+        addAppointmentLocalDateColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getStart()));
+        addAppointmentLocalDateColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getEnd()));
     }
 
 }
