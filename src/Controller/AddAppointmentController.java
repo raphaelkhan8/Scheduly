@@ -73,7 +73,7 @@ public class AddAppointmentController implements Initializable {
     private Label appointmentTypeLabel;
 
     @FXML
-    private TextField appointmentTypeText;
+    private ComboBox<String> appointmentTypeComboBox;
 
     @FXML
     private Label appointmentIdLabel;
@@ -88,10 +88,16 @@ public class AddAppointmentController implements Initializable {
     private TextField customerIdText;
 
     @FXML
-    private Label assignedContactLabel;
+    private Label contactTypeLabel;
 
     @FXML
-    private ComboBox<String> assignedContactComboBox;
+    private Label emailLabel;
+
+    @FXML
+    private TextField emailText;
+
+    @FXML
+    private ComboBox<String> contactTypeComboBox;
 
     @FXML
     private Button saveAppointmentButton;
@@ -124,19 +130,20 @@ public class AddAppointmentController implements Initializable {
     int currentUserId;
     /** container to hold selected customer */
     Customer selectedCustomer;
-    /** conatiner for customer's appointments */
+    /** container for customer's appointments */
     ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
     /** container to hold all contact's names */
     ObservableList<String> contactsList = FXCollections.observableArrayList();
     /** var to hold user's language */
     ResourceBundle userLanguage = SessionHandler.getUserLanguage();
 
-    /** Initilization Override: Populate contacts combo-box with contact names and
+    /** Initilization Override: Populate types and contact combo-boxes and
      *  change text to match user's language upon initialization
       */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
+            populateTypeComboBox();
             populateContactComboBox();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -153,7 +160,8 @@ public class AddAppointmentController implements Initializable {
         descriptionLabel.setText(userLanguage.getString("Description"));
         locationLabel.setText(userLanguage.getString("Location"));
         appointmentTypeLabel.setText(userLanguage.getString("AppointmentType"));
-        assignedContactLabel.setText(userLanguage.getString("AssignedContact"));
+        emailLabel.setText(userLanguage.getString("Email"));
+        contactTypeLabel.setText(userLanguage.getString("ContactType"));
         dateLabel.setText(userLanguage.getString("Date"));
         startTimeLabel.setText(userLanguage.getString("StartTime"));
         endTimeLabel.setText(userLanguage.getString("EndTime"));
@@ -180,27 +188,32 @@ public class AddAppointmentController implements Initializable {
     @FXML
     void saveAppointmentHandler(ActionEvent event) throws SQLException, IOException {
         int appointmentId = 1;
+        int contactId = 1;
         // get user's text input
         String title = titleText.getText();
         String description = descriptionText.getText();
         String location = locationText.getText();
-        String type = appointmentTypeText.getText();
-        String start = "AHHHHH";
-        String end = "BAHHHHHH";
-        int assignedContactId = assignedContactComboBox.getSelectionModel().getSelectedIndex();
-        System.out.println(assignedContactId);
+        String appointmentType = appointmentTypeComboBox.getSelectionModel().getSelectedItem();
+        String start = "2019-11-11 13:23:44";
+        String end = "2020-11-11 13:23:44";
+        String contactType = contactTypeComboBox.getSelectionModel().getSelectedItem();
         // verify that all text fields were filled out
-        if (title.isEmpty() || description.isEmpty() || location.isEmpty() || type.isEmpty()) {
+        if (title.isEmpty() || description.isEmpty() || location.isEmpty()) {
             AlertMessages.errorMessage(userLanguage.getString("missingFieldMessage"));
             return;
         }
+        // verify that an appointment type was selected
+        if (appointmentType == null) {
+            AlertMessages.errorMessage(userLanguage.getString("selectAppointmentTypeMsg"));
+            return;
+        }
         // verify that an assigned contact was selected
-        if (assignedContactId < 0) {
-            AlertMessages.errorMessage(userLanguage.getString("selectAssignedContactMsg"));
+        if (contactType == null) {
+            AlertMessages.errorMessage(userLanguage.getString("selectContactTypeMsg"));
             return;
         }
         // if all fields are filled out, get the last appointmentId in db and increment by one to get the new appointmentId
-        DBQuery.makeQuery("SELECT MAX(Customer_ID) FROM customers");
+        DBQuery.makeQuery("SELECT MAX(Appointment_ID) FROM appointments");
         ResultSet rs = DBQuery.getResult();
         if(rs.next()) {
             appointmentId = rs.getInt(1);
@@ -208,9 +221,9 @@ public class AddAppointmentController implements Initializable {
         }
         // then add the appointment to the database:
         DBQuery.makeQuery("INSERT INTO appointments SET Appointment_ID=" + appointmentId + ", Title='" +
-                title + "', Description='" + description + "', Location='" + location + "', Type='" + type +
+                title + "', Description='" + description + "', Location='" + location + "', Type='" + appointmentType +
                 "', Start='" + start + "', End='" + end + "', Create_Date=NOW(), Created_By='', Last_Update=NOW(), Last_Updated_By='', Customer_ID="
-                + selectedCustomer.getCustomerId() + ", User_ID=" + currentUserId + ", Contact_ID=" + assignedContactId + 1);
+                + selectedCustomer.getCustomerId() + ", User_ID=" + currentUserId + ", Contact_ID=" + contactId);
         AlertMessages.alertMessage(userLanguage.getString("addAppointmentSuccessMsg"));
         // Afterwards, go back to Customer Table view
         cancelView(event);
@@ -233,16 +246,21 @@ public class AddAppointmentController implements Initializable {
         populateAppointmentsTable(selectedCustomer.getCustomerId());
     }
 
-    /** Populates Contact combo-box (drop-down) with contact names stored in database
+    /** Populates Type combo-box with four possible appointment types
+     *
+     */
+    void populateTypeComboBox() {
+        ObservableList<String> meetingTypes = FXCollections.observableArrayList("Virtual", "In-Person", "Telephone", "Whatever works");
+        appointmentTypeComboBox.setItems(meetingTypes);
+    }
+
+    /** Populates Contact Type combo-box with three possible types
      *
      * @throws SQLException
      */
     void populateContactComboBox() throws SQLException {
-        ResultSet contacts = DataRetriever.getAllContacts();
-        while (contacts.next()) {
-            contactsList.add(contacts.getString(2));
-        }
-        assignedContactComboBox.setItems(contactsList);
+        ObservableList<String> contactTypes = FXCollections.observableArrayList("Primary", "Work", "School");
+        contactTypeComboBox.setItems(contactTypes);
     }
 
     /** Populates Appointments table with customer's appointments
