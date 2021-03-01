@@ -193,12 +193,13 @@ public class AddAppointmentController implements Initializable {
         String title = titleText.getText();
         String description = descriptionText.getText();
         String location = locationText.getText();
+        String email = emailText.getText();
         String appointmentType = appointmentTypeComboBox.getSelectionModel().getSelectedItem();
+        String contactType = contactTypeComboBox.getSelectionModel().getSelectedItem();
         String start = "2019-11-11 13:23:44";
         String end = "2020-11-11 13:23:44";
-        String contactType = contactTypeComboBox.getSelectionModel().getSelectedItem();
         // verify that all text fields were filled out
-        if (title.isEmpty() || description.isEmpty() || location.isEmpty()) {
+        if (title.isEmpty() || description.isEmpty() || location.isEmpty() || email.isEmpty()) {
             AlertMessages.errorMessage(userLanguage.getString("missingFieldMessage"));
             return;
         }
@@ -212,11 +213,26 @@ public class AddAppointmentController implements Initializable {
             AlertMessages.errorMessage(userLanguage.getString("selectContactTypeMsg"));
             return;
         }
-        // if all fields are filled out, get the last appointmentId in db and increment by one to get the new appointmentId
+        // if all fields are filled out, add the Contact and Appointment to the database:
+
+        /// Add the Contact:
+        // get the last contactId in db and increment by one to get the new contactId
+        DBQuery.makeQuery("SELECT MAX(Contact_ID) FROM contacts");
+        ResultSet lastContactId = DBQuery.getResult();
+        if(lastContactId.next()) {
+            contactId = lastContactId.getInt(1);
+            contactId++;
+        }
+        // then add the contact to the database:
+        DBQuery.makeQuery("INSERT INTO contacts SET Contact_ID=" + contactId + ", Contact_Name='" +
+                contactType + "', Email='" + email + "'");
+
+        /// Add the Appointment:
+        // get the last appointmentId in db and increment by one to get the new appointmentId
         DBQuery.makeQuery("SELECT MAX(Appointment_ID) FROM appointments");
-        ResultSet rs = DBQuery.getResult();
-        if(rs.next()) {
-            appointmentId = rs.getInt(1);
+        ResultSet lastAppointId = DBQuery.getResult();
+        if(lastContactId.next()) {
+            appointmentId = lastAppointId.getInt(1);
             appointmentId++;
         }
         // then add the appointment to the database:
@@ -225,6 +241,7 @@ public class AddAppointmentController implements Initializable {
                 "', Start='" + start + "', End='" + end + "', Create_Date=NOW(), Created_By='', Last_Update=NOW(), Last_Updated_By='', Customer_ID="
                 + selectedCustomer.getCustomerId() + ", User_ID=" + currentUserId + ", Contact_ID=" + contactId);
         AlertMessages.alertMessage(userLanguage.getString("addAppointmentSuccessMsg"));
+
         // Afterwards, go back to Customer Table view
         cancelView(event);
     }
