@@ -32,6 +32,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -42,23 +43,25 @@
                 <Label fx:id="locationLabel" prefHeight="17.0" prefWidth="127.0" text="Location" GridPane.rowIndex="4" />
                 <Label fx:id="descriptionLabel" prefHeight="17.0" prefWidth="133.0" text="Description" GridPane.rowIndex="3" />
                 <Label fx:id="titleLabel" prefHeight="17.0" prefWidth="117.0" text="Title" GridPane.rowIndex="2" />
-                <Label fx:id="dateLabel" text="Date" GridPane.rowIndex="7" />
-                <Label fx:id="startTimeLabel" text="Start Time" GridPane.rowIndex="8" />
-                <Label fx:id="endTimeLabel" text="End Time" GridPane.rowIndex="9" />
+                <Label fx:id="dateLabel" text="Date" GridPane.rowIndex="8" />
+                <Label fx:id="startTimeLabel" text="Start Time" GridPane.rowIndex="9" />
+                <Label fx:id="endTimeLabel" text="End Time" GridPane.rowIndex="10" />
                 <TextField fx:id="titleText" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <TextField fx:id="descriptionText" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <ComboBox fx:id="startTimeComboBox" prefHeight="25.0" prefWidth="149.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                <DatePicker fx:id="updateAppointmentDatePicker" prefHeight="25.0" prefWidth="148.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                <ComboBox fx:id="locationComboBox" prefHeight="25.0" prefWidth="265.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                <ComboBox fx:id="endTimeComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                <Label fx:id="contactTypeLabel" prefHeight="17.0" prefWidth="244.0" text="Contact Type" GridPane.rowIndex="5" />
-                <TextField fx:id="contactTypeText" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <ComboBox fx:id="startTimeComboBox" prefHeight="25.0" prefWidth="149.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                <DatePicker fx:id="updateAppointmentDatePicker" prefHeight="25.0" prefWidth="148.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                <ComboBox fx:id="endTimeComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                <Label fx:id="emailLabel" prefHeight="17.0" prefWidth="244.0" text="Contact (Email)" GridPane.rowIndex="6" />
+                <TextField fx:id="emailText" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                 <Label fx:id="appointmentIdLabel" prefHeight="17.0" prefWidth="142.0" text="Appointment ID" />
                 <TextField fx:id="appointmentIdText" editable="false" maxWidth="-Infinity" prefHeight="25.0" prefWidth="52.0" GridPane.columnIndex="1" />
                 <Label fx:id="customerIdLabel" prefHeight="17.0" prefWidth="142.0" text="Customer ID" GridPane.rowIndex="1" />
                 <TextField fx:id="customerIdText" maxWidth="-Infinity" prefHeight="25.0" prefWidth="52.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Label fx:id="assignedContactLabel" prefHeight="17.0" prefWidth="244.0" text="Assigned Contact" GridPane.rowIndex="6" />
-                <ComboBox fx:id="assignedContactComboBox" prefHeight="25.0" prefWidth="265.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                <Label fx:id="contactTypeLabel" prefHeight="17.0" prefWidth="244.0" text="Contact Type" GridPane.rowIndex="7" />
+                <ComboBox fx:id="contactTypeComboBox" prefHeight="25.0" prefWidth="265.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextField fx:id="locationText" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label fx:id="appointmentTypeLabel" prefHeight="17.0" prefWidth="127.0" text="Appointment Type" GridPane.rowIndex="5" />
+            <ComboBox fx:id="appointmentTypeComboBox" prefHeight="25.0" prefWidth="265.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             </children>
         </GridPane>
         <Button fx:id="saveAppointmentButton" layoutX="462.0" layoutY="628.0" mnemonicParsing="false" onAction="#saveAppointmentHandler" prefHeight="30.0" prefWidth="61.0" text="Save">
