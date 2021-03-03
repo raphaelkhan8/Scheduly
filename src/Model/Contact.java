@@ -44,23 +44,27 @@ public class Contact {
         return email;
     }
 
-    /** Gets the email corresponding to the passed-in contactId
+    /** Gets the Contact object corresponding to the passed-in contactId
      *
      * @param contactId - the primary key of the contact
-     * @return - the String containing the email that corresponds to the passed-in contactId
+     * @return - the Contact object corresponding to the passed-in contactId
      */
-    public static String getEmail(int contactId) {
-        String email = "";
+    public static Contact getEmail(int contactId) {
+        Contact contact = new Contact();
         try {
-            DBQuery.makeQuery("SELECT Email from contacts WHERE Contact_ID=" + contactId);
+            DBQuery.makeQuery("SELECT * from contacts WHERE Contact_ID=" + contactId);
             ResultSet rs = DBQuery.getResult();
             while (rs.next()) {
-                email = rs.getString(1);
+                String contactType = rs.getString("Contact_Name");
+                String email = rs.getString("Email");
+                contact.setContactId(contactId);
+                contact.setContactName(contactType);
+                contact.setEmail(email);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return email;
+        return contact;
     }
 
 }

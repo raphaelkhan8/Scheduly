@@ -1,9 +1,6 @@
 package Controller;
 
-import Model.Appointment;
-import Model.Contact;
-import Model.Customer;
-import Model.SessionHandler;
+import Model.*;
 import Utils.AlertMessages;
 import Utils.DataRetriever;
 import javafx.beans.property.SimpleStringProperty;
@@ -83,9 +80,12 @@ public class AppointmentManagerController implements Initializable {
     @FXML
     private Button searchTableSorterButton;
 
-    /** containers to containing View By options */
+    /** containers containing View By options */
     ObservableList<String> monthOptions = FXCollections.observableArrayList("January","February","March","April","May","June","July","August","September","October","November","December");
     ObservableList<String> weekOptions = FXCollections.observableArrayList("Last Week", "This Week", "Next Week");
+
+    /** container to hold selected appointment */
+    private Appointment selectedAppointment;
 
     /** container to hold user's language */
     ResourceBundle userLanguage = SessionHandler.getUserLanguage();
@@ -137,10 +137,22 @@ public class AppointmentManagerController implements Initializable {
     }
 
     @FXML
-    void updateAppointmentHandler(ActionEvent event) throws IOException {
-        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        Object scene = FXMLLoader.load(getClass().getResource("/View/UpdateAppointment.fxml"));
-        stage.setScene(new Scene((Parent) scene));
+    void updateAppointmentHandler(ActionEvent event) throws IOException, SQLException {
+//        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+//        Object scene = FXMLLoader.load(getClass().getResource("/View/UpdateAppointment.fxml"));
+//        stage.setScene(new Scene((Parent) scene));
+//        stage.show();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/View/UpdateAppointment.fxml"));
+        loader.load();
+        UpdateAppointmentController controller = loader.getController();
+        selectedAppointment = appointmentTableView.getSelectionModel().getSelectedItem();
+
+        controller.getSelectedAppointment(selectedAppointment);
+
+        Stage stage = (Stage) updateAppointmentButton.getScene().getWindow();
+        Parent scene = loader.getRoot();
+        stage.setScene(new Scene(scene));
         stage.show();
     }
 
@@ -166,7 +178,7 @@ public class AppointmentManagerController implements Initializable {
         appointmentTitleColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getTitle()));
         appointmentDescriptionColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getDescription()));
         appointmentLocationColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getLocation()));
-        customerContactColumn.setCellValueFactory(apt -> new SimpleStringProperty(Contact.getEmail(apt.getValue().getContactId())));;
+        customerContactColumn.setCellValueFactory(apt -> new SimpleStringProperty(Contact.getEmail(apt.getValue().getContactId()).getEmail()));
         appointmentTypeColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getType()));
         appointmentStartColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getStart()));
         appointmentEndColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getEnd()));

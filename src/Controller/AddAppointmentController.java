@@ -146,9 +146,7 @@ public class AddAppointmentController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        populateTypeComboBox();
-        populateContactComboBox();
-        populateTimeComboBoxes();
+        populateComboBoxes();
 
         appointmentIdText.setTooltip(new Tooltip(userLanguage.getString("appointmentIDTooltip")));
         cancelButton.setText(userLanguage.getString("cancelButton"));
@@ -298,27 +296,15 @@ public class AddAppointmentController implements Initializable {
         populateAppointmentsTable(selectedCustomer.getCustomerId());
     }
 
-    /** Populates Type combo-box with four possible appointment types
+    /** Populates all four combo boxes with possible user choices
      *
      */
-    void populateTypeComboBox() {
-        ObservableList<String> meetingTypes = FXCollections.observableArrayList("Virtual", "In-Person", "Telephone", "Whatever works");
-        appointmentTypeComboBox.setItems(meetingTypes);
-    }
-
-    /** Populates Contact Type combo-box with three possible types
-     *
-     */
-    void populateContactComboBox() {
+    void populateComboBoxes() {
         ObservableList<String> contactTypes = FXCollections.observableArrayList("Primary", "Work", "School");
-        contactTypeComboBox.setItems(contactTypes);
-    }
-
-    /** Populates Contact Type combo-box with three possible types
-     *
-     */
-    void populateTimeComboBoxes() {
+        ObservableList<String> meetingTypes = FXCollections.observableArrayList("Virtual", "In-Person", "Telephone", "Whatever works");
         ObservableList<String> times = FXCollections.observableArrayList("06:00:00","07:00:00","08:00:00","09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00", "18:00:00");
+        contactTypeComboBox.setItems(contactTypes);
+        appointmentTypeComboBox.setItems(meetingTypes);
         startTimeComboBox.setItems(times);
         endTimeComboBox.setItems(times);
     }

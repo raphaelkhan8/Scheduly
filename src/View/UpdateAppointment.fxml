@@ -59,9 +59,9 @@
                 <TextField fx:id="customerIdText" maxWidth="-Infinity" prefHeight="25.0" prefWidth="52.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Label fx:id="contactTypeLabel" prefHeight="17.0" prefWidth="244.0" text="Contact Type" GridPane.rowIndex="7" />
                 <ComboBox fx:id="contactTypeComboBox" prefHeight="25.0" prefWidth="265.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <TextField fx:id="locationText" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Label fx:id="appointmentTypeLabel" prefHeight="17.0" prefWidth="127.0" text="Appointment Type" GridPane.rowIndex="5" />
             <ComboBox fx:id="appointmentTypeComboBox" prefHeight="25.0" prefWidth="265.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="locationText" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             </children>
         </GridPane>
         <Button fx:id="saveAppointmentButton" layoutX="462.0" layoutY="628.0" mnemonicParsing="false" onAction="#saveAppointmentHandler" prefHeight="30.0" prefWidth="61.0" text="Save">
