@@ -1,6 +1,7 @@
 package Controller;
 
 import Database.DBQuery;
+import Model.Country;
 import Model.Customer;
 import Model.SessionHandler;
 import Utils.AlertMessages;
@@ -203,7 +204,7 @@ public class CustomersTableController implements Initializable {
 
         try {
             String selectedCountry = selectedCustomer.getCountry();
-            selectedCountryId = DataRetriever.getCountryId(selectedCountry);
+            selectedCountryId = Country.getCountryId(selectedCountry);
             controller.getSelectedCustomer(selectedCustomer, selectedCountryId);
         } catch (SQLException throwables) {
             throwables.printStackTrace();

@@ -134,10 +134,10 @@ public class AddAppointmentController implements Initializable {
     int currentUserId;
     /** container to hold selected customer */
     Customer selectedCustomer;
-    /** container for customer's appointments */
-    ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
-    /** container to hold all contact's names */
-    ObservableList<String> contactsList = FXCollections.observableArrayList();
+//    /** container for customer's appointments */
+//    ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+//    /** container to hold all contact's names */
+//    ObservableList<String> contactsList = FXCollections.observableArrayList();
     /** var to hold user's language */
     ResourceBundle userLanguage = SessionHandler.getUserLanguage();
 
@@ -328,23 +328,8 @@ public class AddAppointmentController implements Initializable {
      * @throws SQLException
      */
     void populateAppointmentsTable(int customerId) throws SQLException {
-        ResultSet appointments = DataRetriever.getCustomerAppointments(customerId);
-        while (appointments.next()) {
-            int appointmentId = appointments.getInt("Appointment_ID");
-            String title = appointments.getString("Title");
-            String description = appointments.getString("Description");
-            String location = appointments.getString("Location");
-            String type = appointments.getString("Type");
-//            String start = appointments.getString("Start");
-//            String end = appointments.getString("End");
-            String start = "Now";
-            String end = "Never";
-            int userId = appointments.getInt("User_Id");
-            int contactId = appointments.getInt("Contact_ID");
-            Appointment newAppointment = new Appointment(appointmentId, title, description, location, type, start, end, customerId, userId, contactId);
-            allAppointments.add(newAppointment);
-        }
-        addAppointmentTableView.setItems(allAppointments);
+        ObservableList<Appointment> appointments = Appointment.getAppointments(customerId);
+        addAppointmentTableView.setItems(appointments);
         addAppointmentIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getAppointmentId())));
         addAppointmentCustomerIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getCustomerId())));
         addAppointmentLocationColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getLocation()));

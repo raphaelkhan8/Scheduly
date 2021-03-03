@@ -1,7 +1,11 @@
 package Model;
 
+import Database.DBQuery;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Customer {
 
@@ -76,5 +80,24 @@ public class Customer {
     }
     public int getDivisionId() { return divisionId; }
     public ObservableList<Appointment> getAllAppointments() { return allAppointments; }
+
+    /** Gets the customer name corresponding to the passed-in customerId
+     *
+     * @param customerId - the primary key of the customer
+     * @return - the String corresponding to the passed-in customerId
+     */
+    public static String getCustomerName(int customerId) {
+        String name = "";
+        try {
+            DBQuery.makeQuery("SELECT Customer_Name from customers WHERE Customer_ID=" + customerId);
+            ResultSet rs = DBQuery.getResult();
+            while (rs.next()) {
+                name = rs.getString(1);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return name;
+    }
 
 }

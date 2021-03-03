@@ -1,6 +1,14 @@
 package Controller;
 
+import Model.Appointment;
+import Model.Contact;
+import Model.Customer;
 import Model.SessionHandler;
+import Utils.AlertMessages;
+import Utils.DataRetriever;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,10 +16,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class AppointmentManagerController implements Initializable {
@@ -29,31 +39,31 @@ public class AppointmentManagerController implements Initializable {
     private RadioButton viewByWeekRadioButton;
 
     @FXML
-    private TableView<?> appointmentTableView;
+    private TableView<Appointment> appointmentTableView;
 
     @FXML
-    private TableColumn<?, ?> customerNameColumn;
+    private TableColumn<Appointment, String> customerNameColumn;
 
     @FXML
-    private TableColumn<?, ?> customerContactColumn;
+    private TableColumn<Appointment, String> customerContactColumn;
 
     @FXML
-    private TableColumn<?, ?> appointmentTitleColumn;
+    private TableColumn<Appointment, String> appointmentTitleColumn;
 
     @FXML
-    private TableColumn<?, ?> appointmentTypeColumn;
+    private TableColumn<Appointment, String> appointmentTypeColumn;
 
     @FXML
-    private TableColumn<?, ?> appointmentLocationColumn;
+    private TableColumn<Appointment, String> appointmentLocationColumn;
 
     @FXML
-    private TableColumn<?, ?> appointmentDescriptionColumn;
+    private TableColumn<Appointment, String> appointmentDescriptionColumn;
 
     @FXML
-    private TableColumn<?, ?> appointmentStartColumn;
+    private TableColumn<Appointment, String> appointmentStartColumn;
 
     @FXML
-    private TableColumn<?, ?> appointmentEndColumn;
+    private TableColumn<Appointment, String> appointmentEndColumn;
 
     @FXML
     private Button cancelButton;
@@ -73,12 +83,22 @@ public class AppointmentManagerController implements Initializable {
     @FXML
     private Button searchTableSorterButton;
 
-    // var to hold user's language
+    /** containers to containing View By options */
+    ObservableList<String> monthOptions = FXCollections.observableArrayList("January","February","March","April","May","June","July","August","September","October","November","December");
+    ObservableList<String> weekOptions = FXCollections.observableArrayList("Last Week", "This Week", "Next Week");
+
+    /** container to hold user's language */
     ResourceBundle userLanguage = SessionHandler.getUserLanguage();
 
-    // change text to match user's language upon initialization
+    /** Initialization Override: Populate table with all appointments and change text to match user's language */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        try {
+            populateAppointmentsTable();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
         searchTableSorterButton.setText(userLanguage.getString("searchButton"));
         cancelButton.setText(userLanguage.getString("cancelButton"));
         updateAppointmentButton.setText(userLanguage.getString("updateButton"));
@@ -89,7 +109,7 @@ public class AppointmentManagerController implements Initializable {
         viewByLabel.setText(userLanguage.getString("viewBy"));
         viewByComboBox.promptTextProperty().setValue(userLanguage.getString("viewByComboBox"));
         customerNameColumn.setText(userLanguage.getString("CustomerName"));
-        customerContactColumn.setText(userLanguage.getString("AssignedContact"));
+        customerContactColumn.setText(userLanguage.getString("Email"));
         appointmentTitleColumn.setText(userLanguage.getString("Title"));
         appointmentTypeColumn.setText(userLanguage.getString("Type"));
         appointmentLocationColumn.setText(userLanguage.getString("Location"));
@@ -98,6 +118,11 @@ public class AppointmentManagerController implements Initializable {
         appointmentEndColumn.setText(userLanguage.getString("EndTime"));
     }
 
+    /** Change view to Home Page
+     *
+     * @param event - the Event that triggers this function call (click Cancel button)
+     * @throws IOException
+     */
     @FXML
     void cancelView(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -132,6 +157,19 @@ public class AppointmentManagerController implements Initializable {
     @FXML
     void viewByWeekHandler(ActionEvent event) {
 
+    }
+
+    void populateAppointmentsTable() throws SQLException {
+        ObservableList<Appointment> apts = Appointment.getAppointments(-1);
+        appointmentTableView.setItems(apts);
+        customerNameColumn.setCellValueFactory(apt -> new SimpleStringProperty(Customer.getCustomerName(apt.getValue().getCustomerId())));
+        appointmentTitleColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getTitle()));
+        appointmentDescriptionColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getDescription()));
+        appointmentLocationColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getLocation()));
+        customerContactColumn.setCellValueFactory(apt -> new SimpleStringProperty(Contact.getEmail(apt.getValue().getContactId())));;
+        appointmentTypeColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getType()));
+        appointmentStartColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getStart()));
+        appointmentEndColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getEnd()));
     }
 
 }

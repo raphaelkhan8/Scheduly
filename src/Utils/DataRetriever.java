@@ -3,20 +3,9 @@ package Utils;
 import Database.DBQuery;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /** Commonly used methods to query the database */
 public class DataRetriever {
-
-    /** Gets all countries (Id and Name) from the database
-     *
-     * @return - the ResultSet contains all of the countries' CountryId (int) and CountryName (String)
-     * @throws SQLException
-     */
-    public static ResultSet getAllCountries() throws SQLException {
-        DBQuery.makeQuery("SELECT Country_ID, Country from countries");
-        return DBQuery.getResult();
-    }
 
     /** Gets divisionID and divisionName for the passed-in country from the database
      *
@@ -25,41 +14,6 @@ public class DataRetriever {
      */
     public static ResultSet getDivisionInfo(int countryId) {
         DBQuery.makeQuery("SELECT Division_ID, Division from first_level_divisions WHERE Country_ID = " + countryId);
-        return DBQuery.getResult();
-    }
-
-    /** Gets countryId for the passed-in country from the database
-     *
-     * @param countryName - the String corresponding to the selected country's name
-     * @return - the int corresponds to the passed in country's Id
-     * @throws SQLException
-     */
-    public static int getCountryId(String countryName) throws SQLException {
-        int countryId = 0;
-        DBQuery.makeQuery("SELECT c.Country_ID from countries AS c WHERE c.Country = '" + countryName + "'");
-        ResultSet rs = DBQuery.getResult();
-        if (rs.next()) {
-            countryId = rs.getInt(1);
-        }
-        return countryId;
-    }
-
-    /** Gets all contacts (Id and Name) from the database
-     *
-     * @return - the ResultSet contains all of the contacts' ContactId (int) and ContactName (String)
-     */
-    public static ResultSet getAllContacts() {
-        DBQuery.makeQuery("SELECT Contact_ID, Contact_Name from contacts");
-        return DBQuery.getResult();
-    }
-
-    /** Gets all of the passed-in customer's appointments
-     *
-     * @param customerId - the int that corresponds to the selected customer
-     * @return - the ResultSet contains the all of the customer's scheduled appointments
-     */
-    public static ResultSet getCustomerAppointments(int customerId) {
-        DBQuery.makeQuery("SELECT * FROM appointments WHERE Customer_ID=" + customerId);
         return DBQuery.getResult();
     }
 

@@ -1,8 +1,11 @@
 package Model;
 
+import Database.DBQuery;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalTime;
 
 public class Appointment {
@@ -17,8 +20,6 @@ public class Appointment {
     private int customerId;
     private int userId;
     private int contactId;
-    // container for all appointments
-    private ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
     public Appointment() { }
 
@@ -99,4 +100,40 @@ public class Appointment {
         return contactId;
     }
 
+    /** Returns all of the appointments from the database
+     *
+     * @param customerId - int that corresponds to the customer who's appointments are to be retrieved from
+     *                   the database. If customerId is negative, all the appointments will be retrieved.
+     * @return - returns an ObservableList containing all of the applicable appointments
+     * @throws SQLException
+     */
+
+    public static ObservableList<Appointment> getAppointments(int customerId) throws SQLException {
+        ResultSet appointments;
+        String dbQuery = "";
+        if (customerId < 0) {
+            dbQuery = "SELECT * FROM appointments";
+        } else {
+            dbQuery = "SELECT * FROM appointments WHERE Customer_ID=" + customerId;
+        }
+        ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+        DBQuery.makeQuery(dbQuery);
+        appointments = DBQuery.getResult();
+        while (appointments.next()) {
+            int aptId = appointments.getInt("Appointment_ID");
+            String title = appointments.getString("Title");
+            String desc = appointments.getString("Description");
+            String loc = appointments.getString("Location");
+            String type = appointments.getString("Type");
+            String start = appointments.getString("Start");
+            String end = appointments.getString("End");
+            int custId = appointments.getInt("Customer_ID");
+            int userId = appointments.getInt("User_ID");
+            int contactId = appointments.getInt("Contact_ID");
+
+            Appointment apt = new Appointment(aptId, title, desc, loc, type, start, end, custId, userId, contactId);
+            allAppointments.add(apt);
+        }
+        return allAppointments;
+    }
 }

@@ -1,6 +1,7 @@
 package Controller;
 
 import Database.DBQuery;
+import Model.Country;
 import Model.SessionHandler;
 import Utils.AlertMessages;
 import Utils.DataRetriever;
@@ -202,7 +203,7 @@ public class AddCustomerController implements Initializable {
      * @throws SQLException
      */
     void populateCountryComboBox() throws SQLException {
-        ResultSet countries = DataRetriever.getAllCountries();
+        ResultSet countries = Country.getAllCountries();
         while (countries.next()) {
             countryList.add(countries.getString(2));
         }
