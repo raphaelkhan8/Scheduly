@@ -1,6 +1,7 @@
 package Controller;
 
 import Database.DBQuery;
+import Model.Country;
 import Model.Customer;
 import Model.SessionHandler;
 import Utils.AlertMessages;
@@ -144,6 +145,7 @@ public class UpdateCustomerController implements Initializable {
     @FXML
     void updateCustomerCountryHandler() throws SQLException {
         selectedCountryId = updateCustomerCountryComboBox.getSelectionModel().getSelectedIndex() + 1;
+        updateCustomerDivisionComboBox.promptTextProperty().setValue("");
         populateDivisionComboBox(selectedCountryId);
         if (divisionNameList.size() == 0) {
             ObservableList<String> empty = FXCollections.observableArrayList();
@@ -233,7 +235,7 @@ public class UpdateCustomerController implements Initializable {
      * @throws SQLException
      */
     void populateCountryComboBox() throws SQLException {
-        ResultSet countries = DataRetriever.getAllCountries();
+        ResultSet countries = Country.getAllCountries();
         while (countries.next()) {
             countryList.add(countries.getString(2));
         }
