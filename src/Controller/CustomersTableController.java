@@ -15,10 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -130,10 +127,12 @@ public class CustomersTableController implements Initializable {
         loader.load();
         AddAppointmentController controller = loader.getController();
         selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
-        // if a customer is selected, pass that customer to the AddAppointmentController
-        if (!(selectedCustomer == null)) {
-            controller.getSelectedCustomer(selectedCustomer);
+        // alert user if a customer is not selected
+        if (selectedCustomer == null) {
+            AlertMessages.errorMessage(userLanguage.getString("addAppointmentNoCustomerMessage"));
+            return;
         }
+        controller.getSelectedCustomer(selectedCustomer);
         Stage stage = (Stage) customersTableUpdateButton.getScene().getWindow();
         Parent scene = loader.getRoot();
         stage.setScene(new Scene(scene));
@@ -159,10 +158,15 @@ public class CustomersTableController implements Initializable {
      */
     @FXML
     void deleteCustomerHandler(ActionEvent event) {
+        selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
+        if (selectedCustomer == null) {
+            AlertMessages.errorMessage(userLanguage.getString("deleteCustomerNoCustomerMessage"));
+            return;
+        }
+
         AtomicBoolean proceed = AlertMessages.confirmMessage(userLanguage.getString("customerDeleteConfirmMessage"));
         if (proceed.get() == true) {
 
-            selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
             int numberOfCustomers = customersTableView.getItems().size();
             int selectedID = selectedCustomer.getCustomerId();
 
@@ -201,6 +205,11 @@ public class CustomersTableController implements Initializable {
         loader.load();
         UpdateCustomerController controller = loader.getController();
         selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
+
+        if (selectedCustomer == null) {
+            AlertMessages.errorMessage(userLanguage.getString("updateCustomerNoCustomerMessage"));
+            return;
+        }
 
         try {
             String selectedCountry = selectedCustomer.getCountry();
