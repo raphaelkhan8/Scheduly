@@ -1,9 +1,10 @@
 package Controller;
 
-import Model.Appointment;
-import Model.Contact;
-import Model.Customer;
-import Model.SessionHandler;
+import Database.DBQuery;
+import Model.*;
+import Utils.AlertMessages;
+import Utils.DataRetriever;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,8 +24,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class UpdateAppointmentController implements Initializable {
@@ -108,10 +111,10 @@ public class UpdateAppointmentController implements Initializable {
     private TableView<Appointment> updateCustomerTableView;
 
     @FXML
-    private TableColumn<Appointment, Integer> updateAppointmentCustomerIDColumn;
+    private TableColumn<Appointment, String> updateAppointmentCustomerIDColumn;
 
     @FXML
-    private TableColumn<Appointment, Integer> updateAppointmentIDColumn;
+    private TableColumn<Appointment, String> updateAppointmentIDColumn;
 
     @FXML
     private TableColumn<Appointment, String> updateAppointmentLocationColumn;
@@ -173,8 +176,78 @@ public class UpdateAppointmentController implements Initializable {
     }
 
     @FXML
-    void saveAppointmentHandler(ActionEvent event) {
+    void saveAppointmentHandler(ActionEvent event) throws IOException {
+        int appointmentId = selectedAppointment.getAppointmentId();
+        int currentUserId = selectedAppointment.getUserId();
+        int customerId = selectedAppointment.getCustomerId();
+        int contactId = selectedAppointment.getContactId();
 
+        // get user's text input
+        String title = titleText.getText();
+        String description = descriptionText.getText();
+        String location = locationText.getText();
+        String email = emailText.getText();
+        String appointmentType = appointmentTypeComboBox.getPromptText();
+        String contactType = contactTypeComboBox.getPromptText();
+        String start = startTimeComboBox.getPromptText();
+        String end = endTimeComboBox.getPromptText();
+        LocalDate selectedDate = updateAppointmentDatePicker.getValue();
+        String startTime = selectedDate + " " + start;
+        String endTime = selectedDate + " " + end;
+        // verify that all text fields were filled out
+        if (title.isEmpty() || description.isEmpty() || location.isEmpty() || email.isEmpty()) {
+            AlertMessages.errorMessage(userLanguage.getString("missingFieldMessage"));
+            return;
+        }
+        // verify that an appointment type was selected
+        if (appointmentType == null) {
+            AlertMessages.errorMessage(userLanguage.getString("selectAppointmentTypeMsg"));
+            return;
+        }
+        // verify that an assigned contact was selected
+        if (contactType == null) {
+            AlertMessages.errorMessage(userLanguage.getString("selectContactTypeMsg"));
+            return;
+        }
+        // verify that a date was picked
+        if (selectedDate == null) {
+            AlertMessages.errorMessage(userLanguage.getString("selectDateMsg"));
+            return;
+        }
+        // verify that start and end times were selected
+        if (start == null || end == null) {
+            AlertMessages.errorMessage(userLanguage.getString("selectTimeMsg"));
+            return;
+        }
+        // verify that end time is after start time
+        int startHour = Integer.parseInt(start.substring(0, start.indexOf(":")));
+        int endHour = Integer.parseInt(end.substring(0, end.indexOf(":")));
+        if (endHour < startHour) {
+            AlertMessages.errorMessage(userLanguage.getString("timeErrorMsg"));
+            return;
+        }
+        // verify that the date is in the future
+        if (selectedDate.compareTo(LocalDate.now()) < 0 || (selectedDate.compareTo(LocalDate.now()) == 0 & startHour <= LocalDateTime.now().getHour() + 1)) {
+            AlertMessages.errorMessage(userLanguage.getString("invalidDateMsg"));
+            return;
+        }
+        // if all fields are filled out, update the Contact and Appointment in the database:
+        try {
+            // Update the Contact:
+            DBQuery.makeQuery("UPDATE contacts SET Contact_Name='" + contactType + "', Email='" + email +
+                    "' WHERE Contact_ID=" + contactId);
+
+            // Update the Appointment:
+            DBQuery.makeQuery("UPDATE appointments SET Title='" + title + "', Description='" + description
+                    + "', Location='" + location + "', Type='" + appointmentType + "', Start='" + startTime
+                    + "', End='" + endTime + "', Create_Date=NOW(), Created_By='', Last_Update=NOW(), Last_Updated_By='', Customer_ID="
+                    + customerId + ", User_ID=" + currentUserId + ", Contact_ID=" + contactId + " WHERE Appointment_ID=" + appointmentId);
+        } catch (Exception throwables) {
+            throwables.printStackTrace();
+        }
+        AlertMessages.alertMessage(userLanguage.getString("Appointment") + " #" + appointmentId + " (" + appointmentType + ") " + userLanguage.getString("hasBeenUpdated"));
+        // Afterwards, go back to Customer Table view
+        cancelView(event);
     }
 
 
@@ -182,13 +255,10 @@ public class UpdateAppointmentController implements Initializable {
      *
      */
     void populateComboBoxes() {
-        ObservableList<String> contactTypes = FXCollections.observableArrayList("Primary", "Work", "School");
-        ObservableList<String> meetingTypes = FXCollections.observableArrayList("Virtual", "In-Person", "Telephone", "Whatever works");
-        ObservableList<String> times = FXCollections.observableArrayList("06:00:00","07:00:00","08:00:00","09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00", "18:00:00");
-        contactTypeComboBox.setItems(contactTypes);
-        appointmentTypeComboBox.setItems(meetingTypes);
-        startTimeComboBox.setItems(times);
-        endTimeComboBox.setItems(times);
+        contactTypeComboBox.setItems(DataRetriever.getContactTypes());
+        appointmentTypeComboBox.setItems(DataRetriever.getAppointmentTypes());
+        startTimeComboBox.setItems(DataRetriever.getTimes());
+        endTimeComboBox.setItems(DataRetriever.getTimes());
     }
 
     /** Gets selected appointment from AppointmentManager view to populate UpdateAppointment view fields
@@ -197,17 +267,15 @@ public class UpdateAppointmentController implements Initializable {
      * @throws SQLException
      */
     public void getSelectedAppointment(Appointment appointment) throws SQLException {
-
         selectedAppointment = appointment;
         Contact oldContact = Contact.getEmail(selectedAppointment.getContactId());
         String startTimeWithDate = selectedAppointment.getStart();
         String endTimeWithDate = selectedAppointment.getEnd();
         LocalDate date = LocalDate.parse(startTimeWithDate.substring(0, startTimeWithDate.indexOf(" ")));
-        System.out.println(oldContact.getContactId());
-        System.out.println(oldContact.getContactName());
-        System.out.println(oldContact.getEmail());
         String start = startTimeWithDate.substring(startTimeWithDate.indexOf(" ") + 1);
         String end = endTimeWithDate.substring(endTimeWithDate.indexOf(" ") + 1);
+
+        populateAppointmentsTable(selectedAppointment.getCustomerId());
 
         this.appointmentIdText.setText(Integer.toString(selectedAppointment.getAppointmentId()));
         this.customerIdText.setText(Integer.toString(selectedAppointment.getCustomerId()));
@@ -220,6 +288,25 @@ public class UpdateAppointmentController implements Initializable {
         this.updateAppointmentDatePicker.setValue(date);
         this.startTimeComboBox.promptTextProperty().setValue(start);
         this.endTimeComboBox.promptTextProperty().setValue(end);
+    }
+
+    /** Populates Appointments table with customer's appointments
+     *
+     * @throws SQLException
+     */
+    void populateAppointmentsTable(int customerId) {
+        ObservableList<Appointment> appointments = FXCollections.observableArrayList();
+        try {
+            appointments = Appointment.getAppointments(customerId);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        updateCustomerTableView.setItems(appointments);
+        updateAppointmentIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getAppointmentId())));
+        updateAppointmentCustomerIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getCustomerId())));
+        updateAppointmentLocationColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getLocation()));
+        updateAppointmentLocalDateColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getStart()));
+        updateAppointmentLocalDateColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getEnd()));
     }
 
 }

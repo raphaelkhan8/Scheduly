@@ -138,10 +138,6 @@ public class AppointmentManagerController implements Initializable {
 
     @FXML
     void updateAppointmentHandler(ActionEvent event) throws IOException, SQLException {
-//        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-//        Object scene = FXMLLoader.load(getClass().getResource("/View/UpdateAppointment.fxml"));
-//        stage.setScene(new Scene((Parent) scene));
-//        stage.show();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/View/UpdateAppointment.fxml"));
         loader.load();
