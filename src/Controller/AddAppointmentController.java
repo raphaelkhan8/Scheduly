@@ -6,9 +6,7 @@ import Model.Customer;
 import Model.SessionHandler;
 import Utils.AlertMessages;
 import Utils.DataRetriever;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,8 +23,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDate;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 public class AddAppointmentController implements Initializable {
@@ -134,11 +130,7 @@ public class AddAppointmentController implements Initializable {
     int currentUserId;
     /** container to hold selected customer */
     Customer selectedCustomer;
-//    /** container for customer's appointments */
-//    ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
-//    /** container to hold all contact's names */
-//    ObservableList<String> contactsList = FXCollections.observableArrayList();
-    /** var to hold user's language */
+    /** container to hold user's language */
     ResourceBundle userLanguage = SessionHandler.getUserLanguage();
 
     /** Initialization Override: Populate combo-boxes and change text to match user's language
@@ -190,6 +182,7 @@ public class AddAppointmentController implements Initializable {
         int appointmentId = 1;
         int contactId = 1;
         // get user's text input
+        String customerId = customerIdText.getText();
         String title = titleText.getText();
         String description = descriptionText.getText();
         String location = locationText.getText();
@@ -264,7 +257,7 @@ public class AddAppointmentController implements Initializable {
             DBQuery.makeQuery("INSERT INTO appointments SET Appointment_ID=" + appointmentId + ", Title='" +
                     title + "', Description='" + description + "', Location='" + location + "', Type='" + appointmentType +
                     "', Start='" + startTime + "', End='" + endTime + "', Create_Date=NOW(), Created_By='', Last_Update=NOW(), Last_Updated_By='', Customer_ID="
-                    + selectedCustomer.getCustomerId() + ", User_ID=" + currentUserId + ", Contact_ID=" + contactId);
+                    + Integer.parseInt(customerId) + ", User_ID=" + currentUserId + ", Contact_ID=" + contactId);
             AlertMessages.alertMessage(userLanguage.getString("addAppointmentSuccessMsg"));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
