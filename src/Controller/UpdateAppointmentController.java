@@ -187,10 +187,10 @@ public class UpdateAppointmentController implements Initializable {
         String description = descriptionText.getText();
         String location = locationText.getText();
         String email = emailText.getText();
-        String appointmentType = appointmentTypeComboBox.getPromptText();
-        String contactType = contactTypeComboBox.getPromptText();
-        String start = startTimeComboBox.getPromptText();
-        String end = endTimeComboBox.getPromptText();
+        String appointmentType = appointmentTypeComboBox.getSelectionModel().getSelectedItem();
+        String contactType = contactTypeComboBox.getSelectionModel().getSelectedItem();
+        String start = startTimeComboBox.getSelectionModel().getSelectedItem();
+        String end = endTimeComboBox.getSelectionModel().getSelectedItem();
         LocalDate selectedDate = updateAppointmentDatePicker.getValue();
         String startTime = selectedDate + " " + start;
         String endTime = selectedDate + " " + end;
@@ -199,24 +199,9 @@ public class UpdateAppointmentController implements Initializable {
             AlertMessages.errorMessage(userLanguage.getString("missingFieldMessage"));
             return;
         }
-        // verify that an appointment type was selected
-        if (appointmentType == null) {
-            AlertMessages.errorMessage(userLanguage.getString("selectAppointmentTypeMsg"));
-            return;
-        }
-        // verify that an assigned contact was selected
-        if (contactType == null) {
-            AlertMessages.errorMessage(userLanguage.getString("selectContactTypeMsg"));
-            return;
-        }
         // verify that a date was picked
         if (selectedDate == null) {
             AlertMessages.errorMessage(userLanguage.getString("selectDateMsg"));
-            return;
-        }
-        // verify that start and end times were selected
-        if (start == null || end == null) {
-            AlertMessages.errorMessage(userLanguage.getString("selectTimeMsg"));
             return;
         }
         // verify that end time is after start time
@@ -282,12 +267,12 @@ public class UpdateAppointmentController implements Initializable {
         this.titleText.setText(selectedAppointment.getTitle());
         this.descriptionText.setText((selectedAppointment.getDescription()));
         this.locationText.setText(selectedAppointment.getLocation());
-        this.appointmentTypeComboBox.promptTextProperty().setValue(selectedAppointment.getType());
+        this.appointmentTypeComboBox.setValue(selectedAppointment.getType());
         this.emailText.setText(oldContact.getEmail());
-        this.contactTypeComboBox.promptTextProperty().setValue(oldContact.getContactName());
+        this.contactTypeComboBox.setValue(oldContact.getContactName());
         this.updateAppointmentDatePicker.setValue(date);
-        this.startTimeComboBox.promptTextProperty().setValue(start);
-        this.endTimeComboBox.promptTextProperty().setValue(end);
+        this.startTimeComboBox.setValue(start);
+        this.endTimeComboBox.setValue(end);
     }
 
     /** Populates Appointments table with customer's appointments
