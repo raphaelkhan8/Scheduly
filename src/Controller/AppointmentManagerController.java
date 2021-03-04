@@ -1,5 +1,6 @@
 package Controller;
 
+import Database.DBQuery;
 import Model.*;
 import Utils.AlertMessages;
 import Utils.DataRetriever;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AppointmentManagerController implements Initializable {
 
@@ -90,7 +92,9 @@ public class AppointmentManagerController implements Initializable {
     /** container to hold user's language */
     ResourceBundle userLanguage = SessionHandler.getUserLanguage();
 
-    /** Initialization Override: Populate table with all appointments and change text to match user's language */
+    /** Initialization Override: Populate table with all appointments and change text to match user's language
+     *
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
@@ -131,18 +135,65 @@ public class AppointmentManagerController implements Initializable {
         stage.show();
     }
 
+    /** deletes the selected Appointment
+     *
+     * @param event - the Event that triggers this function call (click Delete button)
+     */
     @FXML
     void deleteAppointmentHandler(ActionEvent event) {
+        selectedAppointment = appointmentTableView.getSelectionModel().getSelectedItem();
 
+        if (selectedAppointment == null) {
+            AlertMessages.errorMessage(userLanguage.getString("deleteAppointmentNoAppointmentMessage"));
+            return;
+        }
+
+        AtomicBoolean proceed = AlertMessages.confirmMessage(userLanguage.getString("appointmentDeleteConfirmMessage"));
+        if (proceed.get() == true) {
+
+            int numberOfAppointments = appointmentTableView.getItems().size();
+            int selectedId = selectedAppointment.getAppointmentId();
+            String appointmentType = selectedAppointment.getType();
+
+            if (numberOfAppointments == 1) {
+                appointmentTableView.getItems().remove(0);
+            } else {
+                ObservableList<Appointment> allAppointments, singleApt;
+                allAppointments = appointmentTableView.getItems();
+                singleApt = appointmentTableView.getSelectionModel().getSelectedItems();
+                singleApt.forEach(allAppointments::remove);
+                selectedAppointment = appointmentTableView.getSelectionModel().getSelectedItem();
+            }
+
+            try {
+                DBQuery.makeQuery("DELETE FROM appointments WHERE Appointment_ID =" + selectedId);
+                AlertMessages.alertMessage(userLanguage.getString("Appointment") + " #" + selectedId + " (" + appointmentType + ") " + userLanguage.getString("hasBeenCancelled"));
+            }
+            catch (Exception throwables) {
+                throwables.printStackTrace();
+            }
+        }
     }
 
+    /** updates the selected Appointment
+     *
+     * @param event - the Event that triggers this function call (click Delete button)
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     void updateAppointmentHandler(ActionEvent event) throws IOException, SQLException {
+        selectedAppointment = appointmentTableView.getSelectionModel().getSelectedItem();
+
+        if (selectedAppointment == null) {
+            AlertMessages.errorMessage(userLanguage.getString("updateAppointmentNoAppointmentMessage"));
+            return;
+        }
+
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/View/UpdateAppointment.fxml"));
         loader.load();
         UpdateAppointmentController controller = loader.getController();
-        selectedAppointment = appointmentTableView.getSelectionModel().getSelectedItem();
 
         controller.getSelectedAppointment(selectedAppointment);
 
@@ -167,6 +218,10 @@ public class AppointmentManagerController implements Initializable {
 
     }
 
+    /** populates Appointments Table with all appointments from db
+     *
+     * @throws SQLException
+     */
     void populateAppointmentsTable() throws SQLException {
         ObservableList<Appointment> apts = Appointment.getAppointments(-1);
         appointmentTableView.setItems(apts);
