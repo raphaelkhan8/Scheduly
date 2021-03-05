@@ -21,6 +21,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -203,9 +204,20 @@ public class AppointmentManagerController implements Initializable {
         stage.show();
     }
 
+    /** populates Appointment table based on View By combo-box selection criteria (either Month or previous/next week)
+     *
+     * @param event - the event that triggers this function call (clicking Search button)
+     */
     @FXML
     void searchTableSorterHandler(ActionEvent event) {
-
+        if (viewByWeekRadioButton.isSelected()) {
+            int selectedDurationIndex = viewByComboBox.getSelectionModel().getSelectedIndex();
+            appointments = DataRetriever.getAppointmentsByDuration(0, Integer.toString(selectedDurationIndex - 1));
+        } else {
+            String selectedMonth = viewByComboBox.getSelectionModel().getSelectedItem();
+            appointments = DataRetriever.getAppointmentsByDuration(1, selectedMonth);
+        }
+        populateAppointmentsTable(appointments);
     }
 
     /** filters the AppointmentTable to only show appointments in the current month
