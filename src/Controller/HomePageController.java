@@ -93,7 +93,6 @@ public class HomePageController implements Initializable {
 
     @FXML
     void openAptManagerView(ActionEvent event) throws IOException {
-        AlertMessages.alertMessage(userLanguage.getString("fetchingAppointments"));
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Object scene = FXMLLoader.load(getClass().getResource("/View/AppointmentManager.fxml"));
         stage.setScene(new Scene((Parent) scene));
