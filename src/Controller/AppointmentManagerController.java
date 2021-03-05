@@ -3,7 +3,6 @@ package Controller;
 import Database.DBQuery;
 import Model.*;
 import Utils.AlertMessages;
-import Utils.DataRetriever;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +13,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -225,11 +223,11 @@ public class AppointmentManagerController implements Initializable {
     void populateAppointmentsTable() throws SQLException {
         ObservableList<Appointment> apts = Appointment.getAppointments(-1);
         appointmentTableView.setItems(apts);
-        customerNameColumn.setCellValueFactory(apt -> new SimpleStringProperty(Customer.getCustomerName(apt.getValue().getCustomerId())));
+        customerNameColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getCustomerName()));
         appointmentTitleColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getTitle()));
         appointmentDescriptionColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getDescription()));
         appointmentLocationColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getLocation()));
-        customerContactColumn.setCellValueFactory(apt -> new SimpleStringProperty(Contact.getEmail(apt.getValue().getContactId()).getEmail()));
+        customerContactColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getEmail()));
         appointmentTypeColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getType()));
         appointmentStartColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getStart()));
         appointmentEndColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getEnd()));

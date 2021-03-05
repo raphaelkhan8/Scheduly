@@ -233,27 +233,20 @@ public class AddAppointmentController implements Initializable {
         }
         // if all fields are filled out, add the Contact and Appointment to the database:
         try {
-            /// Add the Contact:
-            // get the last contactId in db and increment by one to get the new contactId
-            DBQuery.makeQuery("SELECT MAX(Contact_ID) FROM contacts");
-            ResultSet lastContactId = DBQuery.getResult();
-            if (lastContactId.next()) {
-                contactId = lastContactId.getInt(1);
+            // get the last contactId and AppointmentId in db and increment by one to get the new primary keys
+            DBQuery.makeQuery("SELECT MAX(c.Contact_ID), MAX(a.Appointment_ID) FROM contacts AS c CROSS JOIN appointments AS a");
+            ResultSet lastIds = DBQuery.getResult();
+            if (lastIds.next()) {
+                contactId = lastIds.getInt(1);
+                appointmentId = lastIds.getInt(2);
                 contactId++;
+                appointmentId++;
+
             }
-            // then add the contact to the database:
+            // add the contact to the database:
             DBQuery.makeQuery("INSERT INTO contacts SET Contact_ID=" + contactId + ", Contact_Name='" +
                     contactType + "', Email='" + email + "'");
-
-            /// Add the Appointment:
-            // get the last appointmentId in db and increment by one to get the new appointmentId
-            DBQuery.makeQuery("SELECT MAX(Appointment_ID) FROM appointments");
-            ResultSet lastAppointId = DBQuery.getResult();
-            if (lastAppointId.next()) {
-                appointmentId = lastAppointId.getInt(1);
-                appointmentId++;
-            }
-            // then add the appointment to the database:
+            // add the appointment to the database:
             DBQuery.makeQuery("INSERT INTO appointments SET Appointment_ID=" + appointmentId + ", Title='" +
                     title + "', Description='" + description + "', Location='" + location + "', Type='" + appointmentType +
                     "', Start='" + startTime + "', End='" + endTime + "', Create_Date=NOW(), Created_By='', Last_Update=NOW(), Last_Updated_By='', Customer_ID="

@@ -5,7 +5,6 @@ import Model.Country;
 import Model.Customer;
 import Model.SessionHandler;
 import Utils.AlertMessages;
-import Utils.DataRetriever;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -181,10 +180,10 @@ public class CustomersTableController implements Initializable {
             }
 
             try {
-                // first delete all of the customer's associated appointments
-                DBQuery.makeQuery("DELETE FROM appointments WHERE Customer_ID =" + selectedID);
+                // delete all of the customer's associated appointments
+                DBQuery.makeQuery("DELETE FROM appointments WHERE Customer_ID=" + selectedID);
                 // then, delete the customer from the database
-                DBQuery.makeQuery("DELETE FROM customers WHERE Customer_ID =" + selectedID);
+                DBQuery.makeQuery("DELETE FROM customers WHERE Customer_ID=" + selectedID);
                 AlertMessages.alertMessage(userLanguage.getString("customerDeleteSuccessMessage"));
             }
             catch (Exception throwables) {
