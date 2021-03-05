@@ -3,6 +3,7 @@ package Controller;
 import Database.DBQuery;
 import Model.*;
 import Utils.AlertMessages;
+import Utils.DataRetriever;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +19,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -75,18 +79,15 @@ public class AppointmentManagerController implements Initializable {
     private Label viewByLabel;
 
     @FXML
-    private ComboBox<?> viewByComboBox;
+    private ComboBox<String> viewByComboBox;
 
     @FXML
     private Button searchTableSorterButton;
 
-    /** containers containing View By options */
-    ObservableList<String> monthOptions = FXCollections.observableArrayList("January","February","March","April","May","June","July","August","September","October","November","December");
-    ObservableList<String> weekOptions = FXCollections.observableArrayList("Last Week", "This Week", "Next Week");
-
     /** container to hold selected appointment */
     private Appointment selectedAppointment;
-
+    /** container to hold all appointments for Calendar view */
+    ObservableList<Appointment> appointments = FXCollections.observableArrayList();
     /** container to hold user's language */
     ResourceBundle userLanguage = SessionHandler.getUserLanguage();
 
@@ -96,7 +97,8 @@ public class AppointmentManagerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            populateAppointmentsTable();
+            appointments = Appointment.getAppointments(-1);
+            populateAppointmentsTable(appointments);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -206,22 +208,34 @@ public class AppointmentManagerController implements Initializable {
 
     }
 
+    /** filters the AppointmentTable to only show appointments in the current month
+     *
+     * @param event - the Event that triggers this function call (click View By Month radio button)
+     */
     @FXML
     void viewByMonthHandler(ActionEvent event) {
-
+        String currentMonth = LocalDate.now().getMonth().toString();
+        appointments = DataRetriever.getAppointmentsByDuration(1, currentMonth);
+        populateAppointmentsTable(appointments);
+        viewByComboBox.setItems(DataRetriever.getMonthOptions());
     }
 
+    /** filters the AppointmentTable to only show appointments in the current week
+     *
+     * @param event - the Event that triggers this function call (click View By Week radio button)
+     */
     @FXML
     void viewByWeekHandler(ActionEvent event) {
-
+        appointments = DataRetriever.getAppointmentsByDuration(0, "0");
+        populateAppointmentsTable(appointments);
+        viewByComboBox.setItems(DataRetriever.getWeekOptions());
     }
 
-    /** populates Appointments Table with all appointments from db
+    /** populates Appointments Table with all appointments from passed in ObservableList
      *
-     * @throws SQLException
+     * @param apts - the ObservableList containing appointments to be displayed in Appointments table
      */
-    void populateAppointmentsTable() throws SQLException {
-        ObservableList<Appointment> apts = Appointment.getAppointments(-1);
+    void populateAppointmentsTable(ObservableList<Appointment> apts) {
         appointmentTableView.setItems(apts);
         customerNameColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getCustomerName()));
         appointmentTitleColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getTitle()));
