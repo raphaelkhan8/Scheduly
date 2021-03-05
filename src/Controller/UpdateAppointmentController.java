@@ -216,17 +216,13 @@ public class UpdateAppointmentController implements Initializable {
             AlertMessages.errorMessage(userLanguage.getString("invalidDateMsg"));
             return;
         }
-        // if all fields are filled out, update the Contact and Appointment in the database:
+        // if all fields are filled out, update the Appointment and its associated Contact
         try {
-            // Update the Contact:
-            DBQuery.makeQuery("UPDATE contacts SET Contact_Name='" + contactType + "', Email='" + email +
-                    "' WHERE Contact_ID=" + contactId);
-
-            // Update the Appointment:
-            DBQuery.makeQuery("UPDATE appointments SET Title='" + title + "', Description='" + description
-                    + "', Location='" + location + "', Type='" + appointmentType + "', Start='" + startTime
-                    + "', End='" + endTime + "', Create_Date=NOW(), Created_By='', Last_Update=NOW(), Last_Updated_By='', Customer_ID="
-                    + customerId + ", User_ID=" + currentUserId + ", Contact_ID=" + contactId + " WHERE Appointment_ID=" + appointmentId);
+            DBQuery.makeQuery("UPDATE contacts c, appointments a SET c.Contact_Name='" + contactType + "', c.Email='" + email
+                    + "', a.Title='" + title + "', a.Description='" + description + "', a.Location='" + location
+                    + "', a.Type='" + appointmentType + "', a.Start='" + startTime + "', a.End='" + endTime
+                    + "', a.Create_Date=NOW(), a.Created_By='', a.Last_Update=NOW(), a.Last_Updated_By='', a.Customer_ID="
+                    + customerId + ", a.User_ID=" + currentUserId + ", a.Contact_ID=" + contactId + " WHERE a.Contact_ID=c.Contact_ID AND a.Appointment_ID=" + appointmentId);
         } catch (Exception throwables) {
             throwables.printStackTrace();
         }
@@ -234,7 +230,6 @@ public class UpdateAppointmentController implements Initializable {
         // Afterwards, go back to Customer Table view
         cancelView(event);
     }
-
 
     /** Populates all four combo boxes with possible user choices
      *
@@ -268,7 +263,7 @@ public class UpdateAppointmentController implements Initializable {
         this.descriptionText.setText((selectedAppointment.getDescription()));
         this.locationText.setText(selectedAppointment.getLocation());
         this.appointmentTypeComboBox.setValue(selectedAppointment.getType());
-        this.emailText.setText(oldContact.getEmail());
+        this.emailText.setText(selectedAppointment.getEmail());
         this.contactTypeComboBox.setValue(oldContact.getContactName());
         this.updateAppointmentDatePicker.setValue(date);
         this.startTimeComboBox.setValue(start);
