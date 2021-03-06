@@ -3,6 +3,7 @@ package Utils;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+import java.awt.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /** Commonly used alert messages */
@@ -28,6 +29,17 @@ public class AlertMessages {
         alert.showAndWait();
     }
 
+    /** Alert to inform user of an important message
+     *
+     * @param message - the String warning message to display to the user
+     * @return - AtomicBoolean return value which states whether user wants to move forward or not
+     */
+    public static void warningMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setContentText(String.format(message, Font.BOLD));
+        alert.showAndWait();
+    }
+
     /** Alert to confirm deletion of data
      *
      * @param message - the String confirmation message to display to the user
@@ -43,4 +55,5 @@ public class AlertMessages {
             }});
         return proceed;
     }
+
 }
