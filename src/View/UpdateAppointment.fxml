@@ -83,6 +83,6 @@
                 <TableColumn fx:id="updateAppointmentUTCDateColumn" prefWidth="155.0" text="UTC Start Time" />
             </columns>
         </TableView>
-        <Label fx:id="updateAppointmentTableHeaderText" layoutX="555.0" layoutY="63.0" prefHeight="17.0" prefWidth="373.0" text="Current Appointments for selected customer:" />
+        <Label fx:id="updateAppointmentTableHeaderText" layoutX="555.0" layoutY="63.0" prefHeight="17.0" prefWidth="630.0" text="Current Appointments for selected customer:" />
     </children>
 </AnchorPane>
