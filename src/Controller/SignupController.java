@@ -69,9 +69,9 @@ public class SignupController implements Initializable {
             return;
         }
 
-        boolean proceed = LoginController.checkLoginInfo(username, password);
+        int loggedInUserId = LoginController.checkLoginInfo(username, password);
 
-        if (proceed) {
+        if (loggedInUserId > -1) {
             AlertMessages.alertMessage(userLanguage.getString("signupRedundant"));
             openHomePage(event);
         }

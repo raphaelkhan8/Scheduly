@@ -1,11 +1,17 @@
 package Model;
 
 import Database.DBQuery;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class Appointment {
 
@@ -143,5 +149,31 @@ public class Appointment {
             allAppointments.add(apt);
         }
         return allAppointments;
+    }
+
+    /** returns the info of any upcoming appointments (within 15 minutes) when a user logs in
+     *
+     * @param userId - the int corresponding to the logged-in user
+     * @return - the ObservableList containing the upcoming Appointment info (Strings)
+     * @throws SQLException
+     */
+    public static ObservableList<String> getUpcomingAppointment(int userId) throws SQLException {
+        ObservableList<String> upcomingAptInfo = FXCollections.observableArrayList();
+
+        LocalDateTime loginTime = LocalDateTime.now();
+        LocalDateTime loginTimePlus15 = loginTime.plus(15, ChronoUnit.MINUTES);
+        int cutOffPoint = loginTime.toString().indexOf(".");
+        String loginT = loginTime.toString().replace("T", " ").substring(0, cutOffPoint);
+        String loginTPlus15 = loginTimePlus15.toString().replace("T", " ").substring(0, cutOffPoint);
+
+        DBQuery.makeQuery("SELECT Appointment_ID, Title, Type, Start FROM appointments WHERE User_ID = " + userId + " AND Start BETWEEN '" + loginT + "' AND '" + loginTPlus15 +"'");
+        ResultSet rs = DBQuery.getResult();
+        while (rs.next()) {
+            upcomingAptInfo.add(rs.getString(1));
+            upcomingAptInfo.add(rs.getString(2));
+            upcomingAptInfo.add(rs.getString(3));
+            upcomingAptInfo.add(rs.getString(4));
+        }
+        return upcomingAptInfo;
     }
 }

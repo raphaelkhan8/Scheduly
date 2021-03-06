@@ -1,15 +1,20 @@
 package Controller;
 
 import Database.DBQuery;
+import Model.Appointment;
 import Model.SessionHandler;
 import Utils.AlertMessages;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -83,7 +88,7 @@ public class LoginController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void handleLogin(ActionEvent event) throws IOException {
+    void handleLogin(ActionEvent event) throws IOException, SQLException {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
 
@@ -92,10 +97,22 @@ public class LoginController implements Initializable {
             return;
         }
 
-        boolean proceed = checkLoginInfo(username, password);
+        int userId = checkLoginInfo(username, password);
 
-        if (proceed) {
-            AlertMessages.alertMessage(userLanguage.getString("loginSuccess"));
+        if (userId > -1) {
+            ObservableList<String> upcomingAptInfo = Appointment.getUpcomingAppointment(userId);
+            if (upcomingAptInfo.size() == 0) {
+                AlertMessages.alertMessage(userLanguage.getString("loginSuccess") + "\n\n" + userLanguage.getString("noUpcomingApt"));
+
+            } else {
+                String aptId = upcomingAptInfo.get(0);
+                String aptTitle = upcomingAptInfo.get(1);
+                String aptType = upcomingAptInfo.get(2);
+                String aptDate = upcomingAptInfo.get(3).substring(0, 10);
+                String aptTime = upcomingAptInfo.get(3).substring(11);
+                AlertMessages.warningMessage(userLanguage.getString("loginSuccess") + "\n\n"
+                        + String.format(userLanguage.getString("upcomingAptMsg"), aptId, aptTitle, aptType, aptDate, aptTime));
+            }
             currentUser = username;
             openHomePage(event);
         }
@@ -108,22 +125,22 @@ public class LoginController implements Initializable {
      *
      * @param username - the String input by the user in the username field
      * @param password - the String input by the user in the password field
-     * @return - Boolean based on whether the input information matches what is in the database
+     * @return - the int corresponding to the logged-in user's Id. If info does not match, -1 is returned.
      */
-    public static Boolean checkLoginInfo(String username, String password) {
+    public static int checkLoginInfo(String username, String password) {
         try {
             DBQuery.makeQuery("SELECT * FROM users");
             ResultSet rs = DBQuery.getResult();
 
             while(rs.next()) {
                 if(rs.getString("User_Name").equals(username) && rs.getString("Password").equals(password))
-                    return true;
+                    return rs.getInt("User_ID");
             }
-            return false;
+            return -1;
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
-            return false;
+            return -1;
         }
     }
 

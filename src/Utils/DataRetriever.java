@@ -99,4 +99,5 @@ public class DataRetriever {
         }
         return appointmentsByDuration;
     }
+
 }
