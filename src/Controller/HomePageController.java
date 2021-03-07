@@ -64,10 +64,10 @@ public class HomePageController implements Initializable {
     @FXML
     private Label reportLabel3;
 
-    // var to hold user's language
+    /** container to hold user's language */
     ResourceBundle userLanguage = SessionHandler.getUserLanguage();
 
-    // change text to match user's language upon initialization
+    /** Initialization Override: change text to match user's language upon initialization */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         welcomeLabel.setText(userLanguage.getString("welcomeLabelMessage"));
@@ -87,9 +87,14 @@ public class HomePageController implements Initializable {
         logoutButton.setText(userLanguage.getString("logoutButton"));
     }
 
+    /** clear loggedInUser variable and change view back to Login page
+     *
+     * @param event - the event that triggers this function call (click Logout button)
+     * @throws IOException
+     */
     @FXML
     void handleLogout(ActionEvent event) throws IOException {
-        AtomicBoolean logout = AlertMessages.confirmMessage("Are you sure you want to log out?");
+        AtomicBoolean logout = AlertMessages.confirmMessage(userLanguage.getString("logoutConfirmMsg"));
         if (logout.get()) {
             LoginController.clearCurrentUser();
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
