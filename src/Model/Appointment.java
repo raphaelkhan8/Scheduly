@@ -1,16 +1,13 @@
 package Model;
 
+import Controller.LoginController;
 import Database.DBQuery;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
 
 public class Appointment {
@@ -149,6 +146,26 @@ public class Appointment {
             allAppointments.add(apt);
         }
         return allAppointments;
+    }
+
+    /** Returns a boolean based on whether the passed-in appointment times overlap with an appointment in the database
+     *
+     * @param start - the start time of the Appointment (String)
+     * @param end - tne end time of the Appointment (String)
+     * @return - the Boolean value (true or false)
+     * @throws SQLException
+     */
+    public static Boolean checkForOverlappingApts(String start, String end) throws SQLException {
+        int userId = LoginController.getCurrentUser();
+
+        DBQuery.makeQuery("SELECT Appointment_ID FROM appointments WHERE User_ID = " + userId +
+                " AND (Start > '" + start + "' AND Start < '" + end +"') OR (End  > '" + start +
+                "' AND End < '" + end +"')");
+        ResultSet rs = DBQuery.getResult();
+        if (rs.next()) {
+            return true;
+        }
+        return false;
     }
 
     /** returns the info of any upcoming appointments (within 15 minutes) when a user logs in

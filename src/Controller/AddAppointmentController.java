@@ -178,7 +178,7 @@ public class AddAppointmentController implements Initializable {
     }
 
     @FXML
-    void saveAppointmentHandler(ActionEvent event) throws IOException {
+    void saveAppointmentHandler(ActionEvent event) throws IOException, SQLException {
         int appointmentId = 1;
         int contactId = 1;
         // get user's text input
@@ -227,8 +227,14 @@ public class AddAppointmentController implements Initializable {
             return;
         }
         // verify that the date is in the future
-        if (selectedDate.compareTo(LocalDate.now()) < 0 || (selectedDate.compareTo(LocalDate.now()) == 0 & startHour <= LocalDateTime.now().getHour() + 1)) {
+        if (selectedDate.compareTo(LocalDate.now()) < 0 || (selectedDate.compareTo(LocalDate.now()) == 0 & startHour <= LocalDateTime.now().getHour())) {
             AlertMessages.errorMessage(userLanguage.getString("invalidDateMsg"));
+            return;
+        }
+        // verify that appointment times do not overlap with another
+        Boolean duplicateAptTimes = Appointment.checkForOverlappingApts(startTime, endTime);
+        if (duplicateAptTimes == true) {
+            AlertMessages.errorMessage(userLanguage.getString("overlapAptMsg"));
             return;
         }
         // if all fields are filled out, add the Contact and Appointment to the database:
@@ -274,7 +280,7 @@ public class AddAppointmentController implements Initializable {
         currentUserId = LoginController.getCurrentUser();
 
         this.customerIdText.setText(Integer.toString(selectedCustomer.getCustomerId()));
-        populateAppointmentsTable(selectedCustomer.getCustomerId());
+        populateAppointmentsTable();
     }
 
     /** Populates all four combo boxes with possible user choices
@@ -291,14 +297,14 @@ public class AddAppointmentController implements Initializable {
      *
      * @throws SQLException
      */
-    void populateAppointmentsTable(int customerId) throws SQLException {
-        ObservableList<Appointment> appointments = Appointment.getAppointments(customerId);
+    void populateAppointmentsTable() throws SQLException {
+        ObservableList<Appointment> appointments = Appointment.getAppointments(-1);
         addAppointmentTableView.setItems(appointments);
         addAppointmentIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getAppointmentId())));
         addAppointmentCustomerIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getCustomerId())));
         addAppointmentLocationColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getLocation()));
         addAppointmentLocalDateColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getStart()));
-        addAppointmentLocalDateColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getEnd()));
+        addAppointmentUTCDateColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getEnd()));
     }
 
 }
