@@ -4,6 +4,7 @@ import Database.DBQuery;
 import Model.Appointment;
 import Model.SessionHandler;
 import Utils.AlertMessages;
+import Utils.SignInLogger;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import jdk.jshell.execution.Util;
 
 import java.io.IOException;
 import java.net.URL;
@@ -114,10 +116,12 @@ public class LoginController implements Initializable {
                         + String.format(userLanguage.getString("upcomingAptMsg"), aptId, aptTitle, aptType, aptDate, aptTime));
             }
             currentUser = username;
+            SignInLogger.trackLog(currentUser, true);
             openHomePage(event);
         }
         else {
             AlertMessages.errorMessage(userLanguage.getString("loginMismatch"));
+            SignInLogger.trackLog(currentUser, false);
         }
     }
 

@@ -3,6 +3,7 @@ package Controller;
 import Database.DBQuery;
 import Model.SessionHandler;
 import Utils.AlertMessages;
+import Utils.SignInLogger;
 import com.mysql.cj.log.Log;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -85,9 +86,8 @@ public class SignupController implements Initializable {
                 }
                 DBQuery.makeQuery("INSERT INTO users SET User_ID=" + userId + ", User_Name='" + username +
                         "', Password='" + password + "', Create_Date=NOW(), Created_By='', Last_Update=NOW(), Last_Updated_By=''");
-                ResultSet userCreation = DBQuery.getResult();
-                System.out.println(userCreation);
                 AlertMessages.alertMessage(userLanguage.getString("signupSuccess"));
+                SignInLogger.trackLog(username, true);
                 openHomePage(event);
             }
             catch (Exception e) {
