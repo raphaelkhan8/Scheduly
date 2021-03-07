@@ -74,7 +74,7 @@ public class SignupController implements Initializable {
 
         if (loggedInUserId > -1) {
             AlertMessages.alertMessage(userLanguage.getString("signupRedundant"));
-            openHomePage(event);
+            return;
         }
         else {
             try {
