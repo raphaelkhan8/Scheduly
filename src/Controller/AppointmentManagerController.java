@@ -249,14 +249,20 @@ public class AppointmentManagerController implements Initializable {
      */
     void populateAppointmentsTable(ObservableList<Appointment> apts) {
         appointmentTableView.setItems(apts);
+        System.out.println(apts.get(0).getStart());
+        System.out.println(apts.get(0).getEnd());
+        System.out.println(apts.get(1).getStart());
+        System.out.println(apts.get(1).getEnd());
+        System.out.println(apts.get(2).getStart());
+        System.out.println(apts.get(2).getEnd());
         customerNameColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getCustomerName()));
         appointmentTitleColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getTitle()));
         appointmentDescriptionColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getDescription()));
         appointmentLocationColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getLocation()));
         customerContactColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getEmail()));
         appointmentTypeColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getType()));
-        appointmentStartColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getStart()));
-        appointmentEndColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getEnd()));
+        appointmentStartColumn.setCellValueFactory(apt -> new SimpleStringProperty(DataRetriever.convertUTCTimeToLocal(apt.getValue().getStart()) + ":00"));
+        appointmentEndColumn.setCellValueFactory(apt -> new SimpleStringProperty(DataRetriever.convertUTCTimeToLocal(apt.getValue().getEnd()) + ":00"));
     }
 
 }

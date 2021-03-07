@@ -2,6 +2,7 @@ package Model;
 
 import Controller.LoginController;
 import Database.DBQuery;
+import Utils.DataRetriever;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -155,17 +156,17 @@ public class Appointment {
      * @return - the Boolean value (true or false)
      * @throws SQLException
      */
-    public static Boolean checkForOverlappingApts(String start, String end) throws SQLException {
+    public static int checkForOverlappingApts(String start, String end) throws SQLException {
         int userId = LoginController.getCurrentUser();
 
         DBQuery.makeQuery("SELECT Appointment_ID FROM appointments WHERE User_ID = " + userId +
-                " AND (Start > '" + start + "' AND Start < '" + end +"') OR (End  > '" + start +
+                " AND (Start >= '" + start + "' AND Start < '" + end +"') OR (End  > '" + start +
                 "' AND End < '" + end +"')");
         ResultSet rs = DBQuery.getResult();
         if (rs.next()) {
-            return true;
+            return rs.getInt(1);
         }
-        return false;
+        return -1;
     }
 
     /** returns the info of any upcoming appointments (within 15 minutes) when a user logs in
@@ -182,8 +183,10 @@ public class Appointment {
         int cutOffPoint = loginTime.toString().indexOf(".");
         String loginT = loginTime.toString().replace("T", " ").substring(0, cutOffPoint);
         String loginTPlus15 = loginTimePlus15.toString().replace("T", " ").substring(0, cutOffPoint);
+        String formattedLoginT = DataRetriever.convertLocalTimeToUTC(loginT);
+        String formattedLoginTPlus15 = DataRetriever.convertLocalTimeToUTC(loginTPlus15);
 
-        DBQuery.makeQuery("SELECT Appointment_ID, Title, Type, Start FROM appointments WHERE User_ID = " + userId + " AND Start BETWEEN '" + loginT + "' AND '" + loginTPlus15 +"'");
+        DBQuery.makeQuery("SELECT Appointment_ID, Title, Type, Start FROM appointments WHERE User_ID = " + userId + " AND Start BETWEEN '" + formattedLoginT + "' AND '" + formattedLoginTPlus15 +"'");
         ResultSet rs = DBQuery.getResult();
         while (rs.next()) {
             upcomingAptInfo.add(rs.getString(1));

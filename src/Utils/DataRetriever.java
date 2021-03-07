@@ -8,7 +8,12 @@ import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 /** Commonly used properties and methods */
 public class DataRetriever {
@@ -100,6 +105,44 @@ public class DataRetriever {
             throwables.printStackTrace();
         }
         return appointmentsByDuration;
+    }
+
+    /** Converts the passed-in Local time to UTC for database standardization
+     *
+     * @param time - the String corresponding to a DateTime in Local Time
+     * @return - a String value in UTC time
+     */
+    public static String convertLocalTimeToUTC(String time) {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        ZoneId localZoneId = ZoneId.of(TimeZone.getDefault().getID());
+        ZoneId UTCZoneID = ZoneId.of("UTC");
+
+        LocalDateTime dateTime = LocalDateTime.parse(time, format);
+        ZonedDateTime zonedTimeLocal = dateTime.atZone(localZoneId);
+        ZonedDateTime convertedTime = zonedTimeLocal.withZoneSameInstant(UTCZoneID);
+
+        String finalTime = convertedTime.toLocalDateTime().toString().replace("T", " ");
+
+        return finalTime;
+    }
+
+    /** Converts the passed-in UTC time to the user's local Time Zone equivalent
+     *
+     * @param time - the String corresponding to a DateTime in UTC
+     * @return - a String value in Local time
+     */
+    public static String convertUTCTimeToLocal(String time) {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        ZoneId localZoneId = ZoneId.of(TimeZone.getDefault().getID());
+        ZoneId UTCZoneID = ZoneId.of("UTC");
+
+        LocalDateTime dateTime = LocalDateTime.parse(time, format);
+        ZonedDateTime zonedTimeLocal = dateTime.atZone(UTCZoneID);
+        ZonedDateTime convertedTime = zonedTimeLocal.withZoneSameInstant(localZoneId);
+
+        String finalTime = convertedTime.toLocalDateTime().toString().replace("T", " ");
+
+        return finalTime;
     }
 
 }

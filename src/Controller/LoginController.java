@@ -4,6 +4,7 @@ import Database.DBQuery;
 import Model.Appointment;
 import Model.SessionHandler;
 import Utils.AlertMessages;
+import Utils.DataRetriever;
 import Utils.SignInLogger;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -110,8 +111,9 @@ public class LoginController implements Initializable {
                 String aptId = upcomingAptInfo.get(0);
                 String aptTitle = upcomingAptInfo.get(1);
                 String aptType = upcomingAptInfo.get(2);
-                String aptDate = upcomingAptInfo.get(3).substring(0, 10);
-                String aptTime = upcomingAptInfo.get(3).substring(11);
+                String localTime = DataRetriever.convertUTCTimeToLocal(upcomingAptInfo.get(3));
+                String aptDate = localTime.substring(0, 10);
+                String aptTime = localTime.substring(11);
                 AlertMessages.warningMessage(userLanguage.getString("loginSuccess") + "\n\n"
                         + String.format(userLanguage.getString("upcomingAptMsg"), aptId, aptTitle, aptType, aptDate, aptTime));
             }

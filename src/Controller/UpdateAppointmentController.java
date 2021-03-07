@@ -212,13 +212,15 @@ public class UpdateAppointmentController implements Initializable {
             return;
         }
         // verify that the date is in the future
-        if (selectedDate.compareTo(LocalDate.now()) < 0 || (selectedDate.compareTo(LocalDate.now()) == 0 & startHour <= LocalDateTime.now().getHour() + 1)) {
+        if (selectedDate.compareTo(LocalDate.now()) < 0 || (selectedDate.compareTo(LocalDate.now()) == 0 & startHour <= LocalDateTime.now().getHour())) {
             AlertMessages.errorMessage(userLanguage.getString("invalidDateMsg"));
             return;
         }
         // verify that appointment times do not overlap with another
-        Boolean duplicateAptTimes = Appointment.checkForOverlappingApts(startTime, endTime);
-        if (duplicateAptTimes == true) {
+        String formattedStartTime = DataRetriever.convertLocalTimeToUTC(startTime);
+        String formattedEndTime = DataRetriever.convertLocalTimeToUTC(endTime);
+        int duplicateAptTimes = Appointment.checkForOverlappingApts(formattedStartTime, formattedEndTime);
+        if (duplicateAptTimes > -1 && duplicateAptTimes != appointmentId) {
             AlertMessages.errorMessage(userLanguage.getString("overlapAptMsg"));
             return;
         }
@@ -226,7 +228,7 @@ public class UpdateAppointmentController implements Initializable {
         try {
             DBQuery.makeQuery("UPDATE contacts c, appointments a SET c.Contact_Name='" + contactType + "', c.Email='" + email
                     + "', a.Title='" + title + "', a.Description='" + description + "', a.Location='" + location
-                    + "', a.Type='" + appointmentType + "', a.Start='" + startTime + "', a.End='" + endTime
+                    + "', a.Type='" + appointmentType + "', a.Start='" + formattedStartTime + "', a.End='" + formattedEndTime
                     + "', a.Create_Date=NOW(), a.Created_By='', a.Last_Update=NOW(), a.Last_Updated_By='', a.Customer_ID="
                     + customerId + ", a.User_ID=" + currentUserId + ", a.Contact_ID=" + contactId + " WHERE a.Contact_ID=c.Contact_ID AND a.Appointment_ID=" + appointmentId);
         } catch (Exception throwables) {
@@ -255,11 +257,11 @@ public class UpdateAppointmentController implements Initializable {
     public void getSelectedAppointment(Appointment appointment) throws SQLException {
         selectedAppointment = appointment;
         Contact oldContact = Contact.getEmail(selectedAppointment.getContactId());
-        String startTimeWithDate = selectedAppointment.getStart();
-        String endTimeWithDate = selectedAppointment.getEnd();
+        String startTimeWithDate = DataRetriever.convertUTCTimeToLocal(selectedAppointment.getStart());
+        String endTimeWithDate = DataRetriever.convertUTCTimeToLocal(selectedAppointment.getEnd());
         LocalDate date = LocalDate.parse(startTimeWithDate.substring(0, startTimeWithDate.indexOf(" ")));
-        String start = startTimeWithDate.substring(startTimeWithDate.indexOf(" ") + 1);
-        String end = endTimeWithDate.substring(endTimeWithDate.indexOf(" ") + 1);
+        String start = startTimeWithDate.substring(startTimeWithDate.indexOf(" ") + 1) + ":00";
+        String end = endTimeWithDate.substring(endTimeWithDate.indexOf(" ") + 1) + ":00";
 
         populateAppointmentsTable(selectedAppointment.getCustomerId());
 
@@ -291,8 +293,8 @@ public class UpdateAppointmentController implements Initializable {
         updateAppointmentIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getAppointmentId())));
         updateAppointmentCustomerIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getCustomerId())));
         updateAppointmentLocationColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getLocation()));
-        updateAppointmentStartColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getStart()));
-        updateAppointmentEndColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getEnd()));
+        updateAppointmentStartColumn.setCellValueFactory(apt -> new SimpleStringProperty(DataRetriever.convertUTCTimeToLocal(apt.getValue().getStart()) + ":00"));
+        updateAppointmentEndColumn.setCellValueFactory(apt -> new SimpleStringProperty(DataRetriever.convertUTCTimeToLocal(apt.getValue().getEnd()) + ":00"));
     }
 
 }

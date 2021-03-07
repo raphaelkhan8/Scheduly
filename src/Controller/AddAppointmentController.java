@@ -201,6 +201,9 @@ public class AddAppointmentController implements Initializable {
         String startTime = selectedDate + " " + start;
         String endTime = selectedDate + " " + end;
 
+        System.out.println(startTime);
+        System.out.println(endTime);
+
         // verify that all text fields were filled out
         if (title.isEmpty() || description.isEmpty() || location.isEmpty() || email.isEmpty()) {
             AlertMessages.errorMessage(userLanguage.getString("missingFieldMessage"));
@@ -229,7 +232,7 @@ public class AddAppointmentController implements Initializable {
         // verify that end time is after start time
         int startHour = Integer.parseInt(start.substring(0, start.indexOf(":")));
         int endHour = Integer.parseInt(end.substring(0, end.indexOf(":")));
-        if (endHour < startHour) {
+        if (endHour <= startHour) {
             AlertMessages.errorMessage(userLanguage.getString("timeErrorMsg"));
             return;
         }
@@ -239,8 +242,12 @@ public class AddAppointmentController implements Initializable {
             return;
         }
         // verify that appointment times do not overlap with another
-        Boolean duplicateAptTimes = Appointment.checkForOverlappingApts(startTime, endTime);
-        if (duplicateAptTimes == true) {
+        String formattedStartTime = DataRetriever.convertLocalTimeToUTC(startTime);
+        String formattedEndTime = DataRetriever.convertLocalTimeToUTC(endTime);
+        System.out.println(formattedStartTime);
+        System.out.println(formattedEndTime);
+        int duplicateAptTimes = Appointment.checkForOverlappingApts(formattedStartTime, formattedEndTime);
+        if (duplicateAptTimes > -1) {
             AlertMessages.errorMessage(userLanguage.getString("overlapAptMsg"));
             return;
         }
@@ -262,7 +269,7 @@ public class AddAppointmentController implements Initializable {
             // add the appointment to the database:
             DBQuery.makeQuery("INSERT INTO appointments SET Appointment_ID=" + appointmentId + ", Title='" +
                     title + "', Description='" + description + "', Location='" + location + "', Type='" + appointmentType +
-                    "', Start='" + startTime + "', End='" + endTime + "', Create_Date=NOW(), Created_By='', Last_Update=NOW(), Last_Updated_By='', Customer_ID="
+                    "', Start='" + formattedStartTime + "', End='" + formattedEndTime + "', Create_Date=NOW(), Created_By='', Last_Update=NOW(), Last_Updated_By='', Customer_ID="
                     + Integer.parseInt(customerId) + ", User_ID=" + currentUserId + ", Contact_ID=" + contactId);
             AlertMessages.alertMessage(userLanguage.getString("addAppointmentSuccessMsg"));
         } catch (SQLException throwables) {
@@ -310,8 +317,8 @@ public class AddAppointmentController implements Initializable {
         addAppointmentIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getAppointmentId())));
         addAppointmentCustomerIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getCustomerId())));
         addAppointmentLocationColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getLocation()));
-        addAppointmentStartColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getStart()));
-        addAppointmentEndColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getEnd()));
+        addAppointmentStartColumn.setCellValueFactory(apt -> new SimpleStringProperty(DataRetriever.convertUTCTimeToLocal(apt.getValue().getStart())));
+        addAppointmentEndColumn.setCellValueFactory(apt -> new SimpleStringProperty(DataRetriever.convertUTCTimeToLocal(apt.getValue().getEnd())));
     }
 
 }
