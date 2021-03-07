@@ -148,6 +148,11 @@ public class LoginController implements Initializable {
         }
     }
 
+    /** clears currentUser variable when logging out */
+    public static void clearCurrentUser() {
+        currentUser = null;
+    }
+
     /** Retrieves the logged-in user's Id
      *
      * @return - the int corresponding to the logged-in userId

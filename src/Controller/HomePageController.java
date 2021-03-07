@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HomePageController implements Initializable {
 
@@ -87,8 +88,17 @@ public class HomePageController implements Initializable {
     }
 
     @FXML
-    void handleLogout(ActionEvent event) {
-
+    void handleLogout(ActionEvent event) throws IOException {
+        AtomicBoolean logout = AlertMessages.confirmMessage("Are you sure you want to log out?");
+        if (logout.get()) {
+            LoginController.clearCurrentUser();
+            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            Object scene = FXMLLoader.load(getClass().getResource("/View/Login.fxml"));
+            stage.setScene(new Scene((Parent) scene));
+            stage.show();
+        } else {
+            return;
+        }
     }
 
     @FXML
