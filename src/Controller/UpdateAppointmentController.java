@@ -120,10 +120,10 @@ public class UpdateAppointmentController implements Initializable {
     private TableColumn<Appointment, String> updateAppointmentLocationColumn;
 
     @FXML
-    private TableColumn<Appointment, String> updateAppointmentLocalDateColumn;
+    private TableColumn<Appointment, String> updateAppointmentStartColumn;
 
     @FXML
-    private TableColumn<Appointment, String> updateAppointmentUTCDateColumn;
+    private TableColumn<Appointment, String> updateAppointmentEndColumn;
 
     @FXML
     private Label updateAppointmentTableHeaderText;
@@ -158,8 +158,8 @@ public class UpdateAppointmentController implements Initializable {
         updateAppointmentIDColumn.setText(userLanguage.getString("AppointmentID"));
         updateAppointmentCustomerIDColumn.setText(userLanguage.getString("CustomerID"));
         updateAppointmentLocationColumn.setText(userLanguage.getString("Location"));
-        updateAppointmentLocalDateColumn.setText(userLanguage.getString("LocalStartTime"));
-        updateAppointmentUTCDateColumn.setText(userLanguage.getString("UTCStartTime"));
+        updateAppointmentStartColumn.setText(userLanguage.getString("LocalStartTime"));
+        updateAppointmentEndColumn.setText(userLanguage.getString("LocalEndTime"));
     }
 
     /** changes view back to Appointment Manager
@@ -176,7 +176,7 @@ public class UpdateAppointmentController implements Initializable {
     }
 
     @FXML
-    void saveAppointmentHandler(ActionEvent event) throws IOException {
+    void saveAppointmentHandler(ActionEvent event) throws IOException, SQLException {
         int appointmentId = selectedAppointment.getAppointmentId();
         int currentUserId = selectedAppointment.getUserId();
         int customerId = selectedAppointment.getCustomerId();
@@ -214,6 +214,12 @@ public class UpdateAppointmentController implements Initializable {
         // verify that the date is in the future
         if (selectedDate.compareTo(LocalDate.now()) < 0 || (selectedDate.compareTo(LocalDate.now()) == 0 & startHour <= LocalDateTime.now().getHour() + 1)) {
             AlertMessages.errorMessage(userLanguage.getString("invalidDateMsg"));
+            return;
+        }
+        // verify that appointment times do not overlap with another
+        Boolean duplicateAptTimes = Appointment.checkForOverlappingApts(startTime, endTime);
+        if (duplicateAptTimes == true) {
+            AlertMessages.errorMessage(userLanguage.getString("overlapAptMsg"));
             return;
         }
         // if all fields are filled out, update the Appointment and its associated Contact
@@ -277,7 +283,7 @@ public class UpdateAppointmentController implements Initializable {
     void populateAppointmentsTable(int customerId) {
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
         try {
-            appointments = Appointment.getAppointments(customerId);
+            appointments = Appointment.getAppointments(-1);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -285,8 +291,8 @@ public class UpdateAppointmentController implements Initializable {
         updateAppointmentIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getAppointmentId())));
         updateAppointmentCustomerIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getCustomerId())));
         updateAppointmentLocationColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getLocation()));
-        updateAppointmentLocalDateColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getStart()));
-        updateAppointmentLocalDateColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getEnd()));
+        updateAppointmentStartColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getStart()));
+        updateAppointmentEndColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getEnd()));
     }
 
 }

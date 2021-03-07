@@ -79,8 +79,8 @@
                 <TableColumn fx:id="addAppointmentIDColumn" prefWidth="105.0" text="Appointment ID" />
                 <TableColumn fx:id="addAppointmentCustomerIDColumn" prefWidth="105.0" text="Customer ID" />
                 <TableColumn fx:id="addAppointmentLocationColumn" prefWidth="105.0" text="Location" />
-                <TableColumn fx:id="addAppointmentLocalDateColumn" prefWidth="160.0" text="Local Start Time" />
-                <TableColumn fx:id="addAppointmentUTCDateColumn" prefWidth="155.0" text="UTC Start Time" />
+                <TableColumn fx:id="addAppointmentStartColumn" prefWidth="160.0" text="Local Start Time" />
+                <TableColumn fx:id="addAppointmentEndColumn" prefWidth="155.0" text="Local End Time" />
             </columns>
         </TableView>
         <Label fx:id="addAppointmentTableHeaderText" layoutX="555.0" layoutY="63.0" prefHeight="17.0" prefWidth="630.0" text="Current Appointments for selected customer:" />

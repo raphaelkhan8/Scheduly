@@ -118,10 +118,10 @@ public class AddAppointmentController implements Initializable {
     private TableColumn<Appointment, String> addAppointmentLocationColumn;
 
     @FXML
-    private TableColumn<Appointment, String> addAppointmentLocalDateColumn;
+    private TableColumn<Appointment, String> addAppointmentStartColumn;
 
     @FXML
-    private TableColumn<Appointment, String> addAppointmentUTCDateColumn;
+    private TableColumn<Appointment, String> addAppointmentEndColumn;
 
     @FXML
     private Label addAppointmentTableHeaderText;
@@ -160,8 +160,8 @@ public class AddAppointmentController implements Initializable {
         addAppointmentIDColumn.setText(userLanguage.getString("AppointmentID"));
         addAppointmentCustomerIDColumn.setText(userLanguage.getString("CustomerID"));
         addAppointmentLocationColumn.setText(userLanguage.getString("Location"));
-        addAppointmentLocalDateColumn.setText(userLanguage.getString("LocalStartTime"));
-        addAppointmentUTCDateColumn.setText(userLanguage.getString("UTCStartTime"));
+        addAppointmentStartColumn.setText(userLanguage.getString("LocalStartTime"));
+        addAppointmentEndColumn.setText(userLanguage.getString("LocalEndTime"));
     }
 
     /** Changes view to Customers Table page
@@ -177,6 +177,12 @@ public class AddAppointmentController implements Initializable {
         stage.show();
     }
 
+    /** Performs input validation prior to saving new appointment
+     *
+     * @param event - the Event that triggers this function call (click Save button)
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     void saveAppointmentHandler(ActionEvent event) throws IOException, SQLException {
         int appointmentId = 1;
@@ -194,6 +200,7 @@ public class AddAppointmentController implements Initializable {
         LocalDate selectedDate = addAppointmentDatePicker.getValue();
         String startTime = selectedDate + " " + start;
         String endTime = selectedDate + " " + end;
+
         // verify that all text fields were filled out
         if (title.isEmpty() || description.isEmpty() || location.isEmpty() || email.isEmpty()) {
             AlertMessages.errorMessage(userLanguage.getString("missingFieldMessage"));
@@ -303,8 +310,8 @@ public class AddAppointmentController implements Initializable {
         addAppointmentIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getAppointmentId())));
         addAppointmentCustomerIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getCustomerId())));
         addAppointmentLocationColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getLocation()));
-        addAppointmentLocalDateColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getStart()));
-        addAppointmentUTCDateColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getEnd()));
+        addAppointmentStartColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getStart()));
+        addAppointmentEndColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getEnd()));
     }
 
 }
