@@ -160,8 +160,8 @@ public class Appointment {
         int userId = LoginController.getCurrentUser();
 
         DBQuery.makeQuery("SELECT Appointment_ID FROM appointments WHERE User_ID = " + userId +
-                " AND (Start >= '" + start + "' AND Start < '" + end +"') OR (End  > '" + start +
-                "' AND End < '" + end +"')");
+                " AND (Start >= '" + start + "' AND Start < '" + end +"') OR (Start  <= '" + start +
+                "' AND End > '" + start + "')");
         ResultSet rs = DBQuery.getResult();
         if (rs.next()) {
             return rs.getInt(1);
