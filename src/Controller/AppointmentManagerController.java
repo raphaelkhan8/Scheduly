@@ -233,9 +233,7 @@ public class AppointmentManagerController implements Initializable {
     }
 
     /** filters the AppointmentTable to only show appointments in the current week
-     * NOTE: Lamda expression used: Lamdas were used to extract properties out of an array of Appointment objects.
-     *       They were beneficial here as new Appointment objects did not have to be created, thus reducing the
-     *       lines of code and lowering the time and space complexity.
+     *
      * @param event - the Event that triggers this function call (click View By Week radio button)
      */
     @FXML
@@ -246,7 +244,9 @@ public class AppointmentManagerController implements Initializable {
     }
 
     /** populates Appointments Table with all appointments from passed in ObservableList
-     *
+     * NOTE: Lamda expression used: Lamdas were used to extract properties out of an array of Appointment objects.
+     *       They were beneficial here as new Appointment objects did not have to be created, thus reducing the
+     *       lines of code and lowering the time and space complexity.
      * @param apts - the ObservableList containing appointments to be displayed in Appointments table
      */
     void populateAppointmentsTable(ObservableList<Appointment> apts) {

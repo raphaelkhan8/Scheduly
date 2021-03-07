@@ -308,7 +308,9 @@ public class AddAppointmentController implements Initializable {
     }
 
     /** Populates Appointments table with customer's appointments
-     *
+     * NOTE: Lamda expression used: Lamdas were used to extract properties out of an array of Appointment objects.
+     *       They were beneficial here as new Appointment objects did not have to be created, thus reducing the
+     *       lines of code and lowering the time and space complexity.
      * @throws SQLException
      */
     void populateAppointmentsTable() throws SQLException {

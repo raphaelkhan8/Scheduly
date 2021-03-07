@@ -278,8 +278,10 @@ public class UpdateAppointmentController implements Initializable {
         this.endTimeComboBox.setValue(end);
     }
 
-    /** Populates Appointments table with customer's appointments
-     *
+    /** Populates Appointments table with all of the appointments from db
+     * NOTE: Lamda expression used: Lamdas were used to extract properties out of an array of Appointment objects.
+     *       They were beneficial here as new Appointment objects did not have to be created, thus reducing the
+     *       lines of code and lowering the time and space complexity.
      * @throws SQLException
      */
     void populateAppointmentsTable(int customerId) {

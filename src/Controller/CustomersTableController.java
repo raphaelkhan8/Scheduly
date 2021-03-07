@@ -238,7 +238,9 @@ public class CustomersTableController implements Initializable {
     }
 
     /** Loads customer data from database into the Customer TableView and displays each customer as a table-row
-     *
+     * NOTE: Lamda expression used: Lamdas were used to extract properties out of an array of Customer objects.
+     *       They were beneficial here as new Customer objects did not have to be created, thus reducing the
+     *       lines of code and lowering the time and space complexity.
      * @throws SQLException
      */
     void populateCustomersTable() throws SQLException {
