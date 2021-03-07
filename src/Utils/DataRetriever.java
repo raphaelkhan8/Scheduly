@@ -19,6 +19,7 @@ public class DataRetriever {
     private static ObservableList<String> times = FXCollections.observableArrayList("08:00:00", "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00", "18:00:00", "19:00:00", "20:00:00", "21:00:00", "22:00:00");
     private static ObservableList<String> monthOptions = FXCollections.observableArrayList("January","February","March","April","May","June","July","August","September","October","November","December");
     private static ObservableList<String> weekOptions = FXCollections.observableArrayList("Last Week", "This Week", "Next Week");
+    private static ObservableList<String> reportTypes = FXCollections.observableArrayList("Number of appointment types by month", "Schedule of each contact type", "Customers ranked by number of appointments");
 
     /** Getters for above properties */
     public static ObservableList<String> getContactTypes() { return contactTypes; }
@@ -30,6 +31,7 @@ public class DataRetriever {
     }
     public static ObservableList<String> getMonthOptions() { return monthOptions; }
     public static ObservableList<String> getWeekOptions() { return weekOptions; }
+    public static ObservableList<String> getReportTypes() { return reportTypes; }
 
     /**
      * Gets divisionID and divisionName for the passed-in country from the database
