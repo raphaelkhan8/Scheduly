@@ -233,7 +233,9 @@ public class AppointmentManagerController implements Initializable {
     }
 
     /** filters the AppointmentTable to only show appointments in the current week
-     *
+     * NOTE: Lamda expression used: Lamdas were used to extract properties out of an array of Appointment objects.
+     *       They were beneficial here as new Appointment objects did not have to be created, thus reducing the
+     *       lines of code and lowering the time and space complexity.
      * @param event - the Event that triggers this function call (click View By Week radio button)
      */
     @FXML
@@ -249,12 +251,6 @@ public class AppointmentManagerController implements Initializable {
      */
     void populateAppointmentsTable(ObservableList<Appointment> apts) {
         appointmentTableView.setItems(apts);
-        System.out.println(apts.get(0).getStart());
-        System.out.println(apts.get(0).getEnd());
-        System.out.println(apts.get(1).getStart());
-        System.out.println(apts.get(1).getEnd());
-        System.out.println(apts.get(2).getStart());
-        System.out.println(apts.get(2).getEnd());
         customerNameColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getCustomerName()));
         appointmentTitleColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getTitle()));
         appointmentDescriptionColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getDescription()));
