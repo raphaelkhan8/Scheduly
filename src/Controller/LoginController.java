@@ -18,12 +18,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import jdk.jshell.execution.Util;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -72,6 +72,7 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         SessionHandler.setLocation();
+        String location = SessionHandler.getLocation().getCountry();
         userLanguage = SessionHandler.getUserLanguage();
 
         sloganLabel.setText(userLanguage.getString("sloganLabel"));
@@ -79,8 +80,8 @@ public class LoginController implements Initializable {
         passwordLabel.setText(userLanguage.getString("password"));
         loginMessage.setText(userLanguage.getString("loginMessage"));
         loginButton.setText(userLanguage.getString("loginButton"));
-        zoneIdLabel.setText(userLanguage.getString("zoneIdLabel"));
-        zoneIdTextField.setText(userLanguage.getString("zoneId"));
+        zoneIdLabel.setText(userLanguage.getString("Country"));
+        zoneIdTextField.setText(location);
         signUpViewButton.setText(userLanguage.getString("signupViewButton"));
         signupViewLabel.setText(userLanguage.getString("signupViewMessage"));
     }
@@ -123,7 +124,7 @@ public class LoginController implements Initializable {
         }
         else {
             AlertMessages.errorMessage(userLanguage.getString("loginMismatch"));
-            SignInLogger.trackLog(currentUser, false);
+            SignInLogger.trackLog(username, false);
         }
     }
 
