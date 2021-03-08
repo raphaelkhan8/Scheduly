@@ -72,7 +72,6 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         SessionHandler.setLocation();
-        String location = SessionHandler.getLocation().getCountry();
         userLanguage = SessionHandler.getUserLanguage();
 
         sloganLabel.setText(userLanguage.getString("sloganLabel"));
@@ -81,7 +80,7 @@ public class LoginController implements Initializable {
         loginMessage.setText(userLanguage.getString("loginMessage"));
         loginButton.setText(userLanguage.getString("loginButton"));
         zoneIdLabel.setText(userLanguage.getString("Country"));
-        zoneIdTextField.setText(location);
+        zoneIdTextField.setText(userLanguage.getString("zoneId"));
         signUpViewButton.setText(userLanguage.getString("signupViewButton"));
         signupViewLabel.setText(userLanguage.getString("signupViewMessage"));
     }
