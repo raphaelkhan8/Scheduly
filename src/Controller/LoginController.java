@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 public class LoginController implements Initializable {
 
@@ -71,6 +71,7 @@ public class LoginController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        String current = TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT);
         SessionHandler.setLocation();
         userLanguage = SessionHandler.getUserLanguage();
 
@@ -79,8 +80,8 @@ public class LoginController implements Initializable {
         passwordLabel.setText(userLanguage.getString("password"));
         loginMessage.setText(userLanguage.getString("loginMessage"));
         loginButton.setText(userLanguage.getString("loginButton"));
-        zoneIdLabel.setText(userLanguage.getString("Country"));
-        zoneIdTextField.setText(userLanguage.getString("zoneId"));
+        zoneIdLabel.setText(userLanguage.getString("timeZoneLabel"));
+        zoneIdTextField.setText(current);
         signUpViewButton.setText(userLanguage.getString("signupViewButton"));
         signupViewLabel.setText(userLanguage.getString("signupViewMessage"));
     }
