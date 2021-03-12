@@ -4,7 +4,6 @@ import Database.DBQuery;
 import Model.SessionHandler;
 import Utils.AlertMessages;
 import Utils.SignInLogger;
-import com.mysql.cj.log.Log;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -48,7 +47,7 @@ public class SignupController implements Initializable {
     // var to hold user's language
     ResourceBundle userLanguage = SessionHandler.getUserLanguage();
 
-    // change text to match user's language upon initialization
+    /** Initialization Override: change text to match user's language upon initialization */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         sloganLabel.setText(userLanguage.getString("sloganLabel"));
@@ -59,6 +58,11 @@ public class SignupController implements Initializable {
         cancelButton.setText(userLanguage.getString("cancelButton"));
     }
 
+    /** handles Signup view user input (creates the new user in the database)
+     *
+      * @param event - the Event that triggers this function call (click Sign Up button)
+     * @throws IOException
+     */
     @FXML
     void handleSignup(ActionEvent event) throws IOException {
         String username = usernameTextField.getText();
@@ -96,6 +100,11 @@ public class SignupController implements Initializable {
         }
     }
 
+    /** changes view to Home Page
+     *
+     * @param event - the Event that triggers this function call (after successful Signup)
+     * @throws IOException
+     */
     @FXML
     void openHomePage(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -104,6 +113,11 @@ public class SignupController implements Initializable {
         stage.show();
     }
 
+    /** changes view back to Login page
+     *
+     * @param event - the Event that triggers this function call (click Cancel button)
+     * @throws IOException
+     */
     @FXML
     void cancelView(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();

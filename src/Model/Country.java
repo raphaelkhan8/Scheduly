@@ -1,8 +1,6 @@
 package Model;
 
 import Database.DBQuery;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,16 +18,30 @@ public class Country {
 
     }
 
-    // Setters
+    /** Setter
+     *
+     * @param countryId - the int value which the Country's Id will be set to
+     */
     public void setCountryId(int countryId) {
         this.countryId = countryId;
     }
+    /** Setter
+     *
+     * @param countryName - the String value which the Country's name will be set to
+     */
     public void setCountryName(String countryName) { this.countryName = countryName; }
 
-    // Getters
+    /** Getter
+     *
+     * @return - the int value corresponding to the Country's id
+     */
     public int getCountryId() {
         return countryId;
     }
+    /** Getter
+     *
+     * @return - the String value corresponding to the Country's name
+     */
     public String getCountryName() {
         return countryName;
     }

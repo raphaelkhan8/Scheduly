@@ -21,32 +21,48 @@ public class User {
         this.status = status;
     }
 
-    // Setters
+    /** Setter
+     *
+     * @param userId - the int value whih the User's Id will be set to
+     */
     public void setUserId(int userId) {
         this.userId = userId;
     }
+    /** Setter
+     *
+     * @param username - the String value which the User's username will be set to
+     */
     public void setUsername(String username) {
         this.username = username;
     }
+    /** Setter
+     *
+     * @param password - the String value which the User's password will be set to
+     */
     public void setPassword(String password) {
         this.password = password;
     }
-    public void setStatus(int status) { this.status = status; }
-    public void addUser(User user) { allUsers.add(user); }
 
-    // Getters
+    /** Getter
+     *
+     * @return - the int value corresponding to the User's Id
+     */
     public int getUserId() {
         return userId;
     }
+    /** Getter
+     *
+     * @return - the String value corresponding to the User's username
+     */
     public String getUsername() {
         return username;
     }
+    /** Getter
+     *
+     * @return - the String value corresponding to the User's password
+     */
     public String getPassword() {
         return password;
     }
-    public int getStatus() {
-        return status;
-    }
-    public ObservableList<User> getAllUsers() { return allUsers; }
 
 }

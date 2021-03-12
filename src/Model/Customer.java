@@ -1,8 +1,6 @@
 package Model;
 
 import Database.DBQuery;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,8 +15,6 @@ public class Customer {
     private String country;
     private String division;
     private int divisionId;
-    // container for customer's appointments
-    private ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
     public Customer() { }
 
@@ -33,42 +29,91 @@ public class Customer {
         this.divisionId = divisionId;
     }
 
-    // Setters
+    /** Setter
+     *
+     * @param customerId - the int value which the Customer's Id will be set to
+     */
     public void setUserId(int customerId) {
         this.customerId = customerId;
     }
+    /** Setter
+     *
+     * @param customerName - the String value which the Customer's name will be set to
+     */
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
+    /** Setter
+     *
+     * @param address - the String value which the Customer's address will be set to
+     */
     public void setAddress(String address) {
         this.address = address;
     }
+    /** Setter
+     *
+     * @param postalCode - the String value which the Customer's postal code will be set to
+     */
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
+    /** Setter
+     *
+     * @param phone - the String value which the Customer's phone number will be set to
+     */
     public void setPhone(String phone) {
         this.phone = phone;
     }
+    /** Setter
+     *
+     * @param country - the String value which the Customer's country will be set to
+     */
     public void setCountry(String country) {
         this.country = country;
     }
+    /** Setter
+     *
+     * @param division - the String value which the Customer's associated division will be set to
+     */
     public void setDivision(String division) { this.division = division; }
+    /** Setter
+     *
+     * @param divisionId - the int value which the Customer's associated divisionId will be set to
+     */
     public void setDivisionId(int divisionId) { this.divisionId = divisionId; }
-    public void addAppointment(Appointment apt) { allAppointments.add(apt); }
 
-    // Getters
+    /** Getter
+     *
+     * @return - the int value corresponding to the Customer's Id
+     */
     public int getCustomerId() {
         return customerId;
     }
+    /** Getter
+     *
+     * @return - the String value corresponding to the Customer's username
+     */
     public String getUsername() {
         return customerName;
     }
+    /** Getter
+     *
+     * @return - the String value corresponding to the Customer's address
+     */
     public String getAddress() {
         return address;
     }
+    /** Getter
+     *
+     * @return - the String value corresponding to the Customer's postal code
+     */
     public String getPostalCode() {
         return postalCode;
     }
+    /** Getter
+     *
+     * @return - the String value corresponding to the Customer's postal code
+     */
     public String getPhone() {
         return phone;
     }
@@ -78,8 +123,11 @@ public class Customer {
     public String getDivision() {
         return division;
     }
+    /** Getter
+     *
+     * @return - the int value corresponding to the Customer's associated Division Id
+     */
     public int getDivisionId() { return divisionId; }
-    public ObservableList<Appointment> getAllAppointments() { return allAppointments; }
 
     /** Gets the customer name corresponding to the passed-in customerId
      *

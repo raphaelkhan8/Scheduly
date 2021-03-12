@@ -93,7 +93,7 @@ public class HomePageController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void handleLogout(ActionEvent event) throws IOException {
+    private void handleLogout(ActionEvent event) throws IOException {
         AtomicBoolean logout = AlertMessages.confirmMessage(userLanguage.getString("logoutConfirmMsg"));
         if (logout.get()) {
             LoginController.clearCurrentUser();
@@ -106,24 +106,39 @@ public class HomePageController implements Initializable {
         }
     }
 
+    /** changes view to the Appointment Manager page
+     *
+     * @param event - the Event that triggers this function call (click View Appointment List button)
+     * @throws IOException
+     */
     @FXML
-    void openAptManagerView(ActionEvent event) throws IOException {
+    private void openAptManagerView(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Object scene = FXMLLoader.load(getClass().getResource("/View/AppointmentManager.fxml"));
         stage.setScene(new Scene((Parent) scene));
         stage.show();
     }
 
+    /** changes view to the Customers Table page
+     *
+     * @param event - the Event that triggers this function call (click View Customer List button)
+     * @throws IOException
+     */
     @FXML
-    void openCustomerTableView(ActionEvent event) throws IOException {
+    private void openCustomerTableView(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Object scene = FXMLLoader.load(getClass().getResource("/View/CustomersTable.fxml"));
         stage.setScene(new Scene((Parent) scene));
         stage.show();
     }
 
+    /** changes view to the Report Generator page
+     *
+     * @param event - the Event that triggers this function call (click Generate Report button)
+     * @throws IOException
+     */
     @FXML
-    void openReportGeneratorView(ActionEvent event) throws IOException {
+    private void openReportGeneratorView(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Object scene = FXMLLoader.load(getClass().getResource("/View/ReportGenerator.fxml"));
         stage.setScene(new Scene((Parent) scene));

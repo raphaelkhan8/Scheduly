@@ -19,7 +19,10 @@ public class DBConnection {
     private static final String password = DBInfo.getPassword();
     private static Connection conn = null;
 
-    /** Starts connection to database */
+    /** Starts connection to database
+     *
+     * @return - database connection
+     */
     public static Connection startConnection() {
         try {
             Class.forName(MySQLJBCDriver);
@@ -33,7 +36,9 @@ public class DBConnection {
         return conn;
     }
 
-    /** Stops database connection */
+    /** Stops database connection
+     *
+     */
     public static void stopConnection() {
         try {
             conn.close();

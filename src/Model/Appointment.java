@@ -43,72 +43,166 @@ public class Appointment {
         this.email = email;
     }
 
-    // Setters
+    /** Setter
+     *
+     * @param appointmentId - the int value which the Appointment's Id will be set to
+     */
     public void setAppointmentId(int appointmentId) {
         this.appointmentId = appointmentId;
     }
+    /** Setter
+     *
+     * @param title - the String value which the Appointment's title will be set to
+     */
     public void setTitle(String title) {
         this.title = title;
     }
+    /** Setter
+     *
+     * @param description - the String value which the Appointment's description will be set to
+     */
     public void setDescription(String description) {
         this.description = description;
     }
+    /** Setter
+     *
+     * @param location - the String value which the Appointment's location will be set to
+     */
     public void setLocation(String location) {
         this.location = location;
     }
+    /** Setter
+     *
+     * @param type - the String value which the Appointment's type will be set to
+     */
     public void setType(String type) {
         this.type = type;
     }
+    /** Setter
+     *
+     * @param start - the String value which the Appointment's start time will be set to
+     */
     public void setStart(String start) {
         this.start = start;
     }
+    /** Setter
+     *
+     * @param end - the String value which the Appointment's end time will be set to
+     */
     public void setEnd(String end) {
         this.end = end;
     }
+    /** Setter
+     *
+     * @param customerId - the int value which the Appointment's customer Id will be set to
+     */
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
+    /** Setter
+     *
+     * @param userId - the int value which the Appointment's user Id will be set to
+     */
     public void setUserId(int userId) {
         this.userId = userId;
     }
+    /** Setter
+     *
+     * @param contactId - the int value which the Appointment's Contact Id will be set to
+     */
     public void setContactId(int contactId) {
         this.contactId = contactId;
     }
+    /** Setter
+     *
+     * @param customerName - the String value which the Appointment's associated customer's name will be set to
+     */
     public void setCustomerName(String customerName) { this.customerName = customerName; }
+    /** Setter
+     *
+     * @param email - the String value which the Appointment's associated contact's email will be set to
+     */
     public void setEmail(String email) { this.email = email; }
 
-    // Getters
+    /** Getter
+     *
+     * @return - the int value corresponding to the Appointment's Id
+     */
     public int getAppointmentId() {
         return appointmentId;
     }
+    /** Getter
+     *
+     * @return - the String value corresponding to the Appointment's Title
+     */
     public String getTitle() {
         return title;
     }
+    /** Getter
+     *
+     * @return - the String value corresponding to the Appointment's description
+     */
     public String getDescription() {
         return description;
     }
+    /** Getter
+     *
+     * @return - the String value corresponding to the Appointment's location
+     */
     public String getLocation() {
         return location;
     }
+    /** Getter
+     *
+     * @return - the String value corresponding to the Appointment's type
+     */
     public String getType() {
         return type;
     }
+    /** Getter
+     *
+     * @return - the String value corresponding to the Appointment's start time
+     */
     public String getStart() {
         return start;
     }
+    /** Getter
+     *
+     * @return - the String value corresponding to the Appointment's end time
+     */
     public String getEnd() {
         return end;
     }
+    /** Getter
+     *
+     * @return - the int value corresponding to the Appointment's associated customer Id
+     */
     public int getCustomerId() {
         return customerId;
     }
+    /** Getter
+     *
+     * @return - the int value corresponding to the Appointment's associated user Id
+     */
     public int getUserId() {
         return userId;
     }
+    /** Getter
+     *
+     * @return - the int value corresponding to the Appointment's associated contact Id
+     */
     public int getContactId() {
         return contactId;
     }
+    /** Getter
+     *
+     * @return - the String value corresponding to the Appointment's associated customer's name
+     */
     public String getCustomerName() { return customerName; }
+    /** Getter
+     *
+     * @return - the String value corresponding to the Appointment's associated contact's email
+     */
     public String getEmail() { return email; }
 
     /** Returns all of the appointments from the database

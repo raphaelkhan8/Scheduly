@@ -168,15 +168,21 @@ public class UpdateAppointmentController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void cancelView(ActionEvent event) throws IOException {
+    private void cancelView(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Object scene = FXMLLoader.load(getClass().getResource("/View/AppointmentManager.fxml"));
         stage.setScene(new Scene((Parent) scene));
         stage.show();
     }
 
+    /** handles saving updates to the Appointment
+     *
+     * @param event - the Event that triggers this function call (click Save button)
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
-    void saveAppointmentHandler(ActionEvent event) throws IOException, SQLException {
+    private void saveAppointmentHandler(ActionEvent event) throws IOException, SQLException {
         int appointmentId = selectedAppointment.getAppointmentId();
         int currentUserId = selectedAppointment.getUserId();
         int customerId = selectedAppointment.getCustomerId();
@@ -242,7 +248,7 @@ public class UpdateAppointmentController implements Initializable {
     /** Populates all four combo boxes with possible user choices
      *
      */
-    void populateComboBoxes() {
+    private void populateComboBoxes() {
         contactTypeComboBox.setItems(DataRetriever.getContactTypes());
         appointmentTypeComboBox.setItems(DataRetriever.getAppointmentTypes());
         startTimeComboBox.setItems(DataRetriever.getTimes());
@@ -279,12 +285,10 @@ public class UpdateAppointmentController implements Initializable {
     }
 
     /** Populates Appointments table with all of the appointments from db
-     * NOTE: Lamda expression used: Lamdas were used to extract properties out of an array of Appointment objects.
-     *       They were beneficial here as new Appointment objects did not have to be created, thus reducing the
-     *       lines of code and lowering the time and space complexity.
+     *
      * @throws SQLException
      */
-    void populateAppointmentsTable(int customerId) {
+    private void populateAppointmentsTable(int customerId) {
         ObservableList<Appointment> appointments = FXCollections.observableArrayList();
         try {
             appointments = Appointment.getAppointments(-1);

@@ -92,7 +92,7 @@ public class LoginController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void handleLogin(ActionEvent event) throws IOException, SQLException {
+    private void handleLogin(ActionEvent event) throws IOException, SQLException {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
 
@@ -151,7 +151,9 @@ public class LoginController implements Initializable {
         }
     }
 
-    /** clears currentUser variable when logging out */
+    /** clears currentUser variable when logging out
+     *
+     */
     public static void clearCurrentUser() {
         currentUser = null;
     }
@@ -176,7 +178,7 @@ public class LoginController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void openSignupView(ActionEvent event) throws IOException {
+    private void openSignupView(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Object scene = FXMLLoader.load(getClass().getResource("/View/Signup.fxml"));
         stage.setScene(new Scene((Parent) scene));
@@ -189,7 +191,7 @@ public class LoginController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void openHomePage(ActionEvent event) throws IOException {
+    private void openHomePage(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Object scene = FXMLLoader.load(getClass().getResource("/View/HomePage.fxml"));
         stage.setScene(new Scene((Parent) scene));

@@ -117,7 +117,7 @@ public class AddCustomerController implements Initializable {
      * @throws SQLException
      */
     @FXML
-    void addCustomerCountryHandler(ActionEvent event) throws SQLException {
+    private void addCustomerCountryHandler(ActionEvent event) throws SQLException {
         selectedCountryId = addCustomerCountryComboBox.getSelectionModel().getSelectedIndex();
         populateDivisionComboBox(selectedCountryId);
         if (divisionNameList.size() == 0) {
@@ -134,7 +134,7 @@ public class AddCustomerController implements Initializable {
      * @param event - the event that triggers this function call (select a division from division combo-box)
      */
     @FXML
-    void addCustomerDivisionHandler(ActionEvent event) {
+    private void addCustomerDivisionHandler(ActionEvent event) {
         selectedDivisionIndex = addCustomerDivisionComboBox.getSelectionModel().getSelectedIndex();
     }
 
@@ -144,7 +144,7 @@ public class AddCustomerController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void cancelView(ActionEvent event) throws IOException {
+    private void cancelView(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Object scene = FXMLLoader.load(getClass().getResource("/View/CustomersTable.fxml"));
         stage.setScene(new Scene((Parent) scene));
@@ -156,7 +156,7 @@ public class AddCustomerController implements Initializable {
      * @param event - the event that triggers this function call (click Save button)
      */
     @FXML
-    void saveCustomerHandler(ActionEvent event) {
+    private void saveCustomerHandler(ActionEvent event) {
         // get user's text input
         int customerId = 1;
         String customerName = addCustomerNameText.getText();
@@ -202,7 +202,7 @@ public class AddCustomerController implements Initializable {
      *
      * @throws SQLException
      */
-    void populateCountryComboBox() throws SQLException {
+    private void populateCountryComboBox() throws SQLException {
         ResultSet countries = Country.getAllCountries();
         while (countries.next()) {
             countryList.add(countries.getString(2));
@@ -214,7 +214,7 @@ public class AddCustomerController implements Initializable {
      * @param countryId - the int corresponding to the selected country's Id
      * @throws SQLException
      */
-    void populateDivisionComboBox(int countryId) throws SQLException {
+    private void populateDivisionComboBox(int countryId) throws SQLException {
         divisionIDList.clear();
         divisionNameList.clear();
         ResultSet divisions = DataRetriever.getDivisionInfo(countryId + 1);

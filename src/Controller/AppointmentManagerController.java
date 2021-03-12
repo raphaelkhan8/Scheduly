@@ -129,7 +129,7 @@ public class AppointmentManagerController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void cancelView(ActionEvent event) throws IOException {
+    private void cancelView(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Object scene = FXMLLoader.load(getClass().getResource("/View/HomePage.fxml"));
         stage.setScene(new Scene((Parent) scene));
@@ -141,7 +141,7 @@ public class AppointmentManagerController implements Initializable {
      * @param event - the Event that triggers this function call (click Delete button)
      */
     @FXML
-    void deleteAppointmentHandler(ActionEvent event) {
+    private void deleteAppointmentHandler(ActionEvent event) {
         selectedAppointment = appointmentTableView.getSelectionModel().getSelectedItem();
 
         if (selectedAppointment == null) {
@@ -183,7 +183,7 @@ public class AppointmentManagerController implements Initializable {
      * @throws SQLException
      */
     @FXML
-    void updateAppointmentHandler(ActionEvent event) throws IOException, SQLException {
+    private void updateAppointmentHandler(ActionEvent event) throws IOException, SQLException {
         selectedAppointment = appointmentTableView.getSelectionModel().getSelectedItem();
 
         if (selectedAppointment == null) {
@@ -209,7 +209,7 @@ public class AppointmentManagerController implements Initializable {
      * @param event - the event that triggers this function call (clicking Search button)
      */
     @FXML
-    void searchTableSorterHandler(ActionEvent event) {
+    private void searchTableSorterHandler(ActionEvent event) {
         if (viewByWeekRadioButton.isSelected()) {
             int selectedDurationIndex = viewByComboBox.getSelectionModel().getSelectedIndex();
             appointments = DataRetriever.getAppointmentsByDuration(0, Integer.toString(selectedDurationIndex - 1));
@@ -225,7 +225,7 @@ public class AppointmentManagerController implements Initializable {
      * @param event - the Event that triggers this function call (click View By Month radio button)
      */
     @FXML
-    void viewByMonthHandler(ActionEvent event) {
+    private void viewByMonthHandler(ActionEvent event) {
         String currentMonth = LocalDate.now().getMonth().toString();
         appointments = DataRetriever.getAppointmentsByDuration(1, currentMonth);
         populateAppointmentsTable(appointments);
@@ -237,19 +237,17 @@ public class AppointmentManagerController implements Initializable {
      * @param event - the Event that triggers this function call (click View By Week radio button)
      */
     @FXML
-    void viewByWeekHandler(ActionEvent event) {
+    private void viewByWeekHandler(ActionEvent event) {
         appointments = DataRetriever.getAppointmentsByDuration(0, "0");
         populateAppointmentsTable(appointments);
         viewByComboBox.setItems(DataRetriever.getWeekOptions());
     }
 
     /** populates Appointments Table with all appointments from passed in ObservableList
-     * NOTE: Lamda expression used: Lamdas were used to extract properties out of an array of Appointment objects.
-     *       They were beneficial here as new Appointment objects did not have to be created, thus reducing the
-     *       lines of code and lowering the time and space complexity.
+     *
      * @param apts - the ObservableList containing appointments to be displayed in Appointments table
      */
-    void populateAppointmentsTable(ObservableList<Appointment> apts) {
+    private void populateAppointmentsTable(ObservableList<Appointment> apts) {
         appointmentTableView.setItems(apts);
         customerNameColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getCustomerName()));
         appointmentTitleColumn.setCellValueFactory(apt -> new SimpleStringProperty(apt.getValue().getTitle()));

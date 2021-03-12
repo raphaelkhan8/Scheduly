@@ -79,7 +79,7 @@ public class ReportGeneratorController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void cancelView(ActionEvent event) throws IOException {
+    private void cancelView(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Object scene = FXMLLoader.load(getClass().getResource("/View/HomePage.fxml"));
         stage.setScene(new Scene((Parent) scene));
@@ -91,7 +91,7 @@ public class ReportGeneratorController implements Initializable {
      * @param event - the Event that triggers this function call (click Generate Report button)
      */
     @FXML
-    void generateReportHandler(ActionEvent event) {
+    private void generateReportHandler(ActionEvent event) {
         if(selectReportComboBox.getSelectionModel().getSelectedIndex() == 0) {
             generateFirstReport();
         }
@@ -103,8 +103,10 @@ public class ReportGeneratorController implements Initializable {
         }
     }
 
-    /** Generates a report on appointments organized by type and month */
-    public void generateFirstReport() {
+    /** Generates a report on appointments organized by type and month
+     *
+     */
+    private void generateFirstReport() {
         try {
             DBQuery.makeQuery("SELECT Type AS t, MONTHNAME(Start) AS m, COUNT(*) AS total FROM appointments GROUP BY m, t");
             ResultSet appointmentQueryResults = DBQuery.getResult();
@@ -125,8 +127,10 @@ public class ReportGeneratorController implements Initializable {
         }
     }
 
-    /** Generates a report on appointments organized by contact */
-    public void generateSecondReport() {
+    /** Generates a report on appointments organized by contact
+     *
+     */
+    private void generateSecondReport() {
         try {
             DBQuery.makeQuery("SELECT Contact_ID, Title, Type, Description, Start, End, Customer_ID " +
                     "FROM appointments ORDER BY Contact_ID, MONTH(Start), Start");
@@ -153,8 +157,10 @@ public class ReportGeneratorController implements Initializable {
         }
     }
 
-    /** Generates a report ranking customers by number of appointments */
-    public void generateThirdReport() {
+    /** Generates a report ranking customers by number of appointments
+     *
+     */
+    private void generateThirdReport() {
         try {
             DBQuery.makeQuery("SELECT a.Customer_ID, c.Customer_Name AS Name, COUNT(*) AS Count FROM appointments a " +
                     "JOIN customers c ON a.Customer_ID = c.Customer_ID GROUP BY Customer_ID DESC;");

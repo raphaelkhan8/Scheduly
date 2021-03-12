@@ -170,7 +170,7 @@ public class AddAppointmentController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void cancelView(ActionEvent event) throws IOException {
+    private void cancelView(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Object scene = FXMLLoader.load(getClass().getResource("/View/CustomersTable.fxml"));
         stage.setScene(new Scene((Parent) scene));
@@ -184,7 +184,7 @@ public class AddAppointmentController implements Initializable {
      * @throws SQLException
      */
     @FXML
-    void saveAppointmentHandler(ActionEvent event) throws IOException, SQLException {
+    private void saveAppointmentHandler(ActionEvent event) throws IOException, SQLException {
         int appointmentId = 1;
         int contactId = 1;
         // get user's text input
@@ -300,7 +300,7 @@ public class AddAppointmentController implements Initializable {
     /** Populates all four combo boxes with possible user choices
      *
      */
-    void populateComboBoxes() {
+    private void populateComboBoxes() {
         contactTypeComboBox.setItems(DataRetriever.getContactTypes());
         appointmentTypeComboBox.setItems(DataRetriever.getAppointmentTypes());
         startTimeComboBox.setItems(DataRetriever.getTimes());
@@ -308,12 +308,10 @@ public class AddAppointmentController implements Initializable {
     }
 
     /** Populates Appointments table with customer's appointments
-     * NOTE: Lamda expression used: Lamdas were used to extract properties out of an array of Appointment objects.
-     *       They were beneficial here as new Appointment objects did not have to be created, thus reducing the
-     *       lines of code and lowering the time and space complexity.
+     *
      * @throws SQLException
      */
-    void populateAppointmentsTable() throws SQLException {
+    private void populateAppointmentsTable() throws SQLException {
         ObservableList<Appointment> appointments = Appointment.getAppointments(-1);
         addAppointmentTableView.setItems(appointments);
         addAppointmentIDColumn.setCellValueFactory(apt -> new SimpleStringProperty(Integer.toString(apt.getValue().getAppointmentId())));

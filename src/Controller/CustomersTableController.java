@@ -120,7 +120,7 @@ public class CustomersTableController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void addAppointmentHandler(ActionEvent event) throws IOException, SQLException {
+    private void addAppointmentHandler(ActionEvent event) throws IOException, SQLException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/View/AddAppointment.fxml"));
         loader.load();
@@ -144,7 +144,7 @@ public class CustomersTableController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void addCustomerHandler(ActionEvent event) throws IOException {
+    private void addCustomerHandler(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Object scene = FXMLLoader.load(getClass().getResource("/View/AddCustomer.fxml"));
         stage.setScene(new Scene((Parent) scene));
@@ -156,7 +156,7 @@ public class CustomersTableController implements Initializable {
      * @param event - the event that triggers this function call (click Delete button)
      */
     @FXML
-    void deleteCustomerHandler(ActionEvent event) {
+    private void deleteCustomerHandler(ActionEvent event) {
         selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
         if (selectedCustomer == null) {
             AlertMessages.errorMessage(userLanguage.getString("deleteCustomerNoCustomerMessage"));
@@ -198,7 +198,7 @@ public class CustomersTableController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void updateCustomerHandler(ActionEvent event) throws IOException {
+    private void updateCustomerHandler(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/View/UpdateCustomer.fxml"));
         loader.load();
@@ -230,7 +230,7 @@ public class CustomersTableController implements Initializable {
      * @throws IOException
      */
     @FXML
-    void cancelView(ActionEvent event) throws IOException {
+    private void cancelView(ActionEvent event) throws IOException {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         Object scene = FXMLLoader.load(getClass().getResource("/View/HomePage.fxml"));
         stage.setScene(new Scene((Parent) scene));
@@ -238,12 +238,10 @@ public class CustomersTableController implements Initializable {
     }
 
     /** Loads customer data from database into the Customer TableView and displays each customer as a table-row
-     * NOTE: Lamda expression used: Lamdas were used to extract properties out of an array of Customer objects.
-     *       They were beneficial here as new Customer objects did not have to be created, thus reducing the
-     *       lines of code and lowering the time and space complexity.
+     *
      * @throws SQLException
      */
-    void populateCustomersTable() throws SQLException {
+    private void populateCustomersTable() throws SQLException {
         DBQuery.makeQuery("SELECT cust.*, f.Division, c.Country FROM customers AS cust JOIN first_level_divisions AS f ON f.Division_ID = cust.Division_ID JOIN countries AS c ON c.Country_ID = f.Country_ID");
         ResultSet customers = DBQuery.getResult();
         while (customers.next()) {

@@ -1,9 +1,6 @@
 package Model;
 
 import Database.DBQuery;
-import javafx.beans.Observable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,24 +19,46 @@ public class Contact {
         this.email = email;
     }
 
-    // Setters
+    /** Setter
+     *
+     * @param contactId - the int value which the Contact's Id will be set to
+     */
     public void setContactId(int contactId) {
         this.contactId = contactId;
     }
+    /** Setter
+     *
+     * @param contactName - the String value which the Contact's name will be set to
+     */
     public void setContactName(String contactName) {
         this.contactName = contactName;
     }
+    /** Setter
+     *
+     * @param email - the String value which the Contact's email will be set to
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
-    // Getters
+    /** Getter
+     *
+     * @return - the int value corresponding to the Contact's id
+     */
     public int getContactId() {
         return contactId;
     }
+    /** Getter
+     *
+     * @return - the int value corresponding to the Contact's name
+     */
     public String getContactName() {
         return contactName;
     }
+    /** Getter
+     *
+     * @return - the int value corresponding to the Contact's email
+     */
     public String getEmail() {
         return email;
     }

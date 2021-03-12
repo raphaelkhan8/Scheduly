@@ -9,6 +9,11 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    /** App start method: open Login Page view
+     *
+     * @param primaryStage - Sets the login page and title as the stage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("../View/Login.fxml"));
@@ -17,7 +22,9 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-
+    /** App entry point
+     *
+     */
     public static void main(String[] args) {
         launch(args);
         DBConnection.stopConnection();

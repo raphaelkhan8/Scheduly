@@ -9,7 +9,10 @@ public class DBQuery {
     /** container for db query return */
     private static ResultSet result;
 
-    /** Setter (sets above result variable to query's return) */
+    /** Setter (sets above result variable to query's return)
+     *
+     * @param query - the String query to be executed against the database
+     */
     public static void makeQuery(String query) {
         try {
             PreparedStatement ps = DBConnection.startConnection().prepareStatement(query);
@@ -26,7 +29,10 @@ public class DBQuery {
         }
     }
 
-    /** Getter (returns result from db query) */
+    /** Getter
+     *
+     * @return - the ResultSet corresponding to the query return from above
+     */
     public static ResultSet getResult() {
         return result;
     }
